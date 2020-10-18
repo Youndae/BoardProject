@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.project.mapper.BoardMapper">
+
+	<select id="BoardList" resultType="HierarchicalBoardoardVO">
+		select * from HierarchicalBoard
+	</select>
+	
+	<select id="BoardDetail" resultType="HierarchicalBoardoardVO">
+		select * from HierarchicalBoard where boardNo=#{boardNo}
+	</select>
+	
+	<select id="BoardModify" resultType="HierarchicalBoardoardVO">
+		select * from HierarchicalBoard where boardNo=#{boardNo}
+	</select><!-- detail과 같은 쿼리문이니까 detail로 해결할 수 있는지 체크 -->
+
+	<update id="BoardModifyProc" parameterType="String">
+		update HierarchicalBoard 
+		set boardTitle=#{boardTitle}, boardContent=#{boardContent}
+		where boardNo=#{boardNo}
+	</update>
+	
+	<insert id="BoardInsertProc" parameterType="String">
+		insert into HierarchicalBoard 
+		(boardNo, boardTitle, boardWriter, boardContent, boardDate, boardGroupNo, boardStep)
+		values(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent}, now(), );
+	</insert>
+	
+	<select id="BoardReply" resultType="HierarchicalBoardoardVO">
+		select * from HierarchicalBoard where boardNo=#{boardNo}
+	</select>
+	
+	<insert id="BoardReplyProc" parameterType="String">
+		insert into HierarchicalBoard
+		(boardNo, boardTitle, boardWriter, boardContent, boardDate, boardGroupNo, boardIndent, boardStep)
+		values(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent}, now(), #{boardGroupNo}, #{boardIndent}+1, );
+	</insert>
+	
+</mapper> 
