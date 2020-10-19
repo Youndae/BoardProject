@@ -12,15 +12,18 @@
     <title>Title</title>
 </head>
 <body>
-    <tr>
-        <th>이름</th>
-        <th>나이</th>
-    </tr>
-    <c:forEach var="testboard" items="${test}">
-        <tr>
-            <td>${testboard.name}</td>
-            <td>${testboard.age}</td>
-        </tr>
-    </c:forEach>
+    <div>
+		<form action="/BoardInsertProc" method="post" id="insertBoardFrm">
+			<div>
+				<label for="boardTitle">제목</label> 
+				<input type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요" value="${boardModify.boardTitle}">
+			</div>
+			<div>
+				<label for="boardContent">내용</label>
+				<textarea  id="boardContent" name="boardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;">${boardModify.boardTitle}</textarea>
+			</div>
+			<button id="insertButton" name="insertButton">등록</button>
+		</form>
+	</div>
 </body>
 </html>

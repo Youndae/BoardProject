@@ -1,39 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.board.project.mapper.BoardMapper">
+<mapper
+	namespace="com.board.project.mapper.HierarchicalBoardMapper">
 
-	<select id="BoardList" resultType="HierarchicalBoardoardVO">
-		select * from HierarchicalBoard
+	<select id="BoardList" resultType="HierarchicalBoardVO">
+		SELECT * FROM HIERARCHICALBOARD
 	</select>
-	
-	<select id="BoardDetail" resultType="HierarchicalBoardoardVO">
-		select * from HierarchicalBoard where boardNo=#{boardNo}
+
+	<select id="BoardDetail" resultType="com.board.project.vo.HierarchicalBoardVO">
+		SELECT * 
+		FROM HIERARCHICALBOARD 
+		WHERE boardNo=#{boardNo}
 	</select>
-	
-	<select id="BoardModify" resultType="HierarchicalBoardoardVO">
-		select * from HierarchicalBoard where boardNo=#{boardNo}
+
+	<select id="BoardModify" resultType="HierarchicalBoardVO">
+		SELECT boardNo, boardTitle, boardContent 
+		FROM HierarchicalBoard 
+		WHERE boardNo=#{boardNo}
 	</select><!-- detail과 같은 쿼리문이니까 detail로 해결할 수 있는지 체크 -->
 
 	<update id="BoardModifyProc" parameterType="String">
-		update HierarchicalBoard 
-		set boardTitle=#{boardTitle}, boardContent=#{boardContent}
-		where boardNo=#{boardNo}
+		UPDATE HierarchicalBoard
+		SET boardTitle=#{boardTitle}, boardContent=#{boardContent}
+		WHERE boardNo=#{boardNo}
 	</update>
-	
+
 	<insert id="BoardInsertProc" parameterType="String">
-		insert into HierarchicalBoard 
-		(boardNo, boardTitle, boardWriter, boardContent, boardDate, boardGroupNo, boardStep)
-		values(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent}, now(), );
+		INSERT INTO	HierarchicalBoard
+		(boardNo, boardTitle, boardWriter, 
+		boardContent, boardDate, boardGroupNo, boardUpperNo, boardIndent)
+		VALUES(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter},
+		#{boardContent}, sysdate, board_seq.NEXTVAL, 0, 0);
 	</insert>
-	
-	<select id="BoardReply" resultType="HierarchicalBoardoardVO">
-		select * from HierarchicalBoard where boardNo=#{boardNo}
+
+	<select id="BoardReply" resultType="HierarchicalBoardVO">
+		SELECT boardNo, boardTitle, boardGroupNo, boardIndent
+		FROM HierarchicalBoard where boardNo=#{boardNo}
 	</select>
-	
+
 	<insert id="BoardReplyProc" parameterType="String">
-		insert into HierarchicalBoard
-		(boardNo, boardTitle, boardWriter, boardContent, boardDate, boardGroupNo, boardIndent, boardStep)
-		values(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent}, now(), #{boardGroupNo}, #{boardIndent}+1, );
+		insert into
+		HierarchicalBoard
+		(boardNo, boardTitle, boardWriter, boardContent,
+		boardDate, boardGroupNo, boardUpperNo, boardIndent)
+		values(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent},
+		sysdate, #{boardGroupNo}, #{boardNo}, #{boardIndent}+1);
 	</insert>
-	
+
 </mapper> 

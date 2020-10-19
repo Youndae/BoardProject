@@ -8,17 +8,16 @@ import com.board.project.vo.HierarchicalBoardVO;
 
 @Mapper
 public interface HierarchicalBoardMapper {
+	
 	List<HierarchicalBoardVO> BoardList() throws Exception;
 	
-	public String BoardDetail() throws Exception;
+	public HierarchicalBoardVO BoardDetail(int boardNo) throws Exception;
 	
-	public String BoardModify() throws Exception;
+	public HierarchicalBoardVO BoardModify(int boardNo) throws Exception;
 	
 	public void BoardModifyProc() throws Exception;
 	
 	public void BoardInsertProc() throws Exception;
-	
-	public String BoardReply() throws Exception;
 	
 	public void BoardReplyProc() throws Exception;
 }

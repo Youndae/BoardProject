@@ -3,7 +3,9 @@ package com.board.project.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.board.project.mapper.HierarchicalBoardMapper;
 
@@ -18,21 +20,25 @@ public class HierarchicalBoardController {
 		
 		model.addAttribute("boardList", boardMapper.BoardList());
 		
+		System.out.println("List : "+boardMapper.BoardList());
+		
 		return "HierarchicalBoard/BoardList";
 	}
 	
-	@RequestMapping("/BoardDetail/{bno}")
-	public String BoardDetail(Model model) throws Exception{
+	@RequestMapping("/BoardDetail")
+	public String BoardDetail(Model model, @RequestParam("boardNo") int boardNo) throws Exception{
+		System.out.println("boardNo : "+boardNo);
+		model.addAttribute("boardDetail", boardMapper.BoardDetail(boardNo));
 		
-		model.addAttribute("boardDetail", boardMapper.BoardDetail());
+		System.out.println("data: "+boardMapper.BoardDetail(boardNo));
 		
 		return "HierarchicalBoard/BoardDetail";
 	}
 	
-	@RequestMapping("/BoardModify/{bno}")
-	public String BoardModify(Model model) throws Exception{
+	@RequestMapping("/BoardModify")
+	public String BoardModify(Model model, @RequestParam("boardNo") int boardNo) throws Exception{
 		
-		model.addAttribute("boardModify", boardMapper.BoardModify());
+		model.addAttribute("boardModify", boardMapper.BoardModify(boardNo));
 		
 		return "HierarchicalBoard/BoardModify";
 	}
@@ -55,10 +61,10 @@ public class HierarchicalBoardController {
 		return "redirect:BoardList";
 	}
 	
-	@RequestMapping("/BoardReply/{bno}")
-	public String BoardReply(Model model) throws Exception{
+	@RequestMapping("/BoardReply")
+	public String BoardReply(Model model, @RequestParam("boardNo") int boardNo) throws Exception{
 		
-		model.addAttribute("boardReply", boardMapper.BoardReply());
+		model.addAttribute("boardReply", boardMapper.BoardDetail(boardNo));
 		
 		return "HierarchicalBoard/BoardReply";
 	}

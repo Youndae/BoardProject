@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: User
-  Date: 2020-10-17
-  Time: 오후 11:20
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -12,15 +5,27 @@
     <title>Title</title>
 </head>
 <body>
-    <tr>
-        <th>이름</th>
-        <th>나이</th>
-    </tr>
-    <c:forEach var="testboard" items="${test}">
-        <tr>
-            <td>${testboard.name}</td>
-            <td>${testboard.age}</td>
-        </tr>
-    </c:forEach>
+    <div>
+        <table class="table table-hover" border="1">
+
+            <tr>
+                <th>글번호</th>
+                <th>글제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+            </tr>
+            <c:forEach var="board" items="${boardList}">
+            <tr>
+                <td>${board.boardNo}</td><!-- 글번호 -->
+                <td>
+                    <a href="/controller/BoardDetail?boardNo=${board.boardNo}">${board.boardTitle}</a>
+                </td><!-- 글제목 -->
+                <td>${board.userId}</td><!-- 작성자 -->
+                <td>${board.boardDate}</td><!-- 작성일 -->
+            </tr>
+            </c:forEach>
+        </table>
+    </div>
+    <button onclick="location.href='/controller/BoardInsert'">글작성</button>
 </body>
 </html>

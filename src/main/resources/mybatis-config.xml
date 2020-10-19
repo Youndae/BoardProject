@@ -3,7 +3,7 @@
 
 <configuration>
 	<typeAliases>
-		<package name="com.board.project.vo"/>
+		<package name="com.board.project"/>
 	</typeAliases> 
 </configuration>
 

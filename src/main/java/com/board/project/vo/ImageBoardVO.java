@@ -13,7 +13,7 @@ public class ImageBoardVO {
 
 	private int imageNo;
 	private String imageTitle;
-	private String imageWriter;
+	private String userId;
 	private String image1;
 	private String image2;
 	private String image3;
