@@ -1,5 +1,8 @@
 package com.board.project.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.board.project.mapper.HierarchicalBoardMapper;
+import com.board.project.vo.HierarchicalBoardVO;
 
 @Controller
 public class HierarchicalBoardController {
@@ -38,15 +42,31 @@ public class HierarchicalBoardController {
 	@RequestMapping("/BoardModify")
 	public String BoardModify(Model model, @RequestParam("boardNo") int boardNo) throws Exception{
 		
-		model.addAttribute("boardModify", boardMapper.BoardModify(boardNo));
+		model.addAttribute("boardModify", boardMapper.BoardDetail(boardNo));
 		
 		return "HierarchicalBoard/BoardModify";
 	}
 	
 	@RequestMapping("/BoardModifyProc")
-	public String BoardModifyProc() throws Exception{
+	public String BoardModifyProc(HttpSession session, HierarchicalBoardVO boardVO, HttpServletRequest request) throws Exception{
 		
-		return "redirect:BoardDetail/{bno}";
+		String id = (String) session.getAttribute("id");
+		
+		boardVO.setBoardTitle(request.getParameter("boardTitle"));
+		boardVO.setBoardNo(Integer.parseInt(request.getParameter("boardNo")));
+		boardVO.setBoardContent(request.getParameter("boardContent"));
+		
+		boardMapper.BoardModifyProc(boardVO);
+		
+		return "redirect:/BoardDetail?boardNo="+request.getParameter("boardNo");
+	}
+	
+	@RequestMapping("/BoardDelete")
+	public String BoardDelete(@RequestParam("boardNo") int boardNo) throws Exception{
+		
+		boardMapper.BoardDelete(boardNo);
+		
+		return "redirect:BoardList";
 	}
 	
 	@RequestMapping("/BoardInsert")
@@ -56,7 +76,14 @@ public class HierarchicalBoardController {
 	}
 	
 	@RequestMapping("/BoardInsertProc")
-	public String BoardInsertProc() throws Exception{
+	public String BoardInsertProc(HierarchicalBoardVO boardVO, HttpServletRequest request, HttpSession session) throws Exception{
+		String id = (String) session.getAttribute("id");
+		
+		boardVO.setUserId(id);
+		boardVO.setBoardTitle(request.getParameter("boardTitle"));
+		boardVO.setBoardContent(request.getParameter("boardContent"));
+		
+		boardMapper.BoardInsertProc(boardVO);
 		
 		return "redirect:BoardList";
 	}
@@ -70,7 +97,18 @@ public class HierarchicalBoardController {
 	}
 	
 	@RequestMapping("/BoardReplyProc")
-	public String BoardReplyProc() throws Exception{
+	public String BoardReplyProc(HierarchicalBoardVO boardVO, HttpSession session, HttpServletRequest request) throws Exception{
+		
+		String id = (String) session.getAttribute("id");
+		
+		boardVO.setUserId(id);
+		boardVO.setBoardTitle(request.getParameter("boardTitle"));
+		boardVO.setBoardContent(request.getParameter("boardContent"));
+		boardVO.setBoardUpperNo(Integer.parseInt(request.getParameter("boardNo")));
+		boardVO.setBoardGroupNo(Integer.parseInt(request.getParameter("boardGroupNo")));
+		boardVO.setBoardIndent(Integer.parseInt(request.getParameter("boardIndent"+1)));
+		
+		boardMapper.BoardReplyProc(boardVO);
 		
 		return "redirect:BoardList";
 	}

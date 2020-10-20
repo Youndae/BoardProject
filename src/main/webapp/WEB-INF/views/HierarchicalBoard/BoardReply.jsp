@@ -6,17 +6,29 @@
 </head>
 <body>
     <div>
-		<form action="/BoardInsertProc" method="post" id="insertBoardFrm">
+		<form method="post" id="ReplyFrm">
 			<div>
-				<label for="boardTitle">RE: ${boardReply.boardTitle}</label> 
-				<input type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요">
+				<label for="boardTitle">제목</label> 
+				<input type="text" id="boardTitle" name="boardTitle" value="RE: ${boardReply.boardTitle}" readonly="readonly"> 
 			</div>
 			<div>
 				<label for="boardContent">내용</label>
 				<textarea  id="boardContent" name="boardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;"></textarea>
 			</div>
-			<button id="insertButton" name="insertButton">등록</button>
+			<button href='#' onclick="ReplyProc()" id="insertButton" name="insertButton">등록</button>
+			<input type="hidden" id="boardNo" value="${boardReply.boardNo}">
+			<input type="hidden" id="boardGroupNo" value="${boardReply.boardGroupNo}">
+			<input type="hidden" id="boardIndent" value="${boardReply.boardIndent}">
 		</form>
 	</div>
 </body>
+
+<script>
+	function ReplyProc(){
+		var form = document.getElementById("ReplyFrm");
+		
+		form.action = "<c:url value='/BoardReplyProc'/>";
+		form.submit();
+	}
+</script>
 </html>

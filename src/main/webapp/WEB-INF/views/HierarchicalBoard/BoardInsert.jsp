@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div>
-		<form action="/BoardInsertProc" method="post" id="insertBoardFrm">
+		<form method="post" id="insertBoardFrm">
 			<div>
 				<label for="boardTitle">제목</label> 
 				<input type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요">
@@ -15,8 +15,17 @@
 				<label for="boardContent">내용</label>
 				<textarea  id="boardContent" name="boardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;"></textarea>
 			</div>
-			<button id="insertButton" name="insertButton">등록</button>
+			<button href='#' onclick="insertBoard()" id="insertButton" name="insertButton">등록</button>
 		</form>
 	</div>
 </body>
+
+<script>
+	function insertBoard(){
+		var form = document.getElementById("insertBoardFrm");
+		
+		form.action = "<c:url value='/controller/BoardInsertProc'/>";
+		form.submit();
+	}
+</script>
 </html>

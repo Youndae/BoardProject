@@ -13,11 +13,11 @@ public interface HierarchicalBoardMapper {
 	
 	public HierarchicalBoardVO BoardDetail(int boardNo) throws Exception;
 	
-	public HierarchicalBoardVO BoardModify(int boardNo) throws Exception;
+	public void BoardDelete(int boardNo) throws Exception;
 	
-	public void BoardModifyProc() throws Exception;
+	public void BoardModifyProc(HierarchicalBoardVO boardVO) throws Exception;
 	
-	public void BoardInsertProc() throws Exception;
+	public void BoardInsertProc(HierarchicalBoardVO boardVO) throws Exception;
 	
-	public void BoardReplyProc() throws Exception;
+	public void BoardReplyProc(HierarchicalBoardVO boardVO) throws Exception;
 }

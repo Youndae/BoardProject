@@ -18,4 +18,5 @@ public class HierarchicalBoardVO {
 	private Date boardDate;
 	private int boardGroupNo;
 	private int boardUpperNo;
+	private int boardIndent;
 }

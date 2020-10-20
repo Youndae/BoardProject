@@ -7,25 +7,23 @@
 		SELECT * FROM HIERARCHICALBOARD
 	</select>
 
-	<select id="BoardDetail" resultType="com.board.project.vo.HierarchicalBoardVO">
-		SELECT * 
+	<select id="BoardDetail" resultType="HierarchicalBoardVO">
+		SELECT boardNo, boardTitle, boardContent, userId
 		FROM HIERARCHICALBOARD 
 		WHERE boardNo=#{boardNo}
 	</select>
 
-	<select id="BoardModify" resultType="HierarchicalBoardVO">
-		SELECT boardNo, boardTitle, boardContent 
-		FROM HierarchicalBoard 
-		WHERE boardNo=#{boardNo}
-	</select><!-- detail과 같은 쿼리문이니까 detail로 해결할 수 있는지 체크 -->
-
-	<update id="BoardModifyProc" parameterType="String">
+	<update id="BoardModifyProc" parameterType="HierarchicalBoardVO">
 		UPDATE HierarchicalBoard
 		SET boardTitle=#{boardTitle}, boardContent=#{boardContent}
 		WHERE boardNo=#{boardNo}
 	</update>
+	
+	<delete id="BoardDelete" parameterType="int">
+		DELETE FROM hierarchicalboard WHERE boardNo=#{boardNo}
+	</delete>
 
-	<insert id="BoardInsertProc" parameterType="String">
+	<insert id="BoardInsertProc" parameterType="HierarchicalBoardVO">
 		INSERT INTO	HierarchicalBoard
 		(boardNo, boardTitle, boardWriter, 
 		boardContent, boardDate, boardGroupNo, boardUpperNo, boardIndent)
@@ -38,13 +36,13 @@
 		FROM HierarchicalBoard where boardNo=#{boardNo}
 	</select>
 
-	<insert id="BoardReplyProc" parameterType="String">
+	<insert id="BoardReplyProc" parameterType="HierarchicalBoardVO">
 		insert into
 		HierarchicalBoard
 		(boardNo, boardTitle, boardWriter, boardContent,
 		boardDate, boardGroupNo, boardUpperNo, boardIndent)
 		values(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent},
-		sysdate, #{boardGroupNo}, #{boardNo}, #{boardIndent}+1);
+		sysdate, #{boardGroupNo}, #{boardNo}, #{boardIndent});
 	</insert>
 
 </mapper> 
