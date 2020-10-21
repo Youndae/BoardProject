@@ -16,6 +16,7 @@
 				<textarea  id="boardContent" name="boardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;">${boardModify.boardTitle}</textarea>
 			</div>
 			<button href='#' onclick="ModifyProc()" id="insertButton" name="insertButton">등록</button>
+			<input type="hidden" name="boardNo" value="${boardModify.boardNo}">
 		</form>
 	</div>
 </body>

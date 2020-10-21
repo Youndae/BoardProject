@@ -24,7 +24,7 @@
 	function insertBoard(){
 		var form = document.getElementById("insertBoardFrm");
 		
-		form.action = "<c:url value='/controller/BoardInsertProc'/>";
+		form.action = "<c:url value='/BoardInsertProc'/>";
 		form.submit();
 	}
 </script>

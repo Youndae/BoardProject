@@ -4,12 +4,16 @@
 	namespace="com.board.project.mapper.HierarchicalBoardMapper">
 
 	<select id="BoardList" resultType="HierarchicalBoardVO">
-		SELECT * FROM HIERARCHICALBOARD
+		SELECT LEVEL AS "LEVEL", boardNo, boardUpperNo, boardTitle, boardDate, boardGroupNo, boardIndent
+		FROM HierarchicalBoard
+		START WITH boardUpperNo = 0
+		CONNECT BY PRIOR boardNo = boardUpperNo
+		ORDER SIBLINGS BY boardGroupNo DESC
 	</select>
 
 	<select id="BoardDetail" resultType="HierarchicalBoardVO">
 		SELECT boardNo, boardTitle, boardContent, userId
-		FROM HIERARCHICALBOARD 
+		FROM HierarchicalBoard 
 		WHERE boardNo=#{boardNo}
 	</select>
 
@@ -20,15 +24,13 @@
 	</update>
 	
 	<delete id="BoardDelete" parameterType="int">
-		DELETE FROM hierarchicalboard WHERE boardNo=#{boardNo}
+		DELETE FROM HierarchicalBoard WHERE boardNo=#{boardNo}
 	</delete>
 
 	<insert id="BoardInsertProc" parameterType="HierarchicalBoardVO">
 		INSERT INTO	HierarchicalBoard
-		(boardNo, boardTitle, boardWriter, 
-		boardContent, boardDate, boardGroupNo, boardUpperNo, boardIndent)
-		VALUES(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter},
-		#{boardContent}, sysdate, board_seq.NEXTVAL, 0, 0);
+		(boardNo, boardTitle, userId, boardContent, boardDate, boardGroupNo, boardUpperNo, boardIndent)
+		VALUES(board_seq.NEXTVAL, #{boardTitle}, #{userId}, #{boardContent}, sysdate, board_seq.NEXTVAL, 0, 0)
 	</insert>
 
 	<select id="BoardReply" resultType="HierarchicalBoardVO">
@@ -39,10 +41,10 @@
 	<insert id="BoardReplyProc" parameterType="HierarchicalBoardVO">
 		insert into
 		HierarchicalBoard
-		(boardNo, boardTitle, boardWriter, boardContent,
+		(boardNo, boardTitle, userId, boardContent,
 		boardDate, boardGroupNo, boardUpperNo, boardIndent)
-		values(board_seq.NEXTVAL, #{boardTitle}, #{boardWriter}, #{boardContent},
-		sysdate, #{boardGroupNo}, #{boardNo}, #{boardIndent});
+		values(board_seq.NEXTVAL, #{boardTitle}, #{userId}, #{boardContent},
+		sysdate, #{boardGroupNo}, #{boardNo}, #{boardIndent})
 	</insert>
 
 </mapper> 

@@ -16,9 +16,9 @@
 				<textarea  id="boardContent" name="boardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;"></textarea>
 			</div>
 			<button href='#' onclick="ReplyProc()" id="insertButton" name="insertButton">등록</button>
-			<input type="hidden" id="boardNo" value="${boardReply.boardNo}">
-			<input type="hidden" id="boardGroupNo" value="${boardReply.boardGroupNo}">
-			<input type="hidden" id="boardIndent" value="${boardReply.boardIndent}">
+			<input type="hidden" name="boardNo" value="${boardReply.boardNo}">
+			<input type="hidden" name="boardGroupNo" value="${boardReply.boardGroupNo}">
+			<input type="hidden" name="boardIndent" value="${boardReply.boardIndent}">
 		</form>
 	</div>
 </body>

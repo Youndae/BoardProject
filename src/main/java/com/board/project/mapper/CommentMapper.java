@@ -1,7 +1,5 @@
 package com.board.project.mapper;
 
-import org.apache.ibatis.annotations.Mapper;
+public interface CommentMapper {
 
-@Mapper
-public class CommentMapper {
 }
