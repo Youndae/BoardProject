@@ -6,14 +6,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.board.project.mapper.HierarchicalBoardMapper;
-import com.board.project.service.HierarchicalBoardService;
 import com.board.project.vo.HierarchicalBoardVO;
 import com.board.project.vo.MemberVO;
+import com.board.project.vo.PageMaker;
 import com.board.project.vo.PagingVO;
+import com.board.project.vo.SearchCriteria;
 
 @Controller
 public class HierarchicalBoardController {
@@ -21,9 +24,19 @@ public class HierarchicalBoardController {
 	@Autowired
 	HierarchicalBoardMapper boardMapper;
 	
-	@Autowired(required = false)
-	HierarchicalBoardService boardService;
-	
+	@RequestMapping(value = "/BoardList3", method = RequestMethod.GET)
+	public String BoardList3(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
+		
+		model.addAttribute("list", boardMapper.SearchPage(scri));
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri);
+		pageMaker.setTotalCount(boardMapper.ListCount(scri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "HierarchicalBoard/BoardList3";
+	}
 	
 	
 	@RequestMapping("/BoardList2")
@@ -53,9 +66,16 @@ public class HierarchicalBoardController {
 	
 	
 	@RequestMapping("/BoardList")
-	public String BoardList(Model model, HttpSession session, MemberVO memberVO) throws Exception{
+	public String BoardList(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
 		
-		model.addAttribute("boardList", boardMapper.BoardList());
+		model.addAttribute("boardList", boardMapper.SearchPage(scri));
+		System.out.println("boardList : "+boardMapper.SearchPage(scri));
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri);
+		pageMaker.setTotalCount(boardMapper.ListCount(scri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
 
 		return "HierarchicalBoard/BoardList";
 	}
