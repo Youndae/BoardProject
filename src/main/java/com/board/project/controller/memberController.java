@@ -1,6 +1,5 @@
 package com.board.project.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -75,12 +74,19 @@ public class memberController {
 			 return "redirect:/Login";
 		}
 		session.setAttribute("userId", memberVO.getUserId()); 
+		session.setAttribute("userName", memberVO.getUserName());
 		model.addAttribute("member", memberVO);
 		
 		String id = (String) session.getAttribute("userId");
 		System.out.println("member userId : "+id);
 		
 		 return "redirect:/BoardList"; 
+	}
+	
+	@RequestMapping("/Logout")
+	public String logout() throws Exception{
+		
+		return "redirect:/Login";
 	}
 	
 }

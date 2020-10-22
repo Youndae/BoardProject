@@ -15,8 +15,10 @@ li {
 <body>
 	<div>
 		<div>
-			<h2>아이디는 : ${sessionScope.userId}</h2>
+			<jsp:include page="/WEB-INF/views/top.jsp" flush="false"/>
 		</div>
+		<br><br><br>
+		<div>
 		<table class="table table-hover" border="1">
 
 			<tr>
@@ -39,6 +41,7 @@ li {
 				</tr>
 			</c:forEach>
 		</table>
+		</div>
 	</div>
 	<button onclick="location.href='/board/BoardInsert'">글작성</button>
 
@@ -62,7 +65,6 @@ li {
 			$(function() {
 				$('#searchBtn').click(
 						function() {
-							alert("gogo");
 							self.location = "/board/BoardList"
 									+ '${pageMaker.makeQuery(1)}'
 									+ "&searchType="

@@ -8,9 +8,6 @@
 </head>
 <body>
 	<div>
-	<div>
-		<h2>아이디는 : ${sessionScope.userId}</h2>
-	</div>
 		<form action="/board/LoginProc" name="LoginForm" method="post">
 			<div>
 				<input type="text" name="userId" placeholder="아이디">
@@ -20,6 +17,7 @@
 			</div>
 			<button type="submit">로그인</button>
 		</form>
+		<button onclick="location.href='/board/Join'">회원가입</button>
 	</div>
 </body>
 </html>
