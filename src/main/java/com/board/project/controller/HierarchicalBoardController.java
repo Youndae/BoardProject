@@ -10,14 +10,47 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.board.project.mapper.HierarchicalBoardMapper;
+import com.board.project.service.HierarchicalBoardService;
 import com.board.project.vo.HierarchicalBoardVO;
 import com.board.project.vo.MemberVO;
+import com.board.project.vo.PagingVO;
 
 @Controller
 public class HierarchicalBoardController {
 
 	@Autowired
 	HierarchicalBoardMapper boardMapper;
+	
+	@Autowired(required = false)
+	HierarchicalBoardService boardService;
+	
+	
+	
+	@RequestMapping("/BoardList2")
+	public String BoardList2(PagingVO vo, Model model
+			,@RequestParam(value="nowPage", required = false) String nowPage
+			,@RequestParam(value="cntPerPage", required = false) String cntPerPage) throws Exception{
+		
+		int total = boardMapper.countBoard();
+		System.out.println("total: "+total);
+		if(nowPage == null && cntPerPage == null) {
+			nowPage = "1";
+			cntPerPage = "5";
+		}else if(nowPage == null) {
+			nowPage = "1";
+		}else if(cntPerPage == null) {
+			cntPerPage = "5";
+		}
+		vo = new PagingVO(total, Integer.parseInt(nowPage), Integer.parseInt(cntPerPage));
+		model.addAttribute("paging", vo);
+		model.addAttribute("viewAll", boardMapper.selectBoard(vo));
+		
+		return "HierarchicalBoard/BoardList2";
+	}
+	
+	
+	
+	
 	
 	@RequestMapping("/BoardList")
 	public String BoardList(Model model, HttpSession session, MemberVO memberVO) throws Exception{

@@ -5,9 +5,17 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.board.project.vo.HierarchicalBoardVO;
+import com.board.project.vo.PagingVO;
 
 @Mapper
 public interface HierarchicalBoardMapper {
+	
+	
+	int countBoard();
+	public List<HierarchicalBoardVO> selectBoard(PagingVO vo);
+	
+	
+	
 	
 	List<HierarchicalBoardVO> BoardList() throws Exception;
 	

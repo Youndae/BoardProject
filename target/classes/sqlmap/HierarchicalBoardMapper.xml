@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.board.project.mapper.HierarchicalBoardMapper">
+	
+	<select id="countBoard" resultType="int">
+		SELECT count(*) FROM pagetest
+	</select>
+	
+	<select id="selectBoard" resultType="HierarchicalBoardVO">
+		SELECT *
+		FROM (
+			SELECT ROWNUM RN, A.*
+			FROM (
+				SELECT *
+				FROM pageTest
+				ORDER BY boardNo DESC
+				) A
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	
+	
+	
+	
 
 	<select id="BoardList" resultType="HierarchicalBoardVO">
 		SELECT LEVEL AS "LEVEL", boardNo, boardUpperNo, boardTitle, boardDate, boardGroupNo, boardIndent
