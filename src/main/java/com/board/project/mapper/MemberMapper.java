@@ -11,4 +11,6 @@ public interface MemberMapper {
 	void joinProc(MemberVO memberVO) throws Exception;
 	
 	public MemberVO loginCheck(MemberDTO memberDTO) throws Exception;
+	
+	int IdCheck(String userId) throws Exception;
 }

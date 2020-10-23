@@ -1,23 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+<script type="text/javascript" src="./js/Member.js"></script>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <body>
 	<div>
-		<form action="/board/LoginProc" name="LoginForm" method="post">
+		<div>
+			<jsp:include page="/WEB-INF/views/top.jsp" flush="false" />
+		</div>
+		<form action="LoginProc" id="LoginForm" method="post">
 			<div>
-				<input type="text" name="userId" placeholder="아이디">
+				<input type="text" id="userId" name="userId" placeholder="아이디">
+				<div>
+					<span id="NullId" style="color: red; font-size: 10pt;"></span>
+				</div>
 			</div>
 			<div>
-				<input type="password" name="userPw" placeholder="비밀번호">
+				<input type="password" id="userPw" name="userPw" placeholder="비밀번호">
+				<div>
+					<span id="NullPw" style="color: red; font-size: 10pt;"></span>
+				</div>
 			</div>
-			<button type="submit">로그인</button>
+			<button type="button" onclick="UserLogin()">로그인</button>
 		</form>
 		<button onclick="location.href='/board/Join'">회원가입</button>
+		<div>
+			<c:set var="stat" value="${login}" />
+			<c:if test="${stat == false}">
+				<span style="color: red; font-size: 10pt;">로그인 실패! 아이디와 비밀번호를
+					확인하세요.</span>
+			</c:if>
+		</div>
 	</div>
 </body>
 </html>

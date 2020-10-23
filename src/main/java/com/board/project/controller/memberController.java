@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.board.project.dto.MemberDTO;
@@ -32,13 +34,21 @@ public class memberController {
 	@RequestMapping("/JoinProc")
 	public String joinProc(MemberVO memberVO, RedirectAttributes redirectAttributes) throws Exception{
 		
+		System.out.println("id : "+memberVO.getUserId()+" , pw : "+memberVO.getUserPw()+" , name : "+memberVO.getUserName());
 		String hashedPw = BCrypt.hashpw(memberVO.getUserPw(), BCrypt.gensalt());
 		memberVO.setUserPw(hashedPw);
 		memberMapper.joinProc(memberVO);
 		redirectAttributes.addFlashAttribute("msg", "REGISTERED");
 		
-		return "redirect:/login";
+		return "redirect:/Login";
 		
+	}
+	
+	@RequestMapping("/CheckUserId")
+	@ResponseBody
+	public int idCheck(@RequestParam("userId") String userId) throws Exception{
+		System.out.println("Id Check : "+userId);
+		return memberMapper.IdCheck(userId);
 	}
 	
 	@RequestMapping("/Login")
@@ -47,20 +57,8 @@ public class memberController {
 		return "Member/login";
 	}
 	
-	/*
-	 * @RequestMapping("/LoginCheck") public ModelAndView loginCheck(@ModelAttribute
-	 * MemberVO vo, HttpSession session) throws Exception{
-	 * 
-	 * boolean result = memberMapper.loginCheck(vo); ModelAndView mav = new
-	 * ModelAndView();
-	 * 
-	 * if(result == true) { mav.setViewName("board/BoardList"); mav.addObject("msg",
-	 * "success"); }else { mav.setViewName("board/Login"); mav.addObject("msg",
-	 * "failure"); }
-	 * 
-	 * return mav; }
-	 */
 	
+	  	
 	@RequestMapping("/LoginProc")
 	public String loginProc(MemberDTO memberDTO, HttpSession session, Model model) throws Exception{
 		
@@ -71,7 +69,9 @@ public class memberController {
 		System.out.println("userPw : "+memberDTO.getUserPw());
 		if(memberVO == null || !BCrypt.checkpw(memberDTO.getUserPw(), memberVO.getUserPw())) {
 			System.out.println("if false");
-			 return "redirect:/Login";
+			String msg = "false";
+			model.addAttribute("login", msg);
+			 return "Member/login";
 		}
 		session.setAttribute("userId", memberVO.getUserId()); 
 		session.setAttribute("userName", memberVO.getUserName());

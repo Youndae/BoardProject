@@ -13,7 +13,7 @@ public class ImageBoardController {
 	@Autowired
 	ImageBoardMapper imageBoardMapper;
 	
-	@RequestMapping("/imageList")
+	@RequestMapping("/ImageList")
 	public String imageList(Model model) throws Exception{
 		
 		

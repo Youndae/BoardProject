@@ -17,4 +17,8 @@
 	<select id="loginCheck" resultType="MemberVO">
 		SELECT * FROM member WHERE userId=#{userId}
 	</select>
+	
+	<select id="IdCheck" resultType="int">
+		SELECT COUNT(*) FROM member WHERE userId=#{userId}
+	</select>
 </mapper>

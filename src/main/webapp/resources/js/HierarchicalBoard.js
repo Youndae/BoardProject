@@ -16,3 +16,4 @@ function Reply(){
 	location.href= "/board/BoardReply?boardNo="+boardNo;
 }
 
+
