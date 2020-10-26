@@ -23,7 +23,7 @@
     	</div>
     </div>
     
-    <button href='#' onclick="Reply()">답글</button>
+    <button href='#' onclick="Reply()" value=1>답글</button>
     <c:set var="name" value="${sessionScope.userId}"/>
     <c:set var="id" value="${boardDetail.userId}"/>
     <c:if test="${name eq id }">
