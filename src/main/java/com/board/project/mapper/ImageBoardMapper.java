@@ -14,5 +14,5 @@ public interface ImageBoardMapper {
 	
 	public String imageModify() throws Exception;
 	
-	void imageInsertProc() throws Exception;
+	void imageInsertProc(ImageBoardVO imageBoardVO) throws Exception;
 }

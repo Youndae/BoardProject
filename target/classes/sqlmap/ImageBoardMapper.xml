@@ -14,10 +14,16 @@
 		select * from imageBoard where imageNo=#{imageNo}
 	</select><!-- 여기도 계층형과 마찬가지로 detail 체크. -->
 	
-	<insert id="imageInsertProc" parameterType="String">
+	<!-- <insert id="imageInsertProc" parameterType="String">
 		insert into imageBoard
 		(imageNo, imageTitle, imageWriter, image1, image2, image3, image4, image5, imageDate)
 		values(image_seq.NEXTVAL, #{imageTitle}, #{imageWriter}, #{image1}, #{image2}, #{image3}, #{image4}, #{image5}, sysdate)
+	</insert> -->
+	
+	<insert id="imageInsertProc" parameterType="ImageBoardVO">
+		insert into test
+		(imageNo, image1, image2, image3, image4, image5)
+		values(#{imageNo}, #{image1}, #{image2}, #{image3}, #{image4}, #{image5})
 	</insert>
 
 </mapper> 
