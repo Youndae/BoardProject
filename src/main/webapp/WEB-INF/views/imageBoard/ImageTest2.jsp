@@ -4,51 +4,47 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>이미지 첨부</title>
-
+ 
 <style>
 #preview img {
-	width: 100px;
-	height: 100px;
+    width: 100px;
+    height: 100px;
 }
-
 #preview p {
-	text-overflow: ellipsis;
-	overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
-
 .preview-box {
-	border: 1px solid;
-	padding: 5px;
-	border-radius: 2px;
-	margin-bottom: 10px;
+    border: 1px solid;
+    padding: 5px;
+    border-radius: 2px;
+    margin-bottom: 10px;
 }
 </style>
 </head>
-
+ 
 <body>
-	<div class="wrapper">
-		<div class="header">
-			<h1>사진 첨부</h1>
-		</div>
-		<div class="body">
-			<!-- 첨부 버튼 -->
-			<div id="attach">
-				<label class="waves-effect waves-teal btn-flat" for="uploadInputBox">사진등록</label>
-				<input id="uploadInputBox" style="display: none" type="file" name="filedata" multiple />
-			</div>
-			
-			<!-- 미리보기 영역 -->
-			<div id="preview" class="content"></div>
-			
-			<!-- multipart 업로드시 영역 -->
-			<form id="uploadForm" style="display: none;">
-				
-			</form>
-		</div>
-		<div class="footer">
-			<button class="submit"><a href="#" title="등록" class="btnlink">등록</a></button>
-		</div>
-	</div>
+    <div class="wrapper">
+        <div class="header">
+            <h1>사진 첨부</h1>
+        </div>
+        <div class="body">
+            <!-- 첨부 버튼 -->
+            <div id="attach">
+                <!-- <label class="waves-effect waves-teal btn-flat" for="uploadInputBox">사진첨부</label> -->
+                <input id="uploadInputBox"  type="file" name="filedata" value="사진 첨부" multiple/>
+            </div>
+            
+            <!-- 미리보기 영역 -->
+            <div id="preview" class="content"></div>
+            
+            <!-- multipart 업로드시 영역 -->
+            <form id="uploadForm" style="display: none;" />
+        </div>
+        <div class="footer">
+            <button class="submit"><a href="#" title="등록" class="btnlink">등록</a></button>
+        </div>
+    </div>
 	
 	
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -61,7 +57,8 @@
 		// image preview 기능 구현
 		// input = file object[]
 		function addPreview(input) {
-            if (input[0].files) {
+			
+            if (input[0].files.length <= 5) {
                 //파일 선택이 여러개였을 시의 대응
                 for (var fileIndex = 0; fileIndex < input[0].files.length; fileIndex++) {
                     var file = input[0].files[fileIndex];
@@ -69,7 +66,7 @@
                     setPreviewForm(file);
                 }
             } else
-                alert('invalid file input'); // 첨부클릭 후 취소시의 대응책은 세우지 않았다.
+                alert('5장까지만 업로드 가능합니다.'); // 첨부클릭 후 취소시의 대응책은 세우지 않았다.
         }
         
         function setPreviewForm(file, img){
@@ -79,19 +76,25 @@
             //이 부분을 수정해서 이미지 링크 외 파일명, 사이즈 등의 부가설명을 할 수 있을 것이다.
             reader.onload = function(img) {
                 var imgNum = previewIndex++;
-                $("#preview").append(
-                        "<div class=\"preview-box\" value=\"" + imgNum +"\">" +
-                        "<img class=\"thumbnail\" src=\"" + img.target.result + "\"\/>" +
-                        "<p>" + file.name + "</p>" +
-                        "<a href=\"#\" value=\"" + imgNum + "\" onclick=\"deletePreview(this)\">" +
-                        "삭제" + "</a>"
-                        + "</div>"
-                );
-                resizeHeight();
-                files[imgNum] = file;            
-            };
-            
-            reader.readAsDataURL(file);
+                if(imgNum < 5){
+		                $("#preview").append(
+		                        "<div class=\"preview-box\" value=\"" + imgNum +"\">" +
+		                        "<img class=\"thumbnail\" src=\"" + img.target.result + "\"\/>" +
+		                        "<p>" + file.name + "</p>" +
+		                        "<a href=\"#\" value=\"" + imgNum + "\" onclick=\"deletePreview(this)\">" +
+		                        "삭제" + "</a>"
+		                        + "</div>"
+		                );
+		                /* resizeHeight(); */
+		                files[imgNum] = file;  
+		                
+            	}else{
+            	alert("이미지 업로드는 5장까지만 가능합니다.");
+            	return;
+            }
+		            };
+		            
+		            reader.readAsDataURL(file);
         }
 
 
@@ -154,6 +157,7 @@
                             // 이후 동작 ...
                         } else {
                             alert('이미지 업로드 성공');
+                            location.href="ImageList";
                             // 이후 동작 ...
                         }
                     }

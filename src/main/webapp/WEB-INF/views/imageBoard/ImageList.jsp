@@ -12,15 +12,17 @@
     <title>Title</title>
 </head>
 <body>
+<table>
     <tr>
-        <th>이름</th>
-        <th>나이</th>
+        <th>번호</th>
+        <th>사진</th>
     </tr>
-    <c:forEach var="testboard" items="${test}">
+    <c:forEach var="testboard" items="${ImgList}">
         <tr>
-            <td>${testboard.name}</td>
-            <td>${testboard.age}</td>
+            <td>${testboard.boardNo}</td>
+            <td>${testboard.image1}</td>
         </tr>
     </c:forEach>
+    </table>
 </body>
 </html>

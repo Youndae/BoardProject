@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.board.project.vo.HierarchicalBoardVO;
 import com.board.project.vo.ImageBoardVO;
+import com.board.project.vo.SearchCriteria;
 
 @Mapper
 public interface ImageBoardMapper {
@@ -14,5 +16,12 @@ public interface ImageBoardMapper {
 	
 	public String imageModify() throws Exception;
 	
-	void imageInsertProc(ImageBoardVO imageBoardVO) throws Exception;
+	public void imageInsertProc(ImageBoardVO imageBoardVO) throws Exception;
+	
+	public String selectTest() throws Exception;
+	
+	
+	
+	int ListCount(SearchCriteria scri) throws Exception;
+	public List<HierarchicalBoardVO> SearchPage(SearchCriteria scri) throws Exception;
 }

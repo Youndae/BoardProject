@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,14 +15,18 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.board.project.mapper.HierarchicalBoardMapper;
 import com.board.project.mapper.ImageBoardMapper;
 import com.board.project.vo.ImageBoardVO;
+import com.board.project.vo.PageMaker;
+import com.board.project.vo.SearchCriteria;
 
 @Controller
 public class ImageBoardController {
@@ -30,70 +35,53 @@ public class ImageBoardController {
 	ImageBoardMapper imageBoardMapper;
 	
 	
+	
 	private static final int RESULT_EXCEED_SIZE = -2;
 	private static final int RESULT_UNACCEPTED_EXTENSION = -1;
 	private static final int RESULT_SUCCESS = 1;
 	private static final long LIMIT_SIZE = 10 * 1024 * 1024;
+
 	
-	@RequestMapping("/ImageTest")
-	public String imageTest() throws Exception{
-		return "ImageBoard/ImageTest2";
+	@RequestMapping("/ImageList")
+	public String imageList(Model model) throws Exception{
+		
+		model.addAttribute("ImgList", imageBoardMapper.imageList());
+		
+		return "ImageBoard/ImageList";
 	}
 	
-	
-	
-	@RequestMapping("/imageupload2")
-	@ResponseBody
-	public String multiImageUpload2(HttpServletRequest request) throws Exception{
-		System.out.println(request.getHeader("file-name"));
-		StringBuffer sb = new StringBuffer();
+	@RequestMapping("/imageDetail/{bno}")
+	public String imageDetail(Model model) throws Exception{
 		
-		try {
-			String oldName = request.getHeader("file-name");
-			
-			String filePath = request.getSession().getServletContext().getRealPath("resources/IMG");
-			
-			String saveName = sb.append(new SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis()))
-								.append(UUID.randomUUID().toString())
-								.append(oldName.substring(oldName.lastIndexOf("."))).toString();
-			
-			InputStream is = request.getInputStream();
-			
-			OutputStream os = new FileOutputStream(filePath + saveName);
-			
-			int numRead;
-			byte b[] = new byte[Integer.parseInt(request.getHeader("file-size"))];
-			while((numRead = is.read(b, 0, b.length)) != -1) {
-				os.write(b, 0, numRead);
-			}
-			os.flush();
-			os.close();
-			
-			sb = new StringBuffer();
-			sb.append("&bNewLine=true")
-				.append("$sFileName=").append(oldName)
-				.append("&sFileURL=").append("/IMG/").append(saveName);
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		
-		
-		return "/board/ImageTest";
+		return "ImageBoard/ImageDetail";
 	}
 	
+	@RequestMapping("/imageModify/{bno}")
+	public String imageModify(Model model) throws Exception{
+		
+		return "ImageBoard/ImageModify";
+	}
 	
+	@RequestMapping("/imageModifyProc")
+	public String imageModifyProc() throws Exception{
+		
+		return "redirect:imageDetail/{bno}";
+	}
 	
+	@RequestMapping("/imageInsert")
+	public String imageInsert() throws Exception{
+		
+		return "ImageBoard/ImageInsert";
+	}
 	
-	
-	@RequestMapping(value="/imageupload", method=RequestMethod.POST)
+	@RequestMapping("/imageupload")
 	@ResponseBody
 	public int multiImageUpload(@RequestParam("files") List<MultipartFile> images, HttpServletRequest request, ImageBoardVO imageBoardVO) throws Exception{
 		System.out.println("images : "+images.size());
 		
 		long sizeSum = 0;
-		String filePath = request.getSession().getServletContext().getRealPath("resources/IMG/");
+		String filePath = request.getSession().getServletContext().getRealPath("/IMG/");
+		System.out.println("filePath : "+filePath);
 		List<String> ImageArray = new ArrayList<>();
 		for(MultipartFile image : images) {
 			String originalName = image.getOriginalFilename();
@@ -149,11 +137,21 @@ public class ImageBoardController {
 			}
 		}
 		
-		int imageNo = 1;
+		int imageNo = 5;
 		
-		imageBoardVO.setImageNo(imageNo);
+		imageBoardVO.setBoardNo(imageNo);
+		imageBoardVO.setImageTitle("test1");
+		imageBoardVO.setUserId("cococo");
+		System.out.println(imageBoardVO);
+		
 		System.out.println("img1 : "+imageBoardVO.getImage1());
+		System.out.println("img2 : "+imageBoardVO.getImage2());
+		System.out.println("img3 : "+imageBoardVO.getImage3());
+		System.out.println("img4 : "+imageBoardVO.getImage4());
+		System.out.println("img5 : "+imageBoardVO.getImage5());
 		imageBoardMapper.imageInsertProc(imageBoardVO);
+		
+		
 		System.out.println("END!");
 		return RESULT_SUCCESS;
 	}
@@ -164,55 +162,10 @@ public class ImageBoardController {
 		case "jpg" :
 		case "png" :
 		case "gif" :
+		case "jpeg" :
 			return true;
 		}
 		return false;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping("/ImageList")
-	public String imageList(Model model) throws Exception{
-		
-		
-		
-		return "ImageBoard/ImageList";
-	}
-	
-	@RequestMapping("/imageDetail/{bno}")
-	public String imageDetail(Model model) throws Exception{
-		
-		return "ImageBoard/ImageDetail";
-	}
-	
-	@RequestMapping("/imageModify/{bno}")
-	public String imageModify(Model model) throws Exception{
-		
-		return "ImageBoard/ImageModify";
-	}
-	
-	@RequestMapping("/imageModifyProc")
-	public String imageModifyProc() throws Exception{
-		
-		return "redirect:imageDetail/{bno}";
-	}
-	
-	@RequestMapping("/imageInsert")
-	public String imageInsert() throws Exception{
-		
-		return "ImageBoard/ImageInsert";
-	}
-	
-	@RequestMapping("/imageInsertProc")
-	public String imageInsertProc() throws Exception{
-		
-		return "redirect:imageList";
 	}
 
 }
