@@ -46,43 +46,12 @@
 	</insert>
 	
 	
-	<select id="SearchPage" resultType="HierarchicalBoardVO">
-		SELECT  *
-		FROM (
-        SELECT  ROWNUM AS RNUM, A.*
-        FROM    (
-                select * 
-                from HierarchicalBoard 
-                WHERE 1=1
-				<include refid="search"></include>
-                
-                START WITH boardUpperNo = 0
-                CONNECT BY PRIOR boardNo = boardUpperNo
-                ORDER SIBLINGS BY boardGroupNo DESC
-                ) A
-                 
-                    ) 
-		WHERE RNUM BETWEEN ${rowStart} AND ${rowEnd}
-        
-		
-	</select>
 	
-	<select id="ListCount" resultType="int">
-		SELECT 	COUNT(boardNo)
-		FROM	HierarchicalBoard
-		WHERE 1=1
-			<include refid="search"></include>
-		AND boardNo > 0
-	</select>
 	
-	<sql id="search">
-		<if test="searchType != null">
-			<if test="searchType == 't'.toString()"> AND boardTitle LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'c'.toString()"> AND boardContent LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'w'.toString()"> AND userId LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'tc'.toString()"> AND (boardTitle LIKE '%' || #{keyword} || '%') or (boardContent LIKE '%' || #{keyword} || '%')</if>
-		</if>
-	</sql>
+	
+	<select id="ModifyTest" resultType="ImageBoardVO">
+		SELECT * FROM test WHERE boardNo=8
+	</select>
 	
 	
 

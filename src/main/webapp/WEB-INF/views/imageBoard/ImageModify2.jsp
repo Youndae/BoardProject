@@ -1,10 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>이미지 첨부</title>
- 
+<title>이미지 수정</title>
+ <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <style>
 #preview img {
     width: 100px;
@@ -24,9 +25,16 @@
 </head>
  
 <body>
+
     <div class="wrapper">
         <div class="header">
-            <h1>사진 첨부</h1>
+            <h1>사진 수정</h1>
+            <h3>${list.image1}</h3>
+            <h3>${list.image2}</h3>
+            <h3>${list.image3}</h3>
+            <h3>${list.image4}</h3>
+            <h3>${list.image5}</h3>
+            
         </div>
         <div class="body">
             <!-- 첨부 버튼 -->
@@ -36,7 +44,9 @@
             </div>
             
             <!-- 미리보기 영역 -->
-            <div id="preview" class="content"></div>
+            <div id="preview" class="content">
+            	
+            </div>
             
             <!-- multipart 업로드시 영역 -->
             <form id="uploadForm" style="display: none;" />
@@ -45,9 +55,10 @@
             <button class="submit"><a href="#" title="등록" class="btnlink">등록</a></button>
         </div>
     </div>
+
 	
 	
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js"></script> -->
 	<script>
 		//임의의 file object영역
@@ -58,7 +69,7 @@
 		// input = file object[]
 		function addPreview(input) {
 			
-            if (input[0].files.length <= 5) {
+            if (input[0].files.length <= (5-$('.preview-box').length)) {
                 //파일 선택이 여러개였을 시의 대응
                 for (var fileIndex = 0; fileIndex < input[0].files.length; fileIndex++) {
                     var file = input[0].files[fileIndex];
@@ -66,7 +77,7 @@
                     setPreviewForm(file);
                 }
             } else
-                alert('5장까지만 업로드 가능합니다.'); // 첨부클릭 후 취소시의 대응책은 세우지 않았다.
+                alert('5장만 올려.'); // 첨부클릭 후 취소시의 대응책은 세우지 않았다.
         }
         
         function setPreviewForm(file, img){
@@ -75,13 +86,16 @@
             //div id="preview" 내에 동적코드추가.
             //이 부분을 수정해서 이미지 링크 외 파일명, 사이즈 등의 부가설명을 할 수 있을 것이다.
             reader.onload = function(img) {
-                var imgNum = previewIndex++;
-                /* if(imgNum < 5){ */
+            	var length = $('.preview-box').length
+    			alert("length : "+length);
+            	var imgNum = previewIndex++;
+            	
+                if(length < 5){
 	                	$("#preview").append(
-		                        "<div class=\"preview-box\" value=\"" + imgNum +"\">" +
+		                        "<div class=\"preview-box\" value=\"" + length +"\">" +
 		                        "<img class=\"thumbnail\" src=\"" + img.target.result + "\"\/>" +
 		                        "<p>" + file.name + "</p>" +
-		                        "<a href=\"#\" value=\"" + imgNum + "\" onclick=\"deletePreview(this)\">" +
+		                        "<a href=\"#\" value=\"" + length + "\" onclick=\"deletePreview(this)\">" +
 		                        "삭제" + "</a>"
 		                        + "</div>"
 		                );
@@ -93,10 +107,10 @@
 		                		<a href=\"#\" value=\"imgNum\" onclick=\"deletePreview(this)\">삭제</a>
 		               		</div> */
 		                
-            	/* }else{
+            	}else{
             	alert("이미지 업로드는 5장까지만 가능합니다.");
             	return;
-            } */
+            }
 		            };
 		            
 		            reader.readAsDataURL(file);
@@ -126,9 +140,69 @@
 				return false;
 			}
 		}
+		
+		
+		/* $(document).ready(function(){
+			(function(){
+				var arr = {};
+				var Num = 0;
+				var DataNum = Num++;
+				var str = "$";
+					str += "{list.image";
+					str += DataNum;
+					str += "}";
+				alert("str : "+str);
+				for(DataNum; DataNum <= 5; DataNum++){
+					
+					
+					if(array != null){
+						$("#preview").append(
+		                        "<div class=\"preview-box\" value=\"" + DataNum +"\">" +
+		                        "<img class=\"thumbnail\" src=\"" + array + "\"\/>" +
+		                        "<a href=\"#\" value=\"" + DataNum + "\" onclick=\"deletePreview(this)\">" +
+		                        "삭제" + "</a>"
+		                        + "</div>"
+		                );
+					}else{
+						break;
+					}
+					}
+			});
+		}) */
+		
+		
+		
 
 		$(document).ready(function() {
             //submit 등록. 실제로 submit type은 아니다.
+            
+			var arr = new Array();
+			arr.push({image : "${list.image1}"});
+			arr.push({image : "${list.image2}"});
+			arr.push({image : "${list.image3}"});
+			arr.push({image : "${list.image4}"});
+			arr.push({image : "${list.image5}"});
+			
+			
+				alert("0 : "+arr[0].image+" 1 : "+arr[1].image+" 2 : "+arr[2].image+" 3 : "+arr[3].image+" 4 : "+arr[4].image);	
+
+
+			for(var i = 0; i < 5; i++){
+				if(arr[i].image != null){
+					$("#preview").append(
+			                "<div class=\"preview-box\" value=\"" + i +"\">" +
+			                "<img class=\"thumbnail\" src=\"" + arr[i].image + "\"\/>" +
+			                "<a href=\"#\" value=\"" + i + "\" onclick=\"deletePreview(this)\">" +
+			                "삭제" + "</a>"
+			                + "</div>"
+			        );
+				}else{
+					break;
+				}
+			}
+            
+       		/* alert(${list.image1}); */
+            
             $('.submit a').on('click',function() {                        
                 var form = $('#uploadForm')[0];
                 var formData = new FormData(form);

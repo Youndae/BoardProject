@@ -42,6 +42,28 @@ public class ImageBoardController {
 	private static final long LIMIT_SIZE = 10 * 1024 * 1024;
 
 	
+	
+	@RequestMapping("/ImageModifyTest")
+	public String imageModifyTest(Model model) throws Exception{
+		
+		int boardNo = 6;
+		
+		model.addAttribute("list", imageBoardMapper.ModifyTest(boardNo));		
+		
+		System.out.println("img : "+imageBoardMapper.ModifyTest(boardNo));
+		return"ImageBoard/ImageModify2";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@RequestMapping("/ImageList")
 	public String imageList(Model model) throws Exception{
 		
@@ -80,9 +102,10 @@ public class ImageBoardController {
 		System.out.println("images : "+images.size());
 		
 		long sizeSum = 0;
-		String filePath = request.getSession().getServletContext().getRealPath("/IMG/");
+		String filePath = request.getSession().getServletContext().getRealPath("IMG/");
 		System.out.println("filePath : "+filePath);
 		List<String> ImageArray = new ArrayList<>();
+		
 		for(MultipartFile image : images) {
 			String originalName = image.getOriginalFilename();
 			System.out.println("originalName: "+originalName);
@@ -109,6 +132,7 @@ public class ImageBoardController {
 			System.out.println("saveFile : "+ saveFile);
 			ImageArray.add(saveName);
 			
+			
 			image.transferTo(new File(saveFile));
 			System.out.println("save End");
 			} catch(Exception e) {
@@ -121,23 +145,23 @@ public class ImageBoardController {
 			int i = 1;
 			switch(filesSize) {
 			case 5 :
-				imageBoardVO.setImage5("/IMG/" + ImageArray.get(filesSize - i));
+				imageBoardVO.setImage5("IMG/" + ImageArray.get(filesSize - i));
 				i++;
 			case 4 :
-				imageBoardVO.setImage4("/IMG/" + ImageArray.get(filesSize - i));
+				imageBoardVO.setImage4("IMG/" + ImageArray.get(filesSize - i));
 				i++;
 			case 3 :
-				imageBoardVO.setImage3("/IMG/" + ImageArray.get(filesSize - i));
+				imageBoardVO.setImage3("IMG/" + ImageArray.get(filesSize - i));
 				i++;
 			case 2 :
-				imageBoardVO.setImage2("/IMG/" + ImageArray.get(filesSize - i));
+				imageBoardVO.setImage2("IMG/" + ImageArray.get(filesSize - i));
 				i++;
 			case 1 :
-				imageBoardVO.setImage1("/IMG/" + ImageArray.get(filesSize - i));
+				imageBoardVO.setImage1("IMG/" + ImageArray.get(filesSize - i));
 			}
 		}
 		
-		int imageNo = 5;
+		int imageNo = 8;
 		
 		imageBoardVO.setBoardNo(imageNo);
 		imageBoardVO.setImageTitle("test1");

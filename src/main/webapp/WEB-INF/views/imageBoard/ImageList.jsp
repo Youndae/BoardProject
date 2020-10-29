@@ -21,6 +21,7 @@
         <tr>
             <td>${testboard.boardNo}</td>
             <td>${testboard.image1}</td>
+            <img src="${testboard.image2}">
         </tr>
     </c:forEach>
     </table>

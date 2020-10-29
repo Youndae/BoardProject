@@ -22,6 +22,5 @@ public interface ImageBoardMapper {
 	
 	
 	
-	int ListCount(SearchCriteria scri) throws Exception;
-	public List<HierarchicalBoardVO> SearchPage(SearchCriteria scri) throws Exception;
+	public ImageBoardVO ModifyTest(int boardNo) throws Exception;
 }
