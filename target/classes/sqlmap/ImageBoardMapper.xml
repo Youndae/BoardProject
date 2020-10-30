@@ -46,12 +46,27 @@
 	</insert>
 	
 	
-	
-	
-	
-	<select id="ModifyTest" resultType="ImageBoardVO">
-		SELECT * FROM test WHERE boardNo=8
+	<select id="ModifyTest" resultType="ImageDataVO">
+		SELECT a.ImageTitle, a.UserId, b.ImageData, b.OName, b.imagestep
+		FROM ImageBoard a INNER JOIN ImageData b
+		ON a.ImageNo = b.ImageNo
+		WHERE b.ImageNo=#{ImageNo}
 	</select>
+	
+	
+	<insert id="imageInsert" parameterType="ImageDataVO">
+		INSERT INTO ImageData(
+			ImageData
+			, ImageNo
+			, OriginalName
+			, ImageStep)
+		VALUES(
+			#{ImageData}
+			, Image_SEQ.CURRVAL
+			, #{OriginalName}
+			, #{ImageStep}
+		)
+	</insert>
 	
 	
 

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.board.project.mapper.HierarchicalBoardMapper;
 import com.board.project.mapper.ImageBoardMapper;
 import com.board.project.vo.ImageBoardVO;
+import com.board.project.vo.ImageDataVO;
 import com.board.project.vo.PageMaker;
 import com.board.project.vo.SearchCriteria;
 
@@ -46,7 +48,7 @@ public class ImageBoardController {
 	@RequestMapping("/ImageModifyTest")
 	public String imageModifyTest(Model model) throws Exception{
 		
-		int boardNo = 6;
+		int boardNo = 1;
 		
 		model.addAttribute("list", imageBoardMapper.ModifyTest(boardNo));		
 		
@@ -98,9 +100,13 @@ public class ImageBoardController {
 	
 	@RequestMapping("/imageupload")
 	@ResponseBody
-	public int multiImageUpload(@RequestParam("files") List<MultipartFile> images, HttpServletRequest request, ImageBoardVO imageBoardVO) throws Exception{
+	public int multiImageUpload(@RequestParam("files") List<MultipartFile> images, HttpServletRequest request, ImageBoardVO imageBoardVO, ImageDataVO imageDataVO) throws Exception{
 		System.out.println("images : "+images.size());
-		
+		int imageNo = 8;
+		imageBoardVO.setBoardNo(imageNo);//seq.nextval로 사용.
+		imageBoardVO.setImageTitle("test1");
+		imageBoardVO.setUserId("cococo");
+		int step = 1;
 		long sizeSum = 0;
 		String filePath = request.getSession().getServletContext().getRealPath("IMG/");
 		System.out.println("filePath : "+filePath);
@@ -130,49 +136,43 @@ public class ImageBoardController {
 			
 			String saveFile = filePath + saveName;
 			System.out.println("saveFile : "+ saveFile);
-			ImageArray.add(saveName);
+			/*ImageArray.add(saveName);*/
 			
 			
 			image.transferTo(new File(saveFile));
 			System.out.println("save End");
+			imageDataVO.setImageData(saveName);
+			imageDataVO.setOName(originalName);
+			imageDataVO.setImageStep(step);
+			step++;
+			imageBoardMapper.imageInsert(imageDataVO);
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
 		}
 		
-		int filesSize = ImageArray.size();
-		if(filesSize != 0) {
-			int i = 1;
-			switch(filesSize) {
-			case 5 :
-				imageBoardVO.setImage5("IMG/" + ImageArray.get(filesSize - i));
-				i++;
-			case 4 :
-				imageBoardVO.setImage4("IMG/" + ImageArray.get(filesSize - i));
-				i++;
-			case 3 :
-				imageBoardVO.setImage3("IMG/" + ImageArray.get(filesSize - i));
-				i++;
-			case 2 :
-				imageBoardVO.setImage2("IMG/" + ImageArray.get(filesSize - i));
-				i++;
-			case 1 :
-				imageBoardVO.setImage1("IMG/" + ImageArray.get(filesSize - i));
-			}
-		}
+		/*
+		 * int filesSize = ImageArray.size(); if(filesSize != 0) { int i = 1;
+		 * switch(filesSize) { case 5 : imageBoardVO.setImage5("IMG/" +
+		 * ImageArray.get(filesSize - i)); i++; case 4 : imageBoardVO.setImage4("IMG/" +
+		 * ImageArray.get(filesSize - i)); i++; case 3 : imageBoardVO.setImage3("IMG/" +
+		 * ImageArray.get(filesSize - i)); i++; case 2 : imageBoardVO.setImage2("IMG/" +
+		 * ImageArray.get(filesSize - i)); i++; case 1 : imageBoardVO.setImage1("IMG/" +
+		 * ImageArray.get(filesSize - i)); } }
+		 */
 		
-		int imageNo = 8;
 		
-		imageBoardVO.setBoardNo(imageNo);
-		imageBoardVO.setImageTitle("test1");
-		imageBoardVO.setUserId("cococo");
+		
+		
 		System.out.println(imageBoardVO);
 		
-		System.out.println("img1 : "+imageBoardVO.getImage1());
-		System.out.println("img2 : "+imageBoardVO.getImage2());
-		System.out.println("img3 : "+imageBoardVO.getImage3());
-		System.out.println("img4 : "+imageBoardVO.getImage4());
-		System.out.println("img5 : "+imageBoardVO.getImage5());
+		/*
+		 * System.out.println("img1 : "+imageBoardVO.getImage1());
+		 * System.out.println("img2 : "+imageBoardVO.getImage2());
+		 * System.out.println("img3 : "+imageBoardVO.getImage3());
+		 * System.out.println("img4 : "+imageBoardVO.getImage4());
+		 * System.out.println("img5 : "+imageBoardVO.getImage5());
+		 */
 		imageBoardMapper.imageInsertProc(imageBoardVO);
 		
 		

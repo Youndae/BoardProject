@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.board.project.vo.HierarchicalBoardVO;
 import com.board.project.vo.ImageBoardVO;
+import com.board.project.vo.ImageDataVO;
 import com.board.project.vo.SearchCriteria;
 
 @Mapper
@@ -20,7 +21,8 @@ public interface ImageBoardMapper {
 	
 	public String selectTest() throws Exception;
 	
+	public void imageInsert(ImageDataVO imageDataVO) throws Exception;
 	
 	
-	public ImageBoardVO ModifyTest(int boardNo) throws Exception;
+	List<ImageDataVO> ModifyTest(int boardNo) throws Exception;
 }
