@@ -39,7 +39,16 @@
             <div id="preview" class="content"></div>
             
             <!-- multipart 업로드시 영역 -->
-            <form id="uploadForm" style="display: none;" />
+            <form id="uploadForm" >
+            	<div>
+            		<label for="ImageTitle">제목</label>
+            		<input type="text" id="ImageTitle" name="ImageTitle" placeholder="제목을 입력하세요">
+            	</div>
+            	<div>
+            		<label for="ImageContent">내용</label>
+            		<textarea id="ImageContent" name="ImageContent" placeholder="사진을 설명해주세요" style="width:300px; height:300px;"></textarea>
+            	</div>
+            </form>
         </div>
         <div class="footer">
             <button class="submit"><a href="#" title="등록" class="btnlink">등록</a></button>
@@ -64,19 +73,21 @@
                     var file = input[0].files[fileIndex];
                     if(validation(file.name)) continue;
                     setPreviewForm(file);
+                    alert("test : "+files[0]+", 1 : "+files[1]+", 2 : "+files[2]+", 3 : "+files[3]+", 4 : "+files[4]+", 5 : "+files[5]);
                 }
             } else
                 alert('5장까지만 업로드 가능합니다.'); // 첨부클릭 후 취소시의 대응책은 세우지 않았다.
+            alert("test : "+files[0]+", 1 : "+files[1]+", 2 : "+files[2]+", 3 : "+files[3]+", 4 : "+files[4]+", 5 : "+files[5]);
         }
         
         function setPreviewForm(file, img){
             var reader = new FileReader();
-            
+            var length = $('.preview-box').length
             //div id="preview" 내에 동적코드추가.
             //이 부분을 수정해서 이미지 링크 외 파일명, 사이즈 등의 부가설명을 할 수 있을 것이다.
             reader.onload = function(img) {
                 var imgNum = previewIndex++;
-                /* if(imgNum < 5){ */
+                 if(length < 5){ 
 	                	$("#preview").append(
 		                        "<div class=\"preview-box\" value=\"" + imgNum +"\">" +
 		                        "<img class=\"thumbnail\" src=\"" + img.target.result + "\"\/>" +
@@ -93,10 +104,10 @@
 		                		<a href=\"#\" value=\"imgNum\" onclick=\"deletePreview(this)\">삭제</a>
 		               		</div> */
 		                
-            	/* }else{
+            	 }else{
             	alert("이미지 업로드는 5장까지만 가능합니다.");
             	return;
-            } */
+            } 
 		            };
 		            
 		            reader.readAsDataURL(file);
@@ -120,7 +131,7 @@
 					fileNameExtensionIndex, fileName.length);
 			if (!((fileNameExtension === 'jpg')
 					|| (fileNameExtension === 'gif') || (fileNameExtension === 'png') || (fileNameExtension === 'jpeg'))) {
-				alert('jpg, gif, png 확장자만 업로드 가능합니다.');
+				alert('jpg, gif, png, jpeg 확장자만 업로드 가능합니다.');
 				return true;
 			} else {
 				return false;

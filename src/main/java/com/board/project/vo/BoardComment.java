@@ -10,12 +10,12 @@ import oracle.sql.DATE;
 @Setter
 @ToString
 public class BoardComment {
-    private int commentNo;
-    private String userId;
-    private DATE commentDate;
-    private String commentContent;
-    private int commentGroupNo;
-    private int commentUpperNo;
-    private int imageNo;
-    private int boardNo;
+    private int CommentNo;
+    private String UserId;
+    private DATE CommentDate;
+    private String CommentContent;
+    private int CommentGroupNo;
+    private int CommentUpperNo;
+    private int ImageNo;
+    private int BoardNo;
 }

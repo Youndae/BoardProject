@@ -1,34 +1,28 @@
 package com.board.project.controller;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.board.project.mapper.HierarchicalBoardMapper;
 import com.board.project.mapper.ImageBoardMapper;
 import com.board.project.vo.ImageBoardVO;
 import com.board.project.vo.ImageDataVO;
-import com.board.project.vo.PageMaker;
-import com.board.project.vo.SearchCriteria;
 
 @Controller
 public class ImageBoardController {
@@ -48,10 +42,9 @@ public class ImageBoardController {
 	@RequestMapping("/ImageModifyTest")
 	public String imageModifyTest(Model model) throws Exception{
 		
-		int boardNo = 1;
+		int boardNo = 9;
 		
 		model.addAttribute("list", imageBoardMapper.ModifyTest(boardNo));		
-		
 		System.out.println("img : "+imageBoardMapper.ModifyTest(boardNo));
 		return"ImageBoard/ImageModify2";
 	}
@@ -61,6 +54,14 @@ public class ImageBoardController {
 	
 	
 	
+	@RequestMapping(value = "/AttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<ImageDataVO>> getAttachList(int ImageNo) throws Exception{
+		System.out.println("ImageNo : " + ImageNo);
+		System.out.println("result : "+new ResponseEntity<>(imageBoardMapper.getAttachList(ImageNo), HttpStatus.OK));
+		
+		return new ResponseEntity<>(imageBoardMapper.getAttachList(ImageNo), HttpStatus.OK);
+	}
 	
 	
 	
@@ -102,11 +103,17 @@ public class ImageBoardController {
 	@ResponseBody
 	public int multiImageUpload(@RequestParam("files") List<MultipartFile> images, HttpServletRequest request, ImageBoardVO imageBoardVO, ImageDataVO imageDataVO) throws Exception{
 		System.out.println("images : "+images.size());
-		int imageNo = 8;
-		imageBoardVO.setBoardNo(imageNo);//seq.nextval로 사용.
-		imageBoardVO.setImageTitle("test1");
-		imageBoardVO.setUserId("cococo");
+		/*
+		 * int imageNo = 8; imageBoardVO.setBoardNo(imageNo);//seq.nextval로 사용.
+		 */		
+		imageBoardVO.setImageTitle(request.getParameter("ImageTitle"));
+		imageBoardVO.setUserId("coco");
+		imageBoardVO.setImageContent(request.getParameter("ImageContent"));
+		System.out.println("board Upload Go");
+		imageBoardMapper.imageInsertProc(imageBoardVO);
+		System.out.println("board Upload Complete");
 		int step = 1;
+		//step은 service로 넘겨서 같은 그룹중 가장 큰 값을 가져오도록 만들자.
 		long sizeSum = 0;
 		String filePath = request.getSession().getServletContext().getRealPath("IMG/");
 		System.out.println("filePath : "+filePath);
@@ -142,10 +149,10 @@ public class ImageBoardController {
 			image.transferTo(new File(saveFile));
 			System.out.println("save End");
 			imageDataVO.setImageData(saveName);
-			imageDataVO.setOName(originalName);
+			imageDataVO.setOldName(originalName);
 			imageDataVO.setImageStep(step);
-			step++;
 			imageBoardMapper.imageInsert(imageDataVO);
+			step++;
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
@@ -173,7 +180,7 @@ public class ImageBoardController {
 		 * System.out.println("img4 : "+imageBoardVO.getImage4());
 		 * System.out.println("img5 : "+imageBoardVO.getImage5());
 		 */
-		imageBoardMapper.imageInsertProc(imageBoardVO);
+		 
 		
 		
 		System.out.println("END!");

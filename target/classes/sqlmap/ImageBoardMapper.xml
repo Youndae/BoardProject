@@ -8,11 +8,11 @@
 	</select>
 	
 	<select id="imageDetail" resultType="ImageBoardVO">
-		select * from imageBoard where imageNo=#{imageNo}
+		select * from imageBoard where ImageNo=#{ImageNo}
 	</select>
 	
 	<select id="imageModify" resultType="ImageBoardVO">
-		select * from imageBoard where imageNo=#{imageNo}
+		select * from imageBoard where ImageNo=#{ImageNo}
 	</select><!-- 여기도 계층형과 마찬가지로 detail 체크. -->
 	
 	<!-- <insert id="imageInsertProc" parameterType="String">
@@ -22,35 +22,32 @@
 	</insert> -->
 	
 	<insert id="imageInsertProc" parameterType="ImageBoardVO">
-		INSERT INTO test(
-			boardNo
-			, image1
-			, image2
-			, image3
-			, image4
-			, image5
-			, imageTitle
-			, userId
-			, imageDate)
+		INSERT INTO ImageBoard(
+			ImageNo
+			, ImageTitle
+			, UserId
+			, ImageContent
+			, ImageDate)
 		VALUES (
-			#{boardNo}
-			, #{image1}
-			, #{image2}
-			, #{image3}
-			, #{image4}
-			, #{image5}
-			, #{imageTitle}
-			, #{userId}
+			Image_SEQ.NEXTVAL
+			, #{ImageTitle}
+			, #{UserId}
+			, #{ImageContent}
 			, sysdate
 			)
 	</insert>
 	
 	
-	<select id="ModifyTest" resultType="ImageDataVO">
-		SELECT a.ImageTitle, a.UserId, b.ImageData, b.OName, b.imagestep
-		FROM ImageBoard a INNER JOIN ImageData b
-		ON a.ImageNo = b.ImageNo
-		WHERE b.ImageNo=#{ImageNo}
+	<select id="ModifyTest" resultType="ImageBoardVO">
+		SELECT ImageTitle, UserId, ImageNo, ImageContent
+		FROM ImageBoard
+		WHERE ImageNo=#{ImageNo}
+	</select>
+	
+	<select id="getAttachList" resultType="ImageDataVO">
+		SELECT ImageData, OldName, ImageStep
+		FROM ImageData
+		WHERE ImageNo=#{ImageNo}
 	</select>
 	
 	
@@ -58,12 +55,12 @@
 		INSERT INTO ImageData(
 			ImageData
 			, ImageNo
-			, OriginalName
+			, OldName
 			, ImageStep)
 		VALUES(
 			#{ImageData}
 			, Image_SEQ.CURRVAL
-			, #{OriginalName}
+			, #{OldName}
 			, #{ImageStep}
 		)
 	</insert>

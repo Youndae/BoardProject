@@ -11,12 +11,12 @@ import lombok.ToString;
 @ToString
 public class HierarchicalBoardVO {
 
-	private int boardNo;
-	private String boardTitle;
-	private String userId;
-	private String boardContent;
-	private Date boardDate;
-	private int boardGroupNo;
-	private int boardUpperNo;
-	private int boardIndent;
+	private int BoardNo;
+	private String BoardTitle;
+	private String UserId;
+	private String BoardContent;
+	private Date BoardDate;
+	private int BoardGroupNo;
+	private int BoardUpperNo;
+	private int BoardIndent;
 }

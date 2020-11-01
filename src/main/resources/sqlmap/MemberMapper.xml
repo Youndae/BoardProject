@@ -8,17 +8,17 @@
 			, UserName
 		)
 		VALUES (
-			#{userId}
-			, #{userPw}
-			, #{userName}
+			#{UserId}
+			, #{UserPw}
+			, #{UserName}
 		)
 	</insert>
 	
 	<select id="loginCheck" resultType="MemberVO">
-		SELECT * FROM member WHERE userId=#{userId}
+		SELECT * FROM member WHERE UserId=#{UserId}
 	</select>
 	
 	<select id="IdCheck" resultType="int">
-		SELECT COUNT(*) FROM member WHERE userId=#{userId}
+		SELECT COUNT(*) FROM member WHERE UserId=#{UserId}
 	</select>
 </mapper>

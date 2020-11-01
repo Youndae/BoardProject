@@ -11,8 +11,9 @@ import lombok.ToString;
 @ToString
 public class ImageBoardVO {
 
-	private int boardNo;
-	private String imageTitle; 
-	private String userId;
-	private Date imageDate;
+	private int ImageNo;
+	private String ImageTitle;
+	private String ImageContent;
+	private String UserId;
+	private Date ImageDate;
 }

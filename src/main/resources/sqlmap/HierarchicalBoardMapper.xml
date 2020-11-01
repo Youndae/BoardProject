@@ -63,9 +63,9 @@
                 WHERE 1=1
 				<include refid="search"></include>
                 
-                START WITH boardUpperNo = 0
-                CONNECT BY PRIOR boardNo = boardUpperNo
-                ORDER SIBLINGS BY boardGroupNo DESC
+                START WITH BoardUpperNo = 0
+                CONNECT BY PRIOR BoardNo = BoardUpperNo
+                ORDER SIBLINGS BY BoardGroupNo DESC
                 ) A
                  
                     ) 
@@ -75,7 +75,7 @@
 	</select>
 	
 	<select id="ListCount" resultType="int">
-		SELECT 	COUNT(boardNo)
+		SELECT 	COUNT(BoardNo)
 		FROM	HierarchicalBoard
 		WHERE 1=1
 			<include refid="search"></include>
@@ -84,10 +84,10 @@
 	
 	<sql id="search">
 		<if test="searchType != null">
-			<if test="searchType == 't'.toString()"> AND boardTitle LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'c'.toString()"> AND boardContent LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'w'.toString()"> AND userId LIKE '%' || #{keyword} || '%'</if>
-			<if test="searchType == 'tc'.toString()"> AND (boardTitle LIKE '%' || #{keyword} || '%') or (boardContent LIKE '%' || #{keyword} || '%')</if>
+			<if test="searchType == 't'.toString()"> AND BoardTitle LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()"> AND BoardContent LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()"> AND UserId LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()"> AND (BoardTitle LIKE '%' || #{keyword} || '%') or (BoardContent LIKE '%' || #{keyword} || '%')</if>
 		</if>
 	</sql>
 	
@@ -96,47 +96,47 @@
 	
 
 	<select id="BoardList" resultType="HierarchicalBoardVO">
-		SELECT LEVEL AS "LEVEL", boardNo, boardUpperNo, boardTitle, boardDate, boardGroupNo, boardIndent
+		SELECT LEVEL AS "LEVEL", BoardNo, BoardUpperNo, BoardTitle, BoardDate, BoardGroupNo, BoardIndent
 		FROM HierarchicalBoard
-		START WITH boardUpperNo = 0
-		CONNECT BY PRIOR boardNo = boardUpperNo
-		ORDER SIBLINGS BY boardGroupNo DESC
+		START WITH BoardUpperNo = 0
+		CONNECT BY PRIOR BoardNo = BoardUpperNo
+		ORDER SIBLINGS BY BoardGroupNo DESC
 	</select>
 
 	<select id="BoardDetail" resultType="HierarchicalBoardVO">
-		SELECT boardNo, boardTitle, boardContent, userId
+		SELECT BoardNo, BoardTitle, BoardContent, UserId
 		FROM HierarchicalBoard 
-		WHERE boardNo=#{boardNo}
+		WHERE BoardNo=#{BoardNo}
 	</select>
 
 	<update id="BoardModifyProc" parameterType="HierarchicalBoardVO">
 		UPDATE HierarchicalBoard
-		SET boardTitle=#{boardTitle}, boardContent=#{boardContent}
-		WHERE boardNo=#{boardNo}
+		SET BoardTitle=#{BoardTitle}, BoardContent=#{BoardContent}
+		WHERE BoardNo=#{BoardNo}
 	</update>
 	
 	<delete id="BoardDelete" parameterType="int">
-		DELETE FROM HierarchicalBoard WHERE boardNo=#{boardNo}
+		DELETE FROM HierarchicalBoard WHERE BoardNo=#{BoardNo}
 	</delete>
 
 	<insert id="BoardInsertProc" parameterType="HierarchicalBoardVO">
 		INSERT INTO	HierarchicalBoard
-		(boardNo, boardTitle, userId, boardContent, boardDate, boardGroupNo, boardUpperNo, boardIndent)
-		VALUES(board_seq.NEXTVAL, #{boardTitle}, #{userId}, #{boardContent}, sysdate, board_seq.NEXTVAL, 0, 0)
+		(BoardNo, BoardTitle, UserId, BoardContent, BoardDate, BoardGroupNo, BoardUpperNo, BoardIndent)
+		VALUES(Board_seq.NEXTVAL, #{BoardTitle}, #{UserId}, #{BoardContent}, sysdate, Board_seq.NEXTVAL, 0, 0)
 	</insert>
 
 	<select id="BoardReply" resultType="HierarchicalBoardVO">
-		SELECT boardNo, boardTitle, boardGroupNo, boardIndent
-		FROM HierarchicalBoard where boardNo=#{boardNo}
+		SELECT BoardNo, BoardTitle, BoardGroupNo, BoardIndent
+		FROM HierarchicalBoard where BoardNo=#{BoardNo}
 	</select>
 
 	<insert id="BoardReplyProc" parameterType="HierarchicalBoardVO">
 		insert into
 		HierarchicalBoard
-		(boardNo, boardTitle, userId, boardContent,
-		boardDate, boardGroupNo, boardUpperNo, boardIndent)
-		values(board_seq.NEXTVAL, #{boardTitle}, #{userId}, #{boardContent},
-		sysdate, #{boardGroupNo}, #{boardNo}, #{boardIndent})
+		(BoardNo, BoardTitle, UserId, BoardContent,
+		BoardDate, BoardGroupNo, BoardUpperNo, BoardIndent)
+		values(Board_seq.NEXTVAL, #{BoardTitle}, #{UserId}, #{BoardContent},
+		sysdate, #{BoardGroupNo}, #{BoardNo}, #{BoardIndent})
 	</insert>
 
 </mapper> 

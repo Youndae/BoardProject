@@ -29,11 +29,7 @@
     <div class="wrapper">
         <div class="header">
             <h1>사진 수정</h1>
-            <h3>${list.image1}</h3>
-            <h3>${list.image2}</h3>
-            <h3>${list.image3}</h3>
-            <h3>${list.image4}</h3>
-            <h3>${list.image5}</h3>
+            
             
         </div>
         <div class="body">
@@ -49,7 +45,17 @@
             </div>
             
             <!-- multipart 업로드시 영역 -->
-            <form id="uploadForm" style="display: none;" />
+            <form id="uploadForm" >
+            	<div>
+	            	<label for="ImageTitle">제목</label>
+	            	<input type="text" id="ImageTitle" name="ImageTitle" value="${list.imageTitle}"/>
+            	</div>
+            	<div>
+            		<label for="ImageContent">내용</label>
+            		<textarea id="ImageContent" name="ImageContent" style="width:300px; height:300px">${list.imageContent}</textarea>
+            	</div>
+            	<input type="hidden" id="ImageNo" name="ImageNo" value="${list.imageNo}"/>
+            </form>
         </div>
         <div class="footer">
             <button class="submit"><a href="#" title="등록" class="btnlink">등록</a></button>
@@ -64,6 +70,8 @@
 		//임의의 file object영역
 		var files = {};
 		var previewIndex = 0;
+		var deletefiles = {};
+		var step = 0; //테스트필요.
 
 		// image preview 기능 구현
 		// input = file object[]
@@ -92,10 +100,10 @@
             	
                 if(length < 5){
 	                	$("#preview").append(
-		                        "<div class=\"preview-box\" value=\"" + length +"\">" +
+		                        "<div class=\"preview-box\" value=\"" + imgNum +"\">" +
 		                        "<img class=\"thumbnail\" src=\"" + img.target.result + "\"\/>" +
 		                        "<p>" + file.name + "</p>" +
-		                        "<a href=\"#\" value=\"" + length + "\" onclick=\"deletePreview(this)\">" +
+		                        "<a href=\"#\" value=\"" + imgNum + "\" onclick=\"deletePreview(this)\">" +
 		                        "삭제" + "</a>"
 		                        + "</div>"
 		                );
@@ -118,12 +126,20 @@
 
 
 		//preview 영역에서 삭제 버튼 클릭시 해당 미리보기이미지 영역 삭제
+		//기존파일과 수정파일의 구분이 필요함.
 		function deletePreview(obj) {
 			var imgNum = obj.attributes['value'].value;
-			delete files[imgNum];
+			var fileName = obj.attributes['value'].value;
+			
+			deletefiles[imgNum] = 
 			$("#preview .preview-box[value=" + imgNum + "]").remove();
+			delete files[imgNum];
 			resizeHeight();
 		}
+		//넘겨서 해야할것.
+		//DB에서 해당 imgNum을 가진 것을 찾아서 삭제.
+		//저장 디렉토리에서 해당 이름을 가진 파일을 찾아서 삭제.
+		
 
 		//client-side validation
 		//always server-side validation required
@@ -176,32 +192,43 @@
 		$(document).ready(function() {
             //submit 등록. 실제로 submit type은 아니다.
             
-			var arr = new Array();
-			arr.push({image : "${list.image1}"});
-			arr.push({image : "${list.image2}"});
-			arr.push({image : "${list.image3}"});
-			arr.push({image : "${list.image4}"});
-			arr.push({image : "${list.image5}"});
-			
-			
-				alert("0 : "+arr[0].image+" 1 : "+arr[1].image+" 2 : "+arr[2].image+" 3 : "+arr[3].image+" 4 : "+arr[4].image);	
-
-
-			for(var i = 0; i < 5; i++){
-				if(arr[i].image != null){
-					$("#preview").append(
-			                "<div class=\"preview-box\" value=\"" + i +"\">" +
-			                "<img class=\"thumbnail\" src=\"" + arr[i].image + "\"\/>" +
-			                "<a href=\"#\" value=\"" + i + "\" onclick=\"deletePreview(this)\">" +
-			                "삭제" + "</a>"
-			                + "</div>"
-			        );
-				}else{
-					break;
-				}
-			}
+            var imageNo = '<c:out value="${list.imageNo}"/>';
+            alert("imageNo : "+imageNo);
+            $.getJSON("/AttachList", {imageNo: imageNo}, function(arr){
+            	console.log(arr);
+            	alert("arr : "+arr);
+            	
+            	$(arr).each(function(i, attach){
+            		
+            		$("#preview").append(
+            			"<div class\"preview-box\" value=\"" + attach.imageStep + "\">" +
+            			"<img class=\"thumbnail\" src=\"" + attach.imageData + "\"\/>" +
+            			"<p>" + attach.oldName + "</p>" +
+            			"<a href=\"#\" value=\"" + attach.imageStep +"\" onclick=\"deletePreview(this)\">" +
+            			"삭제" + "</a>" +
+            			"</div>"
+            		);
+            		step = attach.imageStep;
+            	});
+            });
             
-       		/* alert(${list.image1}); */
+            
+            
+            
+            /* <li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-fileName='"+attach.fileName"' data-type='"+attach.fileType+"'>
+	            <div>
+	            	<img src='/display?fileName="+fileCallPath+"'>
+	            </div>
+            </li>
+            
+            
+            <li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"'>
+            	<div>
+            		<span "+attach.fileName+"</span><br/>
+            		<img src='/resources/img/attach.png'>
+            	</div>
+            </li> */   
+       		
             
             $('.submit a').on('click',function() {                        
                 var form = $('#uploadForm')[0];
@@ -235,7 +262,7 @@
                             alert('파일이 10MB를 초과하였습니다.');
                             // 이후 동작 ...
                         } else {
-                            alert('이미지 업로드 성공');
+                            alert('이미지 수정 성공');
                             location.href="ImageList";
                             // 이후 동작 ...
                         }
