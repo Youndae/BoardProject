@@ -4,10 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.board.project.vo.HierarchicalBoardVO;
 import com.board.project.vo.ImageBoardVO;
 import com.board.project.vo.ImageDataVO;
-import com.board.project.vo.SearchCriteria;
 
 @Mapper
 public interface ImageBoardMapper {

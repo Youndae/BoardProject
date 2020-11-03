@@ -72,6 +72,7 @@
 		var previewIndex = 0;
 		var deletefiles = {};
 		var step = 0; //테스트필요.
+		
 
 		// image preview 기능 구현
 		// input = file object[]
@@ -129,11 +130,12 @@
 		//기존파일과 수정파일의 구분이 필요함.
 		function deletePreview(obj) {
 			var imgNum = obj.attributes['value'].value;
-			var fileName = obj.attributes['value'].value;
+			alert("value : "+imgNum);
+			/* var fileName = obj.attributes['value'].value; */
 			
-			deletefiles[imgNum] = 
+			/* deletefiles[imgNum] =  */
 			$("#preview .preview-box[value=" + imgNum + "]").remove();
-			delete files[imgNum];
+			/* delete files[imgNum]; */
 			resizeHeight();
 		}
 		//넘겨서 해야할것.
@@ -158,7 +160,7 @@
 		}
 		
 		
-		/* $(document).ready(function(){
+		/*  $(document).ready(function(){
 			(function(){
 				var arr = {};
 				var Num = 0;
@@ -184,25 +186,24 @@
 					}
 					}
 			});
-		}) */
+		})  */
 		
 		
 		
 
 		$(document).ready(function() {
-            //submit 등록. 실제로 submit type은 아니다.
-            
-            var imageNo = '<c:out value="${list.imageNo}"/>';
-            alert("imageNo : "+imageNo);
-            $.getJSON("/AttachList", {imageNo: imageNo}, function(arr){
-            	console.log(arr);
+			/* var ImageNo = '<c:out value="${list.imageNo}"/>'; */
+			var ImageNo = $("#ImageNo").val();
+            alert("imageNo : "+ImageNo+"::"+typeof ImageNo);
+          	 $.getJSON("AttachList", {ImageNo: ImageNo}, function(arr){
+            	
             	alert("arr : "+arr);
             	
             	$(arr).each(function(i, attach){
             		
             		$("#preview").append(
             			"<div class\"preview-box\" value=\"" + attach.imageStep + "\">" +
-            			"<img class=\"thumbnail\" src=\"" + attach.imageData + "\"\/>" +
+            			"<img class=\"thumbnail\" src=\"IMG/" + attach.imageData + "\"\/>" +
             			"<p>" + attach.oldName + "</p>" +
             			"<a href=\"#\" value=\"" + attach.imageStep +"\" onclick=\"deletePreview(this)\">" +
             			"삭제" + "</a>" +
@@ -210,7 +211,10 @@
             		);
             		step = attach.imageStep;
             	});
-            });
+            })
+            .fail(function(err){
+            	alert(err.responseText);
+            })
             
             
             
@@ -230,7 +234,7 @@
             </li> */   
        		
             
-            $('.submit a').on('click',function() {                        
+            /* $('.submit a').on('click',function() {                        
                 var form = $('#uploadForm')[0];
                 var formData = new FormData(form);
     
@@ -273,7 +277,7 @@
             // <input type=file> 태그 기능 구현
             $('#attach input[type=file]').change(function() {
                 addPreview($(this)); //preview form 추가하기
-            });
+            }); */
         });
 	</script>
 </body>

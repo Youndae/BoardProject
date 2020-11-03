@@ -54,15 +54,24 @@ public class ImageBoardController {
 	
 	
 	
-	@RequestMapping(value = "/AttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@RequestMapping("/AttachList")
 	@ResponseBody
-	public ResponseEntity<List<ImageDataVO>> getAttachList(int ImageNo) throws Exception{
+	public ResponseEntity<List<ImageDataVO>> getAttachList(Integer ImageNo) throws Exception{
 		System.out.println("ImageNo : " + ImageNo);
 		System.out.println("result : "+new ResponseEntity<>(imageBoardMapper.getAttachList(ImageNo), HttpStatus.OK));
 		
 		return new ResponseEntity<>(imageBoardMapper.getAttachList(ImageNo), HttpStatus.OK);
 	}
 	
+	
+	@GetMapping(value="/AttachList2", produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<ImageDataVO>> getAttachList2(int ImageNo) throws Exception{
+		System.out.println("ImageNo : " + ImageNo);
+		System.out.println("result : "+new ResponseEntity<>(imageBoardMapper.getAttachList(ImageNo), HttpStatus.OK));
+		
+		return new ResponseEntity<>(imageBoardMapper.getAttachList(ImageNo), HttpStatus.OK);
+	}
 	
 	
 	

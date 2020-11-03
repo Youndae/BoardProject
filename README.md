@@ -58,4 +58,6 @@ Insert에서도 처음 이미지선택할 때 5장을 넘겨서 선택한 뒤에
 Comment 따로 만들어서 include 할지 아니면 전처럼 페이지마다 적용할지 고민해야함. ImageBoard끝나면 Comment만 하면 끝.
 디자인은 BootStrap 사용해서 간단하게 작업예정.
 
- 
+11/2,3,4 ImageModify 에서 getJSON 문제로 2,3은 진행도 0%.
+4일날 .fail이라는 방법을 찾아 어디서 에러가 발생했는지 확인. 받아주는 Type문제였기에 Controller에서 타입 변경하여 문제해결 현재 강제 ImageNo부여상태로 정상적으로 이미지 가져오는것 까지 가능.
+
