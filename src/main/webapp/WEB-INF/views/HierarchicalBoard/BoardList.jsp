@@ -12,6 +12,7 @@ li {
 </style>
 </head>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/HierarchicalBoard.js"></script>
 <body>
 	<div>
 		<div>
@@ -61,7 +62,7 @@ li {
 			value="${scri.keyword}" />
 
 		<button id="searchBtn" type="button">검색</button>
-		<script>
+		<!-- <script>
 			$(function() {
 				$('#searchBtn').click(
 						function() {
@@ -74,7 +75,7 @@ li {
 											.val());
 						});
 			});
-		</script>
+		</script> -->
 	</div>
 
 	<div>

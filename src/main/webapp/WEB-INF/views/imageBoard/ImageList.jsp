@@ -16,12 +16,13 @@
     <tr>
         <th>번호</th>
         <th>사진</th>
+        <th>작성자</th>
     </tr>
-    <c:forEach var="testboard" items="${ImgList}">
+    <c:forEach var="list" items="${ImgList}">
         <tr>
-            <td>${testboard.boardNo}</td>
-            <td>${testboard.image1}</td>
-            <img src="${testboard.image2}">
+            <td>${list.imageNo}</td>
+            <td><img id="ImageData" src="IMG/${list.imageData}" style="width:100px; height:100px;"/></td>
+            <td>${list.userId}</td>
         </tr>
     </c:forEach>
     </table>

@@ -3,12 +3,24 @@
 <mapper namespace="com.board.project.mapper.ImageBoardMapper">
 
 
-	<select id="imageList" resultType="ImageBoardVO">
-		select * from test
+	<select id="imageList" resultType="ImageDataVO">
+		SELECT a.ImageNo, a.imageTitle, a.UserId, b.ImageData
+		FROM (
+        	SELECT ImageNo, ImageData
+       		FROM ImageData 
+       		WHERE ImageNo > 0 
+       		AND rowid in(select max(rowid) from ImageData group by ImageNo)
+    		)b INNER JOIN ImageBoard a
+		ON a.ImageNo = b.ImageNo
+		ORDER BY ImageNo DESC
 	</select>
 	
-	<select id="imageDetail" resultType="ImageBoardVO">
-		select * from imageBoard where ImageNo=#{ImageNo}
+	<select id="imageDetail" resultType="ImageDataVO">
+		SELECT a.ImageNo, a.ImageTitle, a.ImageContent, a.UserId, b.ImageData
+		FROM ImageBoard a INNER JOIN ImageData b
+		ON a.ImageNo = b.ImageNo
+		WHERE a.ImageNo=#{ImageNo}
+		ORDER BY b.ImageStep ASC
 	</select>
 	
 	<select id="imageModify" resultType="ImageBoardVO">
@@ -47,7 +59,7 @@
 	<select id="getAttachList" resultType="ImageDataVO">
 		SELECT ImageData, OldName, ImageStep
 		FROM ImageData
-		WHERE ImageNo=#{ImageNo}
+		WHERE ImageNo=#{ImageNo} ORDER BY ImageStep ASC
 	</select>
 	
 	
@@ -65,6 +77,30 @@
 		)
 	</insert>
 	
+	<delete id="deletefiles" parameterType="String">
+		DELETE FROM ImageData WHERE ImageData=#{ImageData}
+	</delete>
 	
+	<update id="ModifyProc" parameterType="ImageBoardVO">
+		UPDATE ImageBoard SET ImageTitle=#{ImageTitle}, ImageContent=#{ImageContent} WHERE ImageNo=#{ImageNo}
+	</update>
+	
+	<select id="CountStep" resultType="int">
+		select MAX(ImageStep) from ImageData where imageNo=#{imageNo}
+	</select>
+	
+	<insert id="imageModfiy" parameterType="ImageDataVO">
+		INSERT INTO ImageData(
+			ImageData
+			, ImageNo
+			, OldName
+			, ImageStep)
+		VALUES(
+			#{ImageData}
+			, #{ImageNo}
+			, #{OldName}
+			, #{ImageStep}
+		)
+	</insert>
 
 </mapper> 

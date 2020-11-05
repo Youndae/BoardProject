@@ -11,7 +11,7 @@ import com.board.project.vo.ImageDataVO;
 public interface ImageBoardMapper {
 	List<ImageBoardVO> imageList() throws Exception;
 	
-	public String imageDetail() throws Exception;//Detail은 결국 ModifyTest와 getAttachList 의 합친 결과인데 이걸 그냥 사용할지, 아니면 지우고 저 두개를 똑같이 불러와서 사용할지 고민해볼것.
+	List<ImageDataVO> imageDetail(int ImageNo) throws Exception;//Detail은 결국 ModifyTest와 getAttachList 의 합친 결과인데 이걸 그냥 사용할지, 아니면 지우고 저 두개를 똑같이 불러와서 사용할지 고민해볼것.
 	
 	public String imageModify() throws Exception;
 	
@@ -19,10 +19,18 @@ public interface ImageBoardMapper {
 	
 	public String selectTest() throws Exception;
 	
-	public void imageInsert(ImageDataVO imageDataVO) throws Exception;
+	void imageInsert(ImageDataVO imageDataVO) throws Exception;
 	
 	
 	public ImageBoardVO ModifyTest(int ImageNo) throws Exception;
 	
 	public List<ImageDataVO> getAttachList(int ImageNo) throws Exception;
+	
+	void deletefiles(String ImageData) throws Exception;
+	
+	void ModifyProc(ImageBoardVO imageBoardVO) throws Exception;
+	
+	int CountStep(int ImageNo) throws Exception;
+
+	void imageModfiy(ImageDataVO imageDataVO) throws Exception;
 }

@@ -4,31 +4,34 @@
 <head>
     <title>답글작성</title>
 </head>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/HierarchicalBoard.js"></script>
 <body>
     <div>
 		<form method="post" id="ReplyFrm">
 			<div>
-				<label for="boardTitle">제목</label> 
-				<input type="text" id="boardTitle" name="boardTitle" value="RE: ${boardReply.boardTitle}" readonly="readonly"> 
+				<label for="BoardTitle">제목</label> 
+				<input type="text" id="BoardTitle" name="BoardTitle" value="RE: ${boardReply.boardTitle}" readonly="readonly"> 
 			</div>
 			<div>
-				<label for="boardContent">내용</label>
-				<textarea  id="boardContent" name="boardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;"></textarea>
+				<label for="BoardContent">내용</label>
+				<textarea  id="BoardContent" name="BoardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;"></textarea>
 			</div>
-			<button href='#' onclick="ReplyProc()" id="insertButton" name="insertButton">등록</button>
-			<input type="hidden" name="boardNo" value="${boardReply.boardNo}">
-			<input type="hidden" name="boardGroupNo" value="${boardReply.boardGroupNo}">
-			<input type="hidden" name="boardIndent" value="${boardReply.boardIndent}">
+			<!-- <button href='#' onclick="ReplyProc()" id="insertButton" name="insertButton">등록</button> -->
+			<button type="button" id="ReplyProc" name="ReplyProc">등록</button>
+			<input type="hidden" name="BoardNo" value="${boardReply.boardNo}">
+			<input type="hidden" name="BoardGroupNo" value="${boardReply.boardGroupNo}">
+			<input type="hidden" name="BoardIndent" value="${boardReply.boardIndent}">
 		</form>
 	</div>
 </body>
 
-<script>
+<!-- <script>
 	function ReplyProc(){
 		var form = document.getElementById("ReplyFrm");
 		
 		form.action = "<c:url value='/BoardReplyProc'/>";
 		form.submit();
 	}
-</script>
+</script> -->
 </html>

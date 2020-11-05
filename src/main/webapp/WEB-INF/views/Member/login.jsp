@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<script type="text/javascript" src="./js/Member.js"></script>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/Member.js"></script>
 <body>
 	<div>
 		<div>
@@ -16,18 +16,19 @@
 		</div>
 		<form action="LoginProc" id="LoginForm" method="post">
 			<div>
-				<input type="text" id="userId" name="userId" placeholder="아이디">
+				<input type="text" id="UserId" name="UserId" placeholder="아이디">
 				<div>
 					<span id="NullId" style="color: red; font-size: 10pt;"></span>
 				</div>
 			</div>
 			<div>
-				<input type="password" id="userPw" name="userPw" placeholder="비밀번호">
+				<input type="password" id="UserPw" name="UserPw" placeholder="비밀번호">
 				<div>
 					<span id="NullPw" style="color: red; font-size: 10pt;"></span>
 				</div>
 			</div>
-			<button type="button" onclick="UserLogin()">로그인</button>
+			<!-- <button type="button" onclick="UserLogin()">로그인</button> -->
+			<button type="button" id="UserLogin" name="UserLogin">로그인</button>
 		</form>
 		<button onclick="location.href='/board/Join'">회원가입</button>
 		<div>

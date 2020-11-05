@@ -100,13 +100,16 @@ public class HierarchicalBoardController {
 	public String BoardModifyProc(HierarchicalBoardVO boardVO, HttpServletRequest request) throws Exception{
 		
 		
-		boardVO.setBoardTitle(request.getParameter("boardTitle"));
-		boardVO.setBoardNo(Integer.parseInt(request.getParameter("boardNo")));
-		boardVO.setBoardContent(request.getParameter("boardContent"));
+		boardVO.setBoardTitle(request.getParameter("BoardTitle"));
+		System.out.println("title : "+boardVO.getBoardTitle());
+		boardVO.setBoardNo(Integer.parseInt(request.getParameter("BoardNo")));
+		System.out.println("boardNo : "+boardVO.getBoardNo());
+		boardVO.setBoardContent(request.getParameter("BoardContent"));
+		System.out.println("content : "+boardVO.getBoardContent());
 		
 		boardMapper.BoardModifyProc(boardVO);
 		
-		return "redirect:/BoardDetail?boardNo="+request.getParameter("boardNo");
+		return "redirect:/BoardDetail?boardNo="+request.getParameter("BoardNo");
 	}
 	
 	@RequestMapping("/BoardDelete")
@@ -148,14 +151,18 @@ public class HierarchicalBoardController {
 	public String BoardReplyProc(HierarchicalBoardVO boardVO, HttpSession session, HttpServletRequest request) throws Exception{
 		
 		String id = (String) session.getAttribute("userId");
-		
+		System.out.println("id : "+id);
 		boardVO.setUserId(id);
-		boardVO.setBoardTitle(request.getParameter("boardTitle"));
-		boardVO.setBoardContent(request.getParameter("boardContent"));
-		boardVO.setBoardUpperNo(Integer.parseInt(request.getParameter("boardNo")));
-		boardVO.setBoardGroupNo(Integer.parseInt(request.getParameter("boardGroupNo")));
-		boardVO.setBoardIndent(Integer.parseInt(request.getParameter("boardIndent")+1));
-		
+		boardVO.setBoardTitle(request.getParameter("BoardTitle"));
+		System.out.println("title : "+boardVO.getBoardTitle());
+		boardVO.setBoardContent(request.getParameter("BoardContent"));
+		System.out.println("content : "+boardVO.getBoardContent());
+		boardVO.setBoardUpperNo(Integer.parseInt(request.getParameter("BoardNo")));
+		System.out.println("boardNo : "+boardVO.getBoardUpperNo());
+		boardVO.setBoardGroupNo(Integer.parseInt(request.getParameter("BoardGroupNo")));
+		System.out.println("groupNo : "+boardVO.getBoardGroupNo());
+		boardVO.setBoardIndent(Integer.parseInt(request.getParameter("BoardIndent")+1));
+		System.out.println("indent : "+boardVO.getBoardIndent());
 		boardMapper.BoardReplyProc(boardVO);
 		
 		return "redirect:BoardList";

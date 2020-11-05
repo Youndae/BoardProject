@@ -4,9 +4,11 @@
 <head>
 <title>게시판 글 작성</title>
 </head>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/HierarchicalBoard.js"></script>
 <body>
 	<div>
-		<form method="post" id="insertBoardFrm">
+		<form method="post" id="insertBoardFrm" action="BoardInsertProc">
 			<div>
 				<label for="boardTitle">제목</label> 
 				<input type="text" id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요">
@@ -15,17 +17,18 @@
 				<label for="boardContent">내용</label>
 				<textarea  id="boardContent" name="boardContent" placeholder="내용을 입력하세요" style="width: 300px; height: 300px;"></textarea>
 			</div>
-			<button href='#' onclick="insertBoard()" id="insertButton" name="insertButton">등록</button>
+			<!-- <button href='#' onclick="insertBoard()" id="insertButton" name="insertButton">등록</button> -->
+			<button type="button" id="insertBoard" name="insertBoard">등록</button>
 		</form>
 	</div>
 </body>
 
-<script>
+<!-- <script>
 	function insertBoard(){
 		var form = document.getElementById("insertBoardFrm");
 		
 		form.action = "<c:url value='/BoardInsertProc'/>";
 		form.submit();
 	}
-</script>
+</script> -->
 </html>

@@ -3,7 +3,8 @@
 <html>
 <head>
 	<%-- <script src="<c:url value="/resources/js/HierarchicalBoard.js" />"></script> --%>
-	<script type="text/javascript" src="./js/HierarchicalBoard.js"></script>
+	<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="js/HierarchicalBoard.js"></script>
 	
     <title>${boardDetai.boardTitle}</title>
 </head>
@@ -23,12 +24,15 @@
     	</div>
     </div>
     
-    <button href='#' onclick="Reply()" value=1>답글</button>
+    <!-- <button href='#' onclick="Reply()" value=1>답글</button> -->
+    <button href='#' id="Reply" value=1>답글</button>
     <c:set var="name" value="${sessionScope.userId}"/>
     <c:set var="id" value="${boardDetail.userId}"/>
     <c:if test="${name eq id }">
-    	<button href='#' onclick="Modify()">수정</button>
-    	<button href='#' onclick="DeleteBoard()">삭제</button>
+    	<!-- <button href='#' onclick="Modify()">수정</button> -->
+    	<button href='#' id="Modify">수정</button>
+    	<!-- <button href='#' onclick="DeleteBoard()">삭제</button> -->
+    	<button href='#' id="DeleteBoard">삭제</button>
     </c:if>
     <input type="hidden" id="boardNo" name="boardNo" value="${boardDetail.boardNo}">
 </body>

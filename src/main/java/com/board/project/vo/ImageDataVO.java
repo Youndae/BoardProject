@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ImageDataVO {
+public class ImageDataVO extends ImageBoardVO{
 
 	private String ImageData;
 	private int ImageNo;

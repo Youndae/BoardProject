@@ -46,9 +46,9 @@ public class memberController {
 	
 	@RequestMapping("/CheckUserId")
 	@ResponseBody
-	public int idCheck(@RequestParam("userId") String userId) throws Exception{
-		System.out.println("Id Check : "+userId);
-		return memberMapper.IdCheck(userId);
+	public int idCheck(@RequestParam("UserId") String UserId) throws Exception{
+		System.out.println("Id Check : "+UserId);
+		return memberMapper.IdCheck(UserId);
 	}
 	
 	@RequestMapping("/Login")
