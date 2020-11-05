@@ -1,6 +1,6 @@
 $(function(){
 	$("#Modify").click(function(){
-		var boardNo = $("#boardNo").val();
+		var boardNo = $("#BoardNo").val();
 		alert("boardNo : "+boardNo);
 		location.href = "/board/BoardModify?boardNo="+boardNo;
 	})
@@ -15,7 +15,7 @@ $(function(){
 
 $(function(){
 	$("#DeleteBoard").click(function(){
-		var boardNo = $("#boardNo").val();
+		var boardNo = $("#BoardNo").val();
 		alert("boardNo : "+boardNo);
 		location.href = "/board/BoardDelete?boardNo="+boardNo;
 	})
@@ -29,7 +29,7 @@ $(function(){
 
 $(function(){
 	$("#Reply").click(function(){
-		var boardNo = $("#boardNo").val();
+		var boardNo = $("#BoardNo").val();
 		location.href= "/board/BoardReply?boardNo="+boardNo;
 	})
 })

@@ -15,6 +15,9 @@ li {
 <body>
 	<div>
 		<div>
+			<jsp:include page="/WEB-INF/views/top.jsp" flush="false" />
+		</div>
+		<div>
 			<h2>아이디는 : ${sessionScope.userId}</h2>
 		</div>
 		<button onclick="location.href='/board/BoardInsert'">글작성</button>
@@ -58,7 +61,8 @@ li {
 				<button id="searchBtn" type="button">검색</button>
 				<script>
 					$(function() {
-						$('#searchBtn').click(function() {
+						$('#searchBtn').click(
+								function() {
 									alert("gogo");
 									self.location = "/board/BoardList3"
 											+ '${pageMaker.makeQuery(1)}'

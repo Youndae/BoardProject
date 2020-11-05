@@ -1,5 +1,21 @@
 package com.board.project.mapper;
 
-public interface CommentMapper {
+import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
+import com.board.project.vo.CommentVO;
+
+@Mapper
+public interface CommentMapper {
+	List<CommentVO> bCommentList(int BoardNo) throws Exception;
+	
+	List<CommentVO> iCommentList(int ImageNo) throws Exception;
+	
+	void commentInsert(CommentVO commentVO) throws Exception;
+	
+	void commentDelete(int CommentNo) throws Exception;
+	
+	void commentReply(CommentVO commentVO) throws Exception;
+	
 }

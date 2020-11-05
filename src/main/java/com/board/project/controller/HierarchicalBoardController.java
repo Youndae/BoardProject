@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.board.project.mapper.CommentMapper;
 import com.board.project.mapper.HierarchicalBoardMapper;
 import com.board.project.vo.HierarchicalBoardVO;
 import com.board.project.vo.MemberVO;
@@ -23,6 +24,9 @@ public class HierarchicalBoardController {
 
 	@Autowired
 	HierarchicalBoardMapper boardMapper;
+	
+	@Autowired
+	CommentMapper commentMapper;
 	
 	@RequestMapping(value = "/BoardList3", method = RequestMethod.GET)
 	public String BoardList3(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
@@ -84,6 +88,7 @@ public class HierarchicalBoardController {
 	public String BoardDetail(Model model, @RequestParam("boardNo") int boardNo) throws Exception{
 		
 		model.addAttribute("boardDetail", boardMapper.BoardDetail(boardNo));
+		model.addAttribute("comment", commentMapper.bCommentList(boardNo));
 		
 		return "HierarchicalBoard/BoardDetail";
 	}
@@ -150,7 +155,7 @@ public class HierarchicalBoardController {
 	@RequestMapping("/BoardReplyProc")
 	public String BoardReplyProc(HierarchicalBoardVO boardVO, HttpSession session, HttpServletRequest request) throws Exception{
 		
-		String id = (String) session.getAttribute("userId");
+		String id = (String) session.getAttribute("UserId");
 		System.out.println("id : "+id);
 		boardVO.setUserId(id);
 		boardVO.setBoardTitle(request.getParameter("BoardTitle"));

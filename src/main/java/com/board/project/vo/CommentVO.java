@@ -9,13 +9,14 @@ import oracle.sql.DATE;
 @Getter
 @Setter
 @ToString
-public class BoardComment {
+public class CommentVO {
     private int CommentNo;
     private String UserId;
     private DATE CommentDate;
     private String CommentContent;
     private int CommentGroupNo;
     private int CommentUpperNo;
-    private int ImageNo;
+    private int CommentIndent;
+    private Integer ImageNo;
     private int BoardNo;
 }
