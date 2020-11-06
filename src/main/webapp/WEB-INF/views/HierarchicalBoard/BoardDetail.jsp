@@ -44,15 +44,15 @@
 		
 	<c:forEach var="clist" items="${comment}">
 		<div id="comment">
-			<div class="comment-box" value="${clist.commentNo}">
-				<p>${clist.userId} &nbsp&nbsp ${clist.commentContent} &nbsp&nbsp <button type="button" id="cReply">답글</button></p>
+			<div class="comment-box" id="comment-box" value="${clist.commentNo}">
+				<p>${clist.userId} &nbsp&nbsp ${clist.commentContent} &nbsp&nbsp <button type="button" id="cReply" value="${clist.commentNo}" onclick="cReply(this)">답글</button></p>
 				<input type="hidden" id="CommentNo" value="${clist.commentNo}">
-				<input type="hidden" id="CommentGroupNo" value="${clist.commentGroupNo}">
-				<input type="hidden" id="CommentIndent" value="${clist.commentIndent}">
-				<div id="ReplyComment">
+				<input type="hidden" class="CommentGroupNo" value="${clist.commentGroupNo}">
+				<input type="hidden" class="CommentIndent" value="${clist.commentIndent}">
+				<%-- <div id="ReplyComment" value="${clist.commentNo}">
 					
 					
-				</div>
+				</div> --%>
 			</div>
 		</div>
 	</c:forEach>

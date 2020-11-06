@@ -54,7 +54,27 @@
 	 	DELETE FROM BoardComment WHERE CommentNo=#{CommentNo}
 	</delete>
 	
-	<select id="commentReply" resultType="CommentVO">
-		SELECT * FROM BoardComment WHERE 
-	</select>
+	<insert id="commentReply" parameterType="CommentVO">
+		INSERT INTO BoardComment(
+					CommentNo
+					, UserId
+					, CommentContent
+					, CommentDate
+					, CommentGroupNo
+					, CommentUpperNo
+					, CommentIndent
+					, ImageNo
+					, BoardNo)
+			VALUES(
+					Comment_SEQ.NEXTVAL
+					, #{UserId}
+					, #{CommentContent}
+					, sysdate
+					, #{CommentGroupNo}
+					, #{CommentUpperNo}
+					, #{CommentIndent}
+					, #{ImageNo}
+					, #{BoardNo}
+			)
+	</insert>
 </mapper>
