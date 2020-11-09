@@ -1,10 +1,6 @@
 package com.board.project.controller;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.board.project.mapper.CommentMapper;
 import com.board.project.mapper.ImageBoardMapper;
+import com.board.project.service.CommentService;
 import com.board.project.service.ImageBoardService;
+import com.board.project.vo.CommentVO;
 import com.board.project.vo.ImageBoardVO;
 import com.board.project.vo.ImageDataVO;
 
@@ -33,6 +32,12 @@ public class ImageBoardController {
 
 	@Autowired
 	ImageBoardService imageBoardService;
+	
+	@Autowired
+	CommentMapper commentMapper;
+	
+	@Autowired
+	CommentService commentService;
 
 	private static final int RESULT_EXCEED_SIZE = -2;
 	private static final int RESULT_UNACCEPTED_EXTENSION = -1;
@@ -41,12 +46,11 @@ public class ImageBoardController {
 	private static int result = 0;
 
 	@RequestMapping("/ImageModifyTest")
-	public String imageModifyTest(Model model) throws Exception {
+	public String imageModifyTest(@RequestParam("ImageNo") int ImageNo , Model model) throws Exception {
 
-		int boardNo = 10;
 
-		model.addAttribute("list", imageBoardMapper.ModifyTest(boardNo));
-		System.out.println("img : " + imageBoardMapper.ModifyTest(boardNo));
+		model.addAttribute("list", imageBoardMapper.ModifyTest(ImageNo));
+		System.out.println("img : " + imageBoardMapper.ModifyTest(ImageNo));
 		return "ImageBoard/ImageModify2";
 	}
 
@@ -77,10 +81,12 @@ public class ImageBoardController {
 	}
 
 	@RequestMapping("/ImageDetail")
-	public String imageDetail(Model model) throws Exception {
-			int imageNo = 10;
-			
+	public String imageDetail(Model model, @RequestParam("imageNo") int imageNo, CommentVO commentVO) throws Exception {
+			System.out.println("ImageDetail Hi!");
+			commentVO.setImageNo(imageNo);
 			model.addAttribute("detail", imageBoardMapper.imageDetail(imageNo));
+			System.out.println("Detail Complete");
+			model.addAttribute("comment", commentMapper.bCommentList(commentVO));
 			
 		return "ImageBoard/Imagedetail";
 	}
@@ -94,10 +100,10 @@ public class ImageBoardController {
 	@RequestMapping("/imageModifyProc")
 	public String imageModifyProc() throws Exception {
 
-		return "redirect:imageDetail/{bno}";
+		return "redirect:ImageList";
 	}
 
-	@RequestMapping("/imageInsert")
+	@RequestMapping("/ImageInsert")
 	public String imageInsert() throws Exception {
 
 		return "ImageBoard/ImageInsert";
@@ -277,6 +283,21 @@ public class ImageBoardController {
 
 		System.out.println("END!");
 		return result;
+	}
+	
+	@RequestMapping("/ImageDelete")
+	@ResponseBody
+	public String ImageDelete(@RequestParam("ImageNo") int ImageNo)throws Exception{
+		System.out.println("Delete start!");
+		System.out.println("Delete ImageNo : "+ImageNo);
+		imageBoardMapper.imageDataDelete(ImageNo);
+		System.out.println("Data Delete Complete!");
+		imageBoardMapper.imageDelete(ImageNo);
+		
+		
+		commentService.commentDeleteBoard(ImageNo, null);
+		
+		return "redirect:/board/ImageList";
 	}
 
 

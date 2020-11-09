@@ -102,5 +102,13 @@
 			, #{ImageStep}
 		)
 	</insert>
+	
+	<delete id="imageDelete" parameterType="int">
+		DELETE FROM ImageBoard WHERE ImageNo=#{ImageNo}
+	</delete>
+	
+	<delete id="imageDataDelete" parameterType="int">
+		DELETE FROM ImageData WHERE ImageNo=#{ImageNo}
+	</delete>
 
 </mapper> 

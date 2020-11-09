@@ -1,3 +1,16 @@
+$(document).ready(function(){
+	
+	$("#UserPw").keydown(function(key){
+		if(key.keyCode == 13){
+			alert("Enter!");
+			$("#UserLogin").click();
+		}
+	})
+})
+
+
+
+
 $(function(){
 	$('#UserLogin').click(function(){
 		var id = $('#UserId').val();

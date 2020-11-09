@@ -2,29 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.project.mapper.CommentMapper">
 	
-	<!-- <select id="bCommentList" resultType="CommentVO">
+	<select id="bCommentList" resultType="CommentVO">
 		SELECT 	* 
 		FROM (
 		SELECT 	ROWNUM AS RNUM, A.*
 		FROM	(
 				SELECT *
 				FROM BoardComment
-				WHERE 1=1
+				WHERE BoardNo=#{BoardNo} OR ImageNo=#{ImageNo}
 				START WITH CommentUpperNo = 0
 				CONNECT BY PRIOR CommentNo = CommentUpperNo
 				ORDER SIBLINGS BY CommentGroupNo DESC
 				) A
 			 )
-		WHERE RNUM BETWEEN ${rowStart} AND ${rowEnd}
+		WHERE RNUM
+		BETWEEN ${rowStart} AND ${rowEnd}
+	</select>
+	
+	<select id="cListCount" resultType="int">
+		SELECT COUNT(CommentNo)
+		FROM BoardComment
+		WHERE BoardNo=#{BoardNo} OR ImageNo=#{ImageNo}
+	</select>
+	
+	<!-- <select id="bCommentList" resultType="CommentVO">
+		SELECT * FROM BoardComment WHERE BoardNo=#{BoardNo}
 	</select> -->
 	
-	<select id="bCommentList" resultType="CommentVO">
-		SELECT * FROM BoardComment WHERE BoardNo=#{BoardNo}
-	</select>
-	
-	<select id="iCommentList" resultType="CommentVO">
-	
-	</select>
+	<!-- <select id="iCommentList" resultType="CommentVO">
+		SELECT 	* 
+			FROM (
+			SELECT 	ROWNUM AS RNUM, A.*
+			FROM	(
+					SELECT *
+					FROM BoardComment
+					WHERE 1=1
+					START WITH CommentUpperNo = 0
+					CONNECT BY PRIOR CommentNo = CommentUpperNo
+					ORDER SIBLINGS BY CommentGroupNo DESC
+					) A
+				 )
+			WHERE ImageNo=#{ImageNo}
+	</select> -->
 	
 	<insert id="commentInsert" parameterType="CommentVO">
 		INSERT INTO BoardComment(
@@ -77,4 +96,8 @@
 					, #{BoardNo}
 			)
 	</insert>
+	
+	<delete id="commentDeleteBoard" parameterType="int">
+		DELETE FROM BoardComment WHERE BoardNo=#{BoardNo} OR ImageNo=#{ImageNo}
+	</delete>
 </mapper>

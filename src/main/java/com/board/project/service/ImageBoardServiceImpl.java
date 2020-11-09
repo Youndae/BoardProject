@@ -18,7 +18,7 @@ import com.board.project.vo.ImageDataVO;
 @Service("ImageBoardService")
 public class ImageBoardServiceImpl implements ImageBoardService{
 	
-	@Autowired(required = false)
+	@Autowired
 	ImageBoardMapper imageBoardMapper;
 	
 	
@@ -189,5 +189,7 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 		}
 		return false;
 	}
+
+
 
 }

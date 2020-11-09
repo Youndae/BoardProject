@@ -11,8 +11,12 @@
 		<jsp:include page="/WEB-INF/views/top.jsp" flush="false" />
 	</div>
 	<div>
+		<c:set var="name" value="${sessionScope.userId}"/>
+		<c:set var="id" value="${detail[0].userId}"/>
+		<c:if test="${name eq id}">
 		<button type="button" id="Modify">수정</button>
 		<button type="button" id="Delete">삭제</button>
+		</c:if>
 	</div>
 	<div>
 		<h2>제목 : ${detail[0].imageTitle}</h2>
@@ -42,5 +46,10 @@
 	</div>
 	<input type="hidden" id="ImageNo" name="ImageNo"
 		value="${detail[0].imageNo}">
+		
+	<div>	
+	<jsp:include page="/WEB-INF/views/comment.jsp" flush="false" />
+	</div>		
+	
 </body>
 </html>

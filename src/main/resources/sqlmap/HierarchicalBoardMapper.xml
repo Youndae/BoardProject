@@ -58,8 +58,8 @@
 		FROM (
         SELECT  ROWNUM AS RNUM, A.*
         FROM    (
-                select * 
-                from HierarchicalBoard 
+                SELECT * 
+                FROM HierarchicalBoard 
                 WHERE 1=1
 				<include refid="search"></include>
                 
@@ -104,7 +104,7 @@
 	</select>
 
 	<select id="BoardDetail" resultType="HierarchicalBoardVO">
-		SELECT BoardNo, BoardTitle, BoardContent, UserId
+		SELECT BoardNo, BoardTitle, BoardContent, UserId, BoardIndent
 		FROM HierarchicalBoard 
 		WHERE BoardNo=#{BoardNo}
 	</select>

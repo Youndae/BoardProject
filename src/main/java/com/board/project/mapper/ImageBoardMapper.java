@@ -33,4 +33,7 @@ public interface ImageBoardMapper {
 	int CountStep(int ImageNo) throws Exception;
 
 	void imageModfiy(ImageDataVO imageDataVO) throws Exception;
+	
+	void imageDelete(int ImageNo) throws Exception;
+	void imageDataDelete(int ImageNo) throws Exception;
 }

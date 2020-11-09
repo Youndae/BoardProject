@@ -18,5 +18,5 @@ public class CommentVO {
     private int CommentUpperNo;
     private int CommentIndent;
     private Integer ImageNo;
-    private int BoardNo;
+    private Integer BoardNo;
 }

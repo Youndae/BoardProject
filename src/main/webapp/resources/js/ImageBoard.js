@@ -147,13 +147,16 @@ $(function(){
 	$("#Modify").click(function(){
 		var ImageNo = $("#ImageNo").val();
 		alert("ImageNo : "+ImageNo);
+		location.href = "/board/ImageModifyTest?ImageNo="+ImageNo;
 	})
 });
 
 $(function(){
 	$("#Delete").click(function(){
 		var ImageNo = $("#ImageNo").val();
+		
 		alert("DelNo : "+ImageNo);
+		location.href = "/board/ImageDelete?ImageNo="+ImageNo;
 	})
 });
 

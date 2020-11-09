@@ -15,6 +15,9 @@
 	<div>
 		<jsp:include page="/WEB-INF/views/top.jsp" flush="false" />
 	</div>
+	<div>
+		<button onclick="location.href='/board/ImageInsert'">글작성</button>
+	</div>
 	<table>
 		<tr>
 			<th>번호</th>
@@ -25,7 +28,7 @@
 			<tr>
 				<td>${list.imageNo}</td>
 				<td><img id="ImageData" src="IMG/${list.imageData}"
-					style="width: 100px; height: 100px;" /></td>
+					style="width: 100px; height: 100px;" /><a href="/board/ImageDetail?imageNo=${list.imageNo}">${list.imageTitle}</a></td>
 				<td>${list.userId}</td>
 			</tr>
 		</c:forEach>

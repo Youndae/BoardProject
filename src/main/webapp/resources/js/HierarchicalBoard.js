@@ -29,8 +29,13 @@ $(function(){
 
 $(function(){
 	$("#Reply").click(function(){
-		var boardNo = $("#BoardNo").val();
-		location.href= "/board/BoardReply?boardNo="+boardNo;
+		var Indent = $("#BoardIndent").val();
+		if(Indent >= 4){
+			alert("더이상 답글을 작성할 수 없습니다.");
+		}else{
+			var boardNo = $("#BoardNo").val();
+			location.href= "/board/BoardReply?boardNo="+boardNo;	
+		}
 	})
 })
 

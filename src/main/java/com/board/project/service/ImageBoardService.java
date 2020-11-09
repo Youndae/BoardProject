@@ -15,4 +15,6 @@ public interface ImageBoardService {
 	public int imageModify(List<MultipartFile> images, HttpServletRequest request, int step, ImageDataVO imageDataVO) throws Exception;
 	
 	public int imageInsert(List<MultipartFile> images, HttpServletRequest request, ImageDataVO imageDataVO) throws Exception;
+	
+	
 }

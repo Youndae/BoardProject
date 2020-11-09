@@ -1,20 +1,27 @@
 package com.board.project.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.board.project.mapper.CommentMapper;
 import com.board.project.mapper.HierarchicalBoardMapper;
+import com.board.project.service.CommentService;
+import com.board.project.vo.CommentVO;
+import com.board.project.vo.Criteria;
 import com.board.project.vo.HierarchicalBoardVO;
-import com.board.project.vo.MemberVO;
 import com.board.project.vo.PageMaker;
 import com.board.project.vo.PagingVO;
 import com.board.project.vo.SearchCriteria;
@@ -28,9 +35,12 @@ public class HierarchicalBoardController {
 	@Autowired
 	CommentMapper commentMapper;
 	
+	@Autowired
+	CommentService commentService;
+	
 	@RequestMapping(value = "/BoardList3", method = RequestMethod.GET)
 	public String BoardList3(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
-		
+		//완성.
 		model.addAttribute("list", boardMapper.SearchPage(scri));
 		
 		PageMaker pageMaker = new PageMaker();
@@ -41,6 +51,28 @@ public class HierarchicalBoardController {
 		
 		return "HierarchicalBoard/BoardList3";
 	}
+	
+	@RequestMapping(value = "/BoardList4", method = RequestMethod.GET)
+	public String BoardList4(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
+		// Test
+		/* model.addAttribute("list", boardMapper.SearchPage(scri)); */
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(scri);
+		pageMaker.setTotalCount(boardMapper.ListCount(scri));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "HierarchicalBoard/BoardList4";
+	}
+	
+	@RequestMapping("/BAttachList")
+	@ResponseBody
+	public ResponseEntity<List<HierarchicalBoardVO>> BAttachList(@ModelAttribute("scri") SearchCriteria scri) throws Exception{
+		
+		return new ResponseEntity<>(boardMapper.SearchPage(scri), HttpStatus.OK);
+	}
+	
 	
 	
 	@RequestMapping("/BoardList2")
@@ -85,10 +117,21 @@ public class HierarchicalBoardController {
 	}
 	
 	@RequestMapping("/BoardDetail")
-	public String BoardDetail(Model model, @RequestParam("boardNo") int boardNo) throws Exception{
+	public String BoardDetail(Criteria cri, Model model, @RequestParam("boardNo") int boardNo, CommentVO commentVO) throws Exception{
+		System.out.println("boardNo : "+boardNo);
+		commentVO.setBoardNo(boardNo);
+		System.out.println("RowStart : "+cri.getRowStart());
+		System.out.println("RowEnd : "+cri.getRowEnd());
 		
 		model.addAttribute("boardDetail", boardMapper.BoardDetail(boardNo));
-		model.addAttribute("comment", commentMapper.bCommentList(boardNo));
+		model.addAttribute("comment", commentMapper.bCommentList(cri, boardNo));
+		
+		
+		PageMaker pageMaker = new PageMaker();
+		pageMaker.setCri(cri);
+		pageMaker.setTotalCount(commentMapper.cListCount(boardNo));
+		
+		model.addAttribute("pageMaker", pageMaker);
 		
 		return "HierarchicalBoard/BoardDetail";
 	}
@@ -121,6 +164,8 @@ public class HierarchicalBoardController {
 	public String BoardDelete(@RequestParam("boardNo") int boardNo) throws Exception{
 		System.out.println("boardNo : "+boardNo);
 		boardMapper.BoardDelete(boardNo);
+		
+		commentService.commentDeleteBoard(null, boardNo);
 		
 		return "redirect:BoardList";
 	}
@@ -155,7 +200,7 @@ public class HierarchicalBoardController {
 	@RequestMapping("/BoardReplyProc")
 	public String BoardReplyProc(HierarchicalBoardVO boardVO, HttpSession session, HttpServletRequest request) throws Exception{
 		
-		String id = (String) session.getAttribute("UserId");
+		String id = (String) session.getAttribute("userId");
 		System.out.println("id : "+id);
 		boardVO.setUserId(id);
 		boardVO.setBoardTitle(request.getParameter("BoardTitle"));
@@ -166,7 +211,7 @@ public class HierarchicalBoardController {
 		System.out.println("boardNo : "+boardVO.getBoardUpperNo());
 		boardVO.setBoardGroupNo(Integer.parseInt(request.getParameter("BoardGroupNo")));
 		System.out.println("groupNo : "+boardVO.getBoardGroupNo());
-		boardVO.setBoardIndent(Integer.parseInt(request.getParameter("BoardIndent")+1));
+		boardVO.setBoardIndent(Integer.parseInt(request.getParameter("BoardIndent"))+1);
 		System.out.println("indent : "+boardVO.getBoardIndent());
 		boardMapper.BoardReplyProc(boardVO);
 		
