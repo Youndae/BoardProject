@@ -59,6 +59,7 @@ public class PageMaker {
 	}
 	
 	public String makeQuery(int page) {
+		System.out.println("makeQuery page : "+page);
 		UriComponents uriComponents = 
 			UriComponentsBuilder.newInstance()
 								.queryParam("page", page)
@@ -69,6 +70,7 @@ public class PageMaker {
 	}	
 	
 	public String makeSearch(int page) {
+		
 		UriComponents uriComponents = 
 				UriComponentsBuilder.newInstance()
 				.queryParam("page", page)

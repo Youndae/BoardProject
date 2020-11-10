@@ -34,7 +34,6 @@ public class memberController {
 	@RequestMapping("/JoinProc")
 	public String joinProc(MemberVO memberVO, RedirectAttributes redirectAttributes) throws Exception{
 		
-		System.out.println("id : "+memberVO.getUserId()+" , pw : "+memberVO.getUserPw()+" , name : "+memberVO.getUserName());
 		String hashedPw = BCrypt.hashpw(memberVO.getUserPw(), BCrypt.gensalt());
 		memberVO.setUserPw(hashedPw);
 		memberMapper.joinProc(memberVO);
@@ -47,7 +46,7 @@ public class memberController {
 	@RequestMapping("/CheckUserId")
 	@ResponseBody
 	public int idCheck(@RequestParam("UserId") String UserId) throws Exception{
-		System.out.println("Id Check : "+UserId);
+		
 		return memberMapper.IdCheck(UserId);
 	}
 	
@@ -63,12 +62,12 @@ public class memberController {
 	public String loginProc(MemberDTO memberDTO, HttpSession session, Model model) throws Exception{
 		
 		String uid = memberDTO.getUserId();
-		System.out.println("uid : "+uid);
 		
-		MemberVO memberVO = memberService.loginCheck(memberDTO);
-		System.out.println("userPw : "+memberDTO.getUserPw());
+		
+		MemberVO memberVO = memberMapper.loginCheck(memberDTO);
+		
 		if(memberVO == null || !BCrypt.checkpw(memberDTO.getUserPw(), memberVO.getUserPw())) {
-			System.out.println("if false");
+			
 			String msg = "false";
 			model.addAttribute("login", msg);
 			 return "Member/login";
@@ -77,10 +76,7 @@ public class memberController {
 		session.setAttribute("userName", memberVO.getUserName());
 		model.addAttribute("member", memberVO);
 		
-		String id = (String) session.getAttribute("userId");
-		System.out.println("member userId : "+id);
-		
-		 return "redirect:/BoardList"; 
+		return "redirect:/BoardList";
 	}
 	
 	@RequestMapping("/Logout")

@@ -2,57 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.project.mapper.HierarchicalBoardMapper">
 	
-	<!-- <select id="countBoard" resultType="int">
-		SELECT count(*) FROM pagetest
-	</select>
-	
-	<select id="selectBoard" resultType="HierarchicalBoardVO">
-		SELECT *
-		FROM (
-			SELECT ROWNUM RN, A.*
-			FROM (
-				SELECT *
-				FROM pageTest
-				ORDER BY boardNo DESC
-				) A
-		)
-		WHERE RN BETWEEN #{start} AND #{end}
-	</select>
-	 -->
-	 
-	 
-	 <!-- <select id="SearchPage" resultType="HierarchicalBoardVO">
-		SELECT  boardNo, boardUpperNo, boardTitle, boardDate, boardGroupNo, boardIndent
-		FROM (
-        SELECT  LEVEL AS "LEVEL", boardNo, boardUpperNo, boardTitle, boardDate, boardGroupNo, boardIndent
-                ROW_NUMBER () OVER(ORDER BY boardNo DESC) AS RNUM
-        FROM    HierarchicalBoard
-        WHERE   1=1
-        	<include refid="search"></include>
-                    )
-		WHERE RNUM BETWEEN ${rowStart} AND ${rowEnd}
-		START WITH boardUpperNo = 0
-		CONNECT BY PRIOR boardNo = boardUpperNo
-		ORDER SIBLINGS BY boardGroupNo DESC
-	</select> -->
-	 
-	 
-	 
-	<!-- <select id="SearchPage" resultType="HierarchicalBoardVO">
-		SELECT  boardNo, boardUpperNo, boardTitle, boardDate, boardGroupNo, boardIndent
-		FROM (
-        SELECT  LEVEL AS "LEVEL", boardNo, boardUpperNo, boardTitle, boardDate, boardGroupNo, boardIndent,
-                ROW_NUMBER () OVER(ORDER BY boardNo DESC) AS RNUM
-        FROM    HierarchicalBoard
-        WHERE   1=1
-        	<include refid="search"></include>
-                    )
-		START WITH boardUpperNo = 0
-		WHERE RNUM BETWEEN ${rowStart} AND ${rowEnd}
-		CONNECT BY PRIOR boardNo = boardUpperNo
-		ORDER SIBLINGS BY boardGroupNo DESC
-	</select> -->
-	
 	<select id="SearchPage" resultType="HierarchicalBoardVO">
 		SELECT  *
 		FROM (
@@ -60,7 +9,7 @@
         FROM    (
                 SELECT * 
                 FROM HierarchicalBoard 
-                WHERE 1=1
+                WHERE BoardNo > 0
 				<include refid="search"></include>
                 
                 START WITH BoardUpperNo = 0
@@ -70,14 +19,12 @@
                  
                     ) 
 		WHERE RNUM BETWEEN ${rowStart} AND ${rowEnd}
-        
-		
 	</select>
 	
 	<select id="ListCount" resultType="int">
 		SELECT 	COUNT(BoardNo)
 		FROM	HierarchicalBoard
-		WHERE 1=1
+		WHERE BoardNo > 0
 			<include refid="search"></include>
 		AND boardNo > 0
 	</select>
@@ -91,23 +38,27 @@
 		</if>
 	</sql>
 	
-	
-	
-	
-
-	<select id="BoardList" resultType="HierarchicalBoardVO">
-		SELECT LEVEL AS "LEVEL", BoardNo, BoardUpperNo, BoardTitle, BoardDate, BoardGroupNo, BoardIndent
-		FROM HierarchicalBoard
-		START WITH BoardUpperNo = 0
-		CONNECT BY PRIOR BoardNo = BoardUpperNo
-		ORDER SIBLINGS BY BoardGroupNo DESC
-	</select>
-
 	<select id="BoardDetail" resultType="HierarchicalBoardVO">
-		SELECT BoardNo, BoardTitle, BoardContent, UserId, BoardIndent
+		SELECT BoardNo, BoardTitle, BoardContent, UserId, BoardIndent, BoardGroupNo
 		FROM HierarchicalBoard 
 		WHERE BoardNo=#{BoardNo}
 	</select>
+	
+	<delete id="BoardDelete" parameterType="int">
+		DELETE FROM HierarchicalBoard WHERE BoardNo=#{BoardNo}
+	</delete>
+	
+	<select id="BoardUpperCount" resultType="int">
+		SELECT COUNT(BoardUpperNo)
+		FROM HierarchicalBoard
+		WHERE BoardUpperNo=#{BoardNo}
+	</select>
+	
+	<update id="BoardUpperUpdate" parameterType="int">
+		UPDATE HierarchicalBoard
+		SET BoardUpperNo=0
+		WHERE BoardUpperNo=#{BoardNo}
+	</update>
 
 	<update id="BoardModifyProc" parameterType="HierarchicalBoardVO">
 		UPDATE HierarchicalBoard
@@ -115,20 +66,11 @@
 		WHERE BoardNo=#{BoardNo}
 	</update>
 	
-	<delete id="BoardDelete" parameterType="int">
-		DELETE FROM HierarchicalBoard WHERE BoardNo=#{BoardNo}
-	</delete>
-
 	<insert id="BoardInsertProc" parameterType="HierarchicalBoardVO">
 		INSERT INTO	HierarchicalBoard
 		(BoardNo, BoardTitle, UserId, BoardContent, BoardDate, BoardGroupNo, BoardUpperNo, BoardIndent)
 		VALUES(Board_seq.NEXTVAL, #{BoardTitle}, #{UserId}, #{BoardContent}, sysdate, Board_seq.NEXTVAL, 0, 0)
 	</insert>
-
-	<select id="BoardReply" resultType="HierarchicalBoardVO">
-		SELECT BoardNo, BoardTitle, BoardGroupNo, BoardIndent
-		FROM HierarchicalBoard where BoardNo=#{BoardNo}
-	</select>
 
 	<insert id="BoardReplyProc" parameterType="HierarchicalBoardVO">
 		insert into

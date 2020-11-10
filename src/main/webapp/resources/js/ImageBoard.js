@@ -12,18 +12,16 @@ var deleteNo = 0;
                     setPreviewForm(file);
                 }
             } else
-                alert('5장만 올려.'); 
+                alert('5장만 업로드 가능합니다.'); 
         }
         
         function setPreviewForm(file, img){
             var reader = new FileReader();
             reader.onload = function(img) {
             	var length = $('.preview-box').length
-    			alert("step1 : "+step);
             	var imgNum = ++step;
             	var fileNum = 0;
-            	alert("step2 : "+imgNum);
-                
+            	
 	                	$("#preview").append(
 		                        "<div class=\"preview-box\" id=\"newImg\" value=\"" + imgNum +"\">" +
 		                        "<img class=\"thumbnail\" id=\"imgName\" src=\"" + img.target.result + "\"\/>" +
@@ -45,7 +43,6 @@ var deleteNo = 0;
 			var deleteImg = imgName.substring(idx+1);
 			
 			deletefiles[deleteNo] = deleteImg;
-			alert("deletefiles : "+deletefiles[0]+", 2 : "+deletefiles[1]+", 3 : "+deletefiles[2]+", 4 : "+deletefiles[3]);
 			deleteNo++;
 			
 			$("#preview .preview-box[value=" + imgNum + "]").remove();
@@ -55,7 +52,7 @@ var deleteNo = 0;
 		function deletePreview(obj) {
 			var imgNum = obj.attributes['value'].value;
 			delete files[imgNum];
-			alert("dvalue : "+imgNum);
+
 			$("#preview .preview-box[value=" + imgNum + "]").remove();
 			resizeHeight();
 		}
@@ -117,7 +114,7 @@ var deleteNo = 0;
                     contentType : false,
                     cache : false,
                     timeout : 600000,
-                    url : '/board/ImageModifyProcTest2',
+                    url : '/board/ImageModifyProc',
                     dataType : 'JSON',
                     data : formData, 
                     success : function(result) {
@@ -136,6 +133,7 @@ var deleteNo = 0;
                     }
                 });
             });
+          	 
             $('#attach input[type=file]').change(function() {
                 addPreview($(this)); 
             }); 
@@ -146,8 +144,8 @@ var deleteNo = 0;
 $(function(){
 	$("#Modify").click(function(){
 		var ImageNo = $("#ImageNo").val();
-		alert("ImageNo : "+ImageNo);
-		location.href = "/board/ImageModifyTest?ImageNo="+ImageNo;
+		
+		location.href = "/board/ImageModify?ImageNo="+ImageNo;
 	})
 });
 
@@ -155,7 +153,6 @@ $(function(){
 	$("#Delete").click(function(){
 		var ImageNo = $("#ImageNo").val();
 		
-		alert("DelNo : "+ImageNo);
 		location.href = "/board/ImageDelete?ImageNo="+ImageNo;
 	})
 });

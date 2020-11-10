@@ -27,15 +27,13 @@
 					<span id="NullPw" style="color: red; font-size: 10pt;"></span>
 				</div>
 			</div>
-			<!-- <button type="button" onclick="UserLogin()">로그인</button> -->
 			<button type="button" id="UserLogin" name="UserLogin">로그인</button>
 		</form>
 		<button onclick="location.href='/board/Join'">회원가입</button>
 		<div>
 			<c:set var="stat" value="${login}" />
 			<c:if test="${stat == false}">
-				<span style="color: red; font-size: 10pt;">로그인 실패! 아이디와 비밀번호를
-					확인하세요.</span>
+				<span style="color: red; font-size: 10pt;">로그인 실패! 아이디와 비밀번호를 확인하세요.</span>
 			</c:if>
 		</div>
 	</div>

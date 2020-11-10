@@ -13,28 +13,16 @@
 		</div>
 		<form method="post" id="insertBoardFrm">
 			<div>
-				<label for="boardTitle">제목</label> <input type="text"
-					id="BoardTitle" name="BoardTitle" placeholder="제목을 입력하세요"
-					value="${boardModify.boardTitle}">
+				<label for="boardTitle">제목</label> 
+				<input type="text" id="BoardTitle" name="BoardTitle" placeholder="제목을 입력하세요" value="${boardModify.boardTitle}">
 			</div>
 			<div>
 				<label for="boardContent">내용</label>
-				<textarea id="BoardContent" name="BoardContent"
-					placeholder="내용을 입력하세요" style="width: 300px; height: 300px;">${boardModify.boardContent}</textarea>
+				<textarea id="BoardContent" name="BoardContent"	placeholder="내용을 입력하세요" style="width: 300px; height: 300px;">${boardModify.boardContent}</textarea>
 			</div>
-			<!-- <button href='#' onclick="ModifyProc()" id="insertButton" name="insertButton">등록</button> -->
 			<button type="button" id="ModifyProc" name="ModifyProc">등록</button>
 			<input type="hidden" name="BoardNo" value="${boardModify.boardNo}">
 		</form>
 	</div>
 </body>
-<!-- <script>
-	function ModifyProc(){
-		var form = document.getElementById("insertBoardFrm");
-		
-		form.action = "<c:url value='/BoardModifyProc' />";
-		form.submit();
-	}
-</script> -->
-
 </html>

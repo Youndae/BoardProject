@@ -15,6 +15,12 @@
 		ORDER BY ImageNo DESC
 	</select>
 	
+	<select id="getAttachList" resultType="ImageDataVO">
+		SELECT ImageData, OldName, ImageStep
+		FROM ImageData
+		WHERE ImageNo=#{ImageNo} ORDER BY ImageStep ASC
+	</select>
+	
 	<select id="imageDetail" resultType="ImageDataVO">
 		SELECT a.ImageNo, a.ImageTitle, a.ImageContent, a.UserId, b.ImageData
 		FROM ImageBoard a INNER JOIN ImageData b
@@ -22,16 +28,6 @@
 		WHERE a.ImageNo=#{ImageNo}
 		ORDER BY b.ImageStep ASC
 	</select>
-	
-	<select id="imageModify" resultType="ImageBoardVO">
-		select * from imageBoard where ImageNo=#{ImageNo}
-	</select><!-- 여기도 계층형과 마찬가지로 detail 체크. -->
-	
-	<!-- <insert id="imageInsertProc" parameterType="String">
-		insert into imageBoard
-		(imageNo, imageTitle, imageWriter, image1, image2, image3, image4, image5, imageDate)
-		values(image_seq.NEXTVAL, #{imageTitle}, #{imageWriter}, #{image1}, #{image2}, #{image3}, #{image4}, #{image5}, sysdate)
-	</insert> -->
 	
 	<insert id="imageInsertProc" parameterType="ImageBoardVO">
 		INSERT INTO ImageBoard(
@@ -49,20 +45,6 @@
 			)
 	</insert>
 	
-	
-	<select id="ModifyTest" resultType="ImageBoardVO">
-		SELECT ImageTitle, UserId, ImageNo, ImageContent
-		FROM ImageBoard
-		WHERE ImageNo=#{ImageNo}
-	</select>
-	
-	<select id="getAttachList" resultType="ImageDataVO">
-		SELECT ImageData, OldName, ImageStep
-		FROM ImageData
-		WHERE ImageNo=#{ImageNo} ORDER BY ImageStep ASC
-	</select>
-	
-	
 	<insert id="imageInsert" parameterType="ImageDataVO">
 		INSERT INTO ImageData(
 			ImageData
@@ -77,17 +59,15 @@
 		)
 	</insert>
 	
-	<delete id="deletefiles" parameterType="String">
-		DELETE FROM ImageData WHERE ImageData=#{ImageData}
-	</delete>
+	<select id="Modify" resultType="ImageBoardVO">
+		SELECT ImageTitle, UserId, ImageNo, ImageContent
+		FROM ImageBoard
+		WHERE ImageNo=#{ImageNo}
+	</select><!-- imageModify랑 동일한데? 체크. -->
 	
 	<update id="ModifyProc" parameterType="ImageBoardVO">
 		UPDATE ImageBoard SET ImageTitle=#{ImageTitle}, ImageContent=#{ImageContent} WHERE ImageNo=#{ImageNo}
 	</update>
-	
-	<select id="CountStep" resultType="int">
-		select MAX(ImageStep) from ImageData where imageNo=#{imageNo}
-	</select>
 	
 	<insert id="imageModfiy" parameterType="ImageDataVO">
 		INSERT INTO ImageData(
@@ -103,6 +83,14 @@
 		)
 	</insert>
 	
+	<select id="CountStep" resultType="int">
+		select MAX(ImageStep) from ImageData where imageNo=#{imageNo}
+	</select>
+	
+	<delete id="deletefiles" parameterType="String">
+		DELETE FROM ImageData WHERE ImageData=#{ImageData}
+	</delete>
+	
 	<delete id="imageDelete" parameterType="int">
 		DELETE FROM ImageBoard WHERE ImageNo=#{ImageNo}
 	</delete>
@@ -110,5 +98,9 @@
 	<delete id="imageDataDelete" parameterType="int">
 		DELETE FROM ImageData WHERE ImageNo=#{ImageNo}
 	</delete>
+	
+	<select id="deleteImageFile" resultType="String">
+		SELECT ImageData FROM ImageData WHERE ImageNo=#{ImageNo}
+	</select>
 
 </mapper> 

@@ -2,7 +2,6 @@ $(document).ready(function(){
 	
 	$("#UserPw").keydown(function(key){
 		if(key.keyCode == 13){
-			alert("Enter!");
 			$("#UserLogin").click();
 		}
 	})
@@ -15,16 +14,12 @@ $(function(){
 	$('#UserLogin').click(function(){
 		var id = $('#UserId').val();
 		var pw = $('#UserPw').val();
-		var form = document.getElementById('LoginForm'); 
-		
-		alert("userId : "+id+", pw : "+pw);
+		var form = document.getElementById('LoginForm');
 		
 		if(id == ""){
-			alert("아이디를 입력하세요");
 			$("#NullId").text("아이디를 입력하세요");
 			$("#UserId").focus();
 		}else if(pw == ""){
-			alert("비밀번호를 입력하세요");
 			$("#NullPw").text("비밀번호를 입력하세요");
 			$("#UserPw").focus();
 		}else{
@@ -40,8 +35,6 @@ $(function(){
 		var UserId ={ 
 			UserId : $("#UserId").val(), 
 		};
-		
-		alert("userId : "+UserId.UserId);
 		
 		if(UserId.UserId == ""){
 			$("#overlap").text("아이디를 입력하세요");
@@ -59,9 +52,7 @@ $(function(){
 	                if(data == 1){
 	                	$("#overlap").text("사용중인 아이디입니다.");
 	                }else{
-	                	$("#check").val("check");
-	                	var test = $("#check").val();
-	                	alert("test : "+test)
+	                	$("#Check").val("Check");
 	                	$("#overlap").text("사용가능한 아이디입니다.");
 	                }
 	                
@@ -79,16 +70,15 @@ $(function(){
 
 $(function(){
 	$("#Join").click(function(){
-		alert("Join");
+
 	var id = $("#UserId").val();
 	var pw = $("#UserPw").val();
 	var Name = $("#UserName").val();
-	var check = $("#check").val();
-	
+	var Check = $("#Check").val();
 	
 	if(id == ""){
 		alert("아이디를 입력하세요")
-	}else if(check == ""){
+	}else if(Check == ""){
 		alerty("아이디 중복체크를 해주세요")
 	}else if(pw == ""){
 		alert("비밀번호를 입력해주세요")

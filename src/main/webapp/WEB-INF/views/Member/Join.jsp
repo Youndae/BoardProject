@@ -16,7 +16,6 @@
 		<form action="JoinProc" id="JoinForm" method="post">
 			<div>
 				<input type="text" id="UserId" name="UserId" placeholder="아이디">
-				<!-- <button type="button" onclick="IdCheck()">중복체크</button> -->
 				<button type="button" id="IdCheck">중복체크</button>
 				<div class="check" id="overlap" style="color: red; font-size: 10pt;"></div>
 			</div>
@@ -27,9 +26,8 @@
 				<input type="text" id="UserName" name="UserName" placeholder="이름">
 			</div>
 		</form>
-		<!-- <button type="button" onclick="Join()">가입</button> -->
 		<button type="button" id="Join">가입</button>
-		<input type="hidden" id="check" name="check" value="">
+		<input type="hidden" id="Check" name="Check" value="">
 	</div>
 </body>
 </html>

@@ -2,7 +2,6 @@ package com.board.project.service;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -188,6 +187,29 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void deleteList(int ImageNo, HttpServletRequest request) throws Exception {
+		String filePath = request.getSession().getServletContext().getRealPath("IMG/");
+		
+		List<String> dt = imageBoardMapper.deleteImageFile(ImageNo);
+		
+		for(int i = 0; i < dt.size(); i++) {
+			System.out.println("file Name : "+dt.get(i));
+			File file = new File(filePath+dt.get(i));
+			if(file.exists()) {
+				if(file.delete()) {
+					System.out.println("삭제 성공!");
+				}else {
+					System.out.println("삭제 실패 ㅠㅠ");
+				}
+			}else {
+				System.out.println("파일 없어");
+			}
+		}
+		
+		return;
 	}
 
 

@@ -82,12 +82,13 @@ var previewIndex = 0;
                         } else if (result === -2) {
                             alert('파일이 10MB를 초과하였습니다.');
                         } else {
-                            alert('이미지 업로드 성공');
+                            
                             location.href="ImageList";
                         }
                     }
                 });
             });
+            
             $('#attach input[type=file]').change(function() {
                 addPreview($(this));
             });

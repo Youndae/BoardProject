@@ -9,7 +9,7 @@ import oracle.sql.DATE;
 @Getter
 @Setter
 @ToString
-public class CommentVO {
+public class CommentVO extends Criteria{
     private int CommentNo;
     private String UserId;
     private DATE CommentDate;

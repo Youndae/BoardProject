@@ -3,6 +3,13 @@
 <html>
 <head>
 <title>${deatil[0].imageTitle}</title>
+<style type="text/css">
+li {
+	list-style: none;
+	float: left;
+	padding: 6px;
+}
+</style>
 </head>
 <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="js/ImageBoard.js"></script>
@@ -14,8 +21,8 @@
 		<c:set var="name" value="${sessionScope.userId}"/>
 		<c:set var="id" value="${detail[0].userId}"/>
 		<c:if test="${name eq id}">
-		<button type="button" id="Modify">수정</button>
-		<button type="button" id="Delete">삭제</button>
+			<button type="button" id="Modify">수정</button>
+			<button type="button" id="Delete">삭제</button>
 		</c:if>
 	</div>
 	<div>
@@ -34,8 +41,7 @@
 		<h5>이미지</h5>
 		<c:forEach var="image" items="${detail}">
 			<div>
-				<img id="boardImg" src="IMG/${image.imageData}"
-					style="width: 500px; height: 500px;" />
+				<img id="boardImg" src="IMG/${image.imageData}"	style="width: 300px; height: 300px;" />
 			</div>
 			<br>
 			<br>
@@ -44,11 +50,9 @@
 			<br>
 		</c:forEach>
 	</div>
-	<input type="hidden" id="ImageNo" name="ImageNo"
-		value="${detail[0].imageNo}">
-		
+	<input type="hidden" id="ImageNo" name="ImageNo" value="${detail[0].imageNo}">
 	<div>	
-	<jsp:include page="/WEB-INF/views/comment.jsp" flush="false" />
+		<jsp:include page="/WEB-INF/views/comment.jsp" flush="false" />
 	</div>		
 	
 </body>
