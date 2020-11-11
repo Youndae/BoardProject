@@ -1,3 +1,13 @@
+$(document).ready(function(){
+	
+	$("#keywordInput").keydown(function(key){
+		if(key.keyCode == 13){
+			$("#searchBtn").click();
+		}
+	})
+})
+
+
 $(function(){
 	$("#Modify").click(function(){
 		var BoardNo = $("#BoardNo").val();

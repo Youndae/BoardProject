@@ -41,7 +41,7 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 			
 			for(int i = 0; i < deletefiles.size(); i++) {
 				System.out.println(deletefiles.get(i));
-				  imageBoardMapper.deletefiles(deletefiles.get(i)); 
+				  imageBoardMapper.deleteImageFiles(deletefiles.get(i)); 
 				  File file = new File(filePath+deletefiles.get(i));
 				  if(file.exists()) {
 					  if(file.delete()) {
@@ -107,9 +107,9 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 				  System.out.println("save End");
 				  
 				  System.out.println("saveName : "+saveName+", oName : "+originalName+", step : "+step);
-				  System.out.println("saveName : "+imageDataVO.getImageData());
+				  System.out.println("saveName : "+imageDataVO.getImageName());
 				  imageDataVO.setImageNo(Integer.parseInt(request.getParameter("ImageNo")));
-				  imageDataVO.setImageData(saveName);
+				  imageDataVO.setImageName(saveName);
 				  imageDataVO.setOldName(originalName);
 				  System.out.println("oldName : "+imageDataVO.getOldName());
 				  imageDataVO.setImageStep(step); 
@@ -163,7 +163,7 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 
 				image.transferTo(new File(saveFile));
 				System.out.println("save End");
-				imageDataVO.setImageData(saveName);
+				imageDataVO.setImageName(saveName);
 				imageDataVO.setOldName(originalName);
 				imageDataVO.setImageStep(step);
 				imageBoardMapper.imageInsert(imageDataVO);
@@ -193,7 +193,7 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 	public void deleteList(int ImageNo, HttpServletRequest request) throws Exception {
 		String filePath = request.getSession().getServletContext().getRealPath("IMG/");
 		
-		List<String> dt = imageBoardMapper.deleteImageFile(ImageNo);
+		List<String> dt = imageBoardMapper.deleteImageFileName(ImageNo);
 		
 		for(int i = 0; i < dt.size(); i++) {
 			System.out.println("file Name : "+dt.get(i));

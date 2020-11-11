@@ -9,11 +9,17 @@
 <script type="text/javascript" src="js/Comment.js"></script>
 </head>
 <body>
-	<div>
+	<div class="container">
 		<form method="post" id="CommentFrm">
-			<div>
+			<div class="mb-4">
+				<c:set var="name" value="${sessionScope.userId}" />
 				<input type="text" id="CommentContent" name="CommentContent">
-				<button type="button" id="CommentInsert">작성</button>
+				<c:if test="${name ne null}">
+				<button class="btn btn-outline-info btn-sm" type="button" id="CommentInsert">작성</button>
+				</c:if>
+				<c:if test="${name eq null}">
+				<button class="btn btn-outline-info btn-sm" type="button" id="CommentInsert" disabled="disabled">작성</button>
+				</c:if>
 			</div>
 		</form>
 		
@@ -21,32 +27,42 @@
 			<div id="comment">
 				<div class="comment-box" id="comment-box" value="${clist.commentNo}">
 					<c:set var="cId" value="${clist.userId}"/>
-					<c:set var="name" value="${sessionScope.userId}" />
-					<c:choose>
-						<c:when test="${clist.commentIndent == 0}">
-							<p>
-								${clist.userId} &nbsp&nbsp ${clist.commentContent} &nbsp&nbsp 
-								<button type="button" id="cReply" value="${clist.commentNo}" onclick="cReply(this)">답글</button>
-								<c:if test="${name eq cId }">
-									<button type="button" id="DeleteComment" value="${clist.commentNo}" onclick="DelComment(this)">삭제</button>				
-								</c:if>
-							</p>					
-						</c:when>
-						<c:otherwise>
-							<p>
-								<span style="margin-left:24px;">
-								${clist.userId} &nbsp&nbsp ${clist.commentContent} &nbsp&nbsp 
-								<button type="button" id="cReply" value="${clist.commentNo}" onclick="cReply(this)">답글</button>
-								<c:if test="${name eq cId }">
-									<button type="button" id="DeleteComment" value="${clist.commentNo}" onclick="DelComment(this)">삭제</button>				
-								</c:if>
-								</span>
-							</p>
-						</c:otherwise>
-					</c:choose>
-					<input type="hidden" id="CommentNo" value="${clist.commentNo}">
-					<input type="hidden" class="CommentGroupNo" value="${clist.commentGroupNo}">
-					<input type="hidden" class="CommentIndent" value="${clist.commentIndent}">
+					<table class="table table-hover">
+						<tr>
+							<c:choose>
+								<c:when test="${clist.commentIndent == 0}">
+									<td>
+										<p style="color:gray;">
+											${clist.userId}<br>
+											<span style="margin-left:36px; font-size: 20px;color:black;">
+												${clist.commentContent}
+											</span>
+											<button class="btn btn-outline-info btn-sm" type="button" id="cReply" value="${clist.commentNo}" onclick="cReply(this)">답글</button>
+											<c:if test="${name eq cId }">
+												<button class="btn btn-outline-info btn-sm" type="button" id="DeleteComment" value="${clist.commentNo}" onclick="DelComment(this)">삭제</button>				
+											</c:if>
+										</p>		
+									</td>			
+								</c:when>
+								<c:otherwise>
+									<td>
+										<p style="margin-left:24px; color:gray; ">
+											┖ ${clist.userId} <br>
+											<span style="margin-left:60px; font-size:20px;color:black;">
+													${clist.commentContent}
+											</span>
+											<c:if test="${name eq cId }">
+												<button class="btn btn-outline-info btn-sm" type="button" id="DeleteComment" value="${clist.commentNo}" onclick="DelComment(this)">삭제</button>				
+											</c:if>
+										</p> 
+									</td>
+								</c:otherwise>
+							</c:choose>
+							<input type="hidden" id="CommentNo" value="${clist.commentNo}">
+							<input type="hidden" class="CommentGroupNo" value="${clist.commentGroupNo}">
+							<input type="hidden" class="CommentIndent" value="${clist.commentIndent}">
+						</tr>
+					</table>
 				</div>
 			</div>
 		</c:forEach>

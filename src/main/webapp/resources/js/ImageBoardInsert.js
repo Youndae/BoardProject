@@ -57,7 +57,7 @@ var previewIndex = 0;
 		}
 
 		$(document).ready(function() {
-            $('.submit a').on('click',function() {                        
+            $("#ImageInsert").on('click',function() {                        
                 var form = $('#uploadForm')[0];
                 var formData = new FormData(form);
     

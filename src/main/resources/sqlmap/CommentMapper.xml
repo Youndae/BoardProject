@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.project.mapper.CommentMapper">
 	
-	<select id="CommentList" resultType="CommentVO">
+	<select id="commentList" resultType="CommentVO">
 		SELECT 	* 
 		FROM (
 		SELECT 	ROWNUM AS RNUM, A.*
@@ -50,7 +50,8 @@
 	</insert>
 	
 	<delete id="commentDelete" parameterType="int">
-	 	DELETE FROM BoardComment WHERE CommentNo=#{CommentNo}
+	 	DELETE FROM BoardComment 
+	 	WHERE CommentNo=#{CommentNo}
 	</delete>
 	
 	<insert id="commentReply" parameterType="CommentVO">
@@ -78,6 +79,7 @@
 	</insert>
 	
 	<delete id="commentDeleteBoard" parameterType="int">
-		DELETE FROM BoardComment WHERE BoardNo=#{BoardNo} OR ImageNo=#{ImageNo}
+		DELETE FROM BoardComment 
+		WHERE BoardNo=#{BoardNo} OR ImageNo=#{ImageNo}
 	</delete>
 </mapper>

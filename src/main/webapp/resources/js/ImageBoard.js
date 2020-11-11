@@ -79,7 +79,7 @@ var deleteNo = 0;
             	$(arr).each(function(i, attach){
             		$("#preview").append(
             			"<div class=\"preview-box\" value=\"" + attach.imageStep + "\">" +
-            			"<img class=\"thumbnail\" id=\"imgName\" src=\"IMG/" + attach.imageData + "\"\/>" +
+            			"<img class=\"thumbnail\" id=\"imgName\" src=\"IMG/" + attach.ImageName + "\"\/>" +
             			"<p>" + attach.oldName + "</p>" +
             			"<a href=\"#\" value=\"" + attach.imageStep +"\" onclick=\"deleteOldPreview(this)\">" +
             			"삭제" + "</a>" +
@@ -94,7 +94,7 @@ var deleteNo = 0;
             
        		
             
-             $('.submit a').on('click',function() {                        
+             $("#ImageInsert").on('click',function() {                        
                 var form = $('#uploadForm')[0];
                 var formData = new FormData(form);
     			

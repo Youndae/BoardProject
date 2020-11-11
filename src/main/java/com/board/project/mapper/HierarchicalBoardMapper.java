@@ -11,20 +11,20 @@ import com.board.project.vo.SearchCriteria;
 public interface HierarchicalBoardMapper {
 	
 	//
-	public List<HierarchicalBoardVO> SearchPage(SearchCriteria scri) throws Exception;
-	int ListCount(SearchCriteria scri) throws Exception;
+	public List<HierarchicalBoardVO> searchPage(SearchCriteria scri) throws Exception;
+	int listCount(SearchCriteria scri) throws Exception;
 	//
-	public HierarchicalBoardVO BoardDetail(int BoardNo) throws Exception;
+	public HierarchicalBoardVO boardDetail(int BoardNo) throws Exception;
 	//
-	public void BoardDelete(int BoardNo) throws Exception;
+	public void boardDelete(int BoardNo) throws Exception;
 	//
-	public int BoardUpperCount(int BoardNo) throws Exception;
+	public int boardUpperCount(int BoardNo) throws Exception;
 	//
-	public void BoardUpperUpdate(int BoardUpperNo) throws Exception;
+	public void boardUpperUpdate(int BoardUpperNo) throws Exception;
 	//
-	public void BoardModifyProc(HierarchicalBoardVO boardVO) throws Exception;
+	public void boardModifyProc(HierarchicalBoardVO boardVO) throws Exception;
 	//
-	public void BoardInsertProc(HierarchicalBoardVO boardVO) throws Exception;
+	public void boardInsertProc(HierarchicalBoardVO boardVO) throws Exception;
 	//
-	public void BoardReplyProc(HierarchicalBoardVO boardVO) throws Exception;
+	public void boardReplyProc(HierarchicalBoardVO boardVO) throws Exception;
 }

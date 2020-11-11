@@ -1,5 +1,6 @@
 package com.board.project.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -47,7 +48,7 @@ public class memberController {
 	@ResponseBody
 	public int idCheck(@RequestParam("UserId") String UserId) throws Exception{
 		
-		return memberMapper.IdCheck(UserId);
+		return memberMapper.idCheck(UserId);
 	}
 	
 	@RequestMapping("/Login")
@@ -60,9 +61,6 @@ public class memberController {
 	  	
 	@RequestMapping("/LoginProc")
 	public String loginProc(MemberDTO memberDTO, HttpSession session, Model model) throws Exception{
-		
-		String uid = memberDTO.getUserId();
-		
 		
 		MemberVO memberVO = memberMapper.loginCheck(memberDTO);
 		
@@ -84,5 +82,6 @@ public class memberController {
 		
 		return "redirect:/Login";
 	}
+	
 	
 }

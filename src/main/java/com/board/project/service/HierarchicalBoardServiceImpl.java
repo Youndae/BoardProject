@@ -14,11 +14,11 @@ public class HierarchicalBoardServiceImpl implements HierarchicalBoardService{
 	@Override
 	public void BoardDelete(int BoardNo) throws Exception {
 		
-		if(boardMapper.BoardUpperCount(BoardNo) == 0) {
-			boardMapper.BoardDelete(BoardNo);
+		if(boardMapper.boardUpperCount(BoardNo) == 0) {
+			boardMapper.boardDelete(BoardNo);
 		}else {
-			boardMapper.BoardUpperUpdate(BoardNo);
-			boardMapper.BoardDelete(BoardNo);
+			boardMapper.boardUpperUpdate(BoardNo);
+			boardMapper.boardDelete(BoardNo);
 		}
 		
 	}

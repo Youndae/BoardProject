@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.board.project.mapper.HierarchicalBoardMapper">
 	
-	<select id="SearchPage" resultType="HierarchicalBoardVO">
+	<select id="searchPage" resultType="HierarchicalBoardVO">
 		SELECT  *
 		FROM (
         SELECT  ROWNUM AS RNUM, A.*
@@ -17,16 +17,17 @@
                 ORDER SIBLINGS BY BoardGroupNo DESC
                 ) A
                  
-                    ) 
-		WHERE RNUM BETWEEN ${rowStart} AND ${rowEnd}
+             ) 
+		WHERE RNUM 
+		BETWEEN ${rowStart} AND ${rowEnd}
 	</select>
 	
-	<select id="ListCount" resultType="int">
+	<select id="listCount" resultType="int">
 		SELECT 	COUNT(BoardNo)
 		FROM	HierarchicalBoard
 		WHERE BoardNo > 0
 			<include refid="search"></include>
-		AND boardNo > 0
+		AND BoardNo > 0
 	</select>
 	
 	<sql id="search">
@@ -38,47 +39,87 @@
 		</if>
 	</sql>
 	
-	<select id="BoardDetail" resultType="HierarchicalBoardVO">
-		SELECT BoardNo, BoardTitle, BoardContent, UserId, BoardIndent, BoardGroupNo
+	<select id="boardDetail" resultType="HierarchicalBoardVO">
+		SELECT 	BoardNo
+				, BoardTitle
+				, BoardContent
+				, UserId
+				, BoardIndent
+				, BoardGroupNo
 		FROM HierarchicalBoard 
 		WHERE BoardNo=#{BoardNo}
 	</select>
 	
-	<delete id="BoardDelete" parameterType="int">
-		DELETE FROM HierarchicalBoard WHERE BoardNo=#{BoardNo}
+	<delete id="boardDelete" parameterType="int">
+		DELETE FROM HierarchicalBoard 
+		WHERE BoardNo=#{BoardNo}
 	</delete>
 	
-	<select id="BoardUpperCount" resultType="int">
+	<select id="boardUpperCount" resultType="int">
 		SELECT COUNT(BoardUpperNo)
 		FROM HierarchicalBoard
 		WHERE BoardUpperNo=#{BoardNo}
 	</select>
 	
-	<update id="BoardUpperUpdate" parameterType="int">
+	<update id="boardUpperUpdate" parameterType="int">
 		UPDATE HierarchicalBoard
 		SET BoardUpperNo=0
 		WHERE BoardUpperNo=#{BoardNo}
 	</update>
 
-	<update id="BoardModifyProc" parameterType="HierarchicalBoardVO">
+	<update id="boardModifyProc" parameterType="HierarchicalBoardVO">
 		UPDATE HierarchicalBoard
-		SET BoardTitle=#{BoardTitle}, BoardContent=#{BoardContent}
+		SET BoardTitle=#{BoardTitle}
+			, BoardContent=#{BoardContent}
 		WHERE BoardNo=#{BoardNo}
 	</update>
 	
-	<insert id="BoardInsertProc" parameterType="HierarchicalBoardVO">
-		INSERT INTO	HierarchicalBoard
-		(BoardNo, BoardTitle, UserId, BoardContent, BoardDate, BoardGroupNo, BoardUpperNo, BoardIndent)
-		VALUES(Board_seq.NEXTVAL, #{BoardTitle}, #{UserId}, #{BoardContent}, sysdate, Board_seq.NEXTVAL, 0, 0)
+	<insert id="boardInsertProc" parameterType="HierarchicalBoardVO">
+		INSERT INTO	
+		HierarchicalBoard(
+						BoardNo
+						, BoardTitle
+						, UserId
+						, BoardContent
+						, BoardDate
+						, BoardGroupNo
+						, BoardUpperNo
+						, BoardIndent
+						)
+				VALUES(
+						Board_seq.NEXTVAL
+						, #{BoardTitle}
+						, #{UserId}
+						, #{BoardContent}
+						, sysdate
+						, Board_seq.NEXTVAL
+						, 0
+						, 0
+						)
 	</insert>
 
-	<insert id="BoardReplyProc" parameterType="HierarchicalBoardVO">
-		insert into
-		HierarchicalBoard
-		(BoardNo, BoardTitle, UserId, BoardContent,
-		BoardDate, BoardGroupNo, BoardUpperNo, BoardIndent)
-		values(Board_seq.NEXTVAL, #{BoardTitle}, #{UserId}, #{BoardContent},
-		sysdate, #{BoardGroupNo}, #{BoardNo}, #{BoardIndent})
+	<insert id="boardReplyProc" parameterType="HierarchicalBoardVO">
+		INSERT INTO
+		HierarchicalBoard(
+						BoardNo
+						, BoardTitle
+						, UserId
+						, BoardContent
+						,BoardDate
+						, BoardGroupNo
+						, BoardUpperNo
+						, BoardIndent
+						)
+				VALUES(
+						Board_seq.NEXTVAL
+						, #{BoardTitle}
+						, #{UserId}
+						, #{BoardContent}
+						, sysdate
+						, #{BoardGroupNo}
+						, #{BoardNo}
+						, #{BoardIndent}
+						)
 	</insert>
 
 </mapper> 

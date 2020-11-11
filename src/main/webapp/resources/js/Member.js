@@ -8,6 +8,22 @@ $(document).ready(function(){
 })
 
 
+$(function(){
+	$("#Modify").click(function(){
+		var Name = $("#UserName").val();
+		
+		if(Name == ""){
+			$("#overlap").text("이름을 입력하세요");
+			$("#UserName").focus();
+		}else{
+			alert("정보수정이 완료되었습니다");
+			$("#ModifyForm").submit();
+		}
+	})
+})
+
+
+
 
 
 $(function(){
@@ -42,7 +58,6 @@ $(function(){
 			$("#overlap").text("한글 및 특수문자는 사용하실 수 없습니다."); 
 			
 		}else{
-			alert("else");
 			$.ajaxSettings.traditional = true;
 			$.ajax({
 	            url: "/board/CheckUserId",

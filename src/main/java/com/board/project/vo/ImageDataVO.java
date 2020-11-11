@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class ImageDataVO extends ImageBoardVO{
 
-	private String ImageData;
+	private String ImageName;
 	private int ImageNo;
 	private String OldName;
 	private int ImageStep;

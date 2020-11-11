@@ -3,26 +3,40 @@
 <mapper namespace="com.board.project.mapper.ImageBoardMapper">
 
 
-	<select id="imageList" resultType="ImageDataVO">
-		SELECT a.ImageNo, a.imageTitle, a.UserId, b.ImageData
+	<select id="imageBoardList" resultType="ImageDataVO">
+		SELECT 	a.ImageNo
+				, a.imageTitle
+				, a.UserId
+				, b.ImageName
 		FROM (
-        	SELECT ImageNo, ImageData
-       		FROM ImageData 
-       		WHERE ImageNo > 0 
-       		AND rowid in(select max(rowid) from ImageData group by ImageNo)
-    		)b INNER JOIN ImageBoard a
+	        	SELECT 	ImageNo
+	        			, ImageName
+	       		FROM ImageData 
+	       		WHERE ImageNo > 0 
+	       		AND rowid in(
+	       					SELECT max(rowid) 
+	       					FROM ImageData 
+	       					GROUP BY ImageNo
+	       					)
+	    		)b INNER JOIN ImageBoard a
 		ON a.ImageNo = b.ImageNo
 		ORDER BY ImageNo DESC
 	</select>
 	
 	<select id="getAttachList" resultType="ImageDataVO">
-		SELECT ImageData, OldName, ImageStep
+		SELECT 	ImageName
+				, OldName
+				, ImageStep
 		FROM ImageData
 		WHERE ImageNo=#{ImageNo} ORDER BY ImageStep ASC
 	</select>
 	
-	<select id="imageDetail" resultType="ImageDataVO">
-		SELECT a.ImageNo, a.ImageTitle, a.ImageContent, a.UserId, b.ImageData
+	<select id="imageBoardDetail" resultType="ImageDataVO">
+		SELECT 	a.ImageNo
+				, a.ImageTitle
+				, a.ImageContent
+				, a.UserId
+				, b.ImageName
 		FROM ImageBoard a INNER JOIN ImageData b
 		ON a.ImageNo = b.ImageNo
 		WHERE a.ImageNo=#{ImageNo}
@@ -47,60 +61,73 @@
 	
 	<insert id="imageInsert" parameterType="ImageDataVO">
 		INSERT INTO ImageData(
-			ImageData
+			ImageName
 			, ImageNo
 			, OldName
 			, ImageStep)
 		VALUES(
-			#{ImageData}
+			#{ImageName}
 			, Image_SEQ.CURRVAL
 			, #{OldName}
 			, #{ImageStep}
 		)
 	</insert>
 	
-	<select id="Modify" resultType="ImageBoardVO">
-		SELECT ImageTitle, UserId, ImageNo, ImageContent
+	<select id="imageBoardModify" resultType="ImageBoardVO">
+		SELECT 	ImageTitle
+				, UserId
+				, ImageNo
+				, ImageContent
 		FROM ImageBoard
 		WHERE ImageNo=#{ImageNo}
-	</select><!-- imageModify랑 동일한데? 체크. -->
+	</select>
 	
-	<update id="ModifyProc" parameterType="ImageBoardVO">
-		UPDATE ImageBoard SET ImageTitle=#{ImageTitle}, ImageContent=#{ImageContent} WHERE ImageNo=#{ImageNo}
+	<update id="imageBoardModifyProc" parameterType="ImageBoardVO">
+		UPDATE ImageBoard 
+		SET ImageTitle=#{ImageTitle}
+			, ImageContent=#{ImageContent} 
+		WHERE ImageNo=#{ImageNo}
 	</update>
 	
 	<insert id="imageModfiy" parameterType="ImageDataVO">
 		INSERT INTO ImageData(
-			ImageData
+			ImageName
 			, ImageNo
 			, OldName
 			, ImageStep)
 		VALUES(
-			#{ImageData}
+			#{ImageName}
 			, #{ImageNo}
 			, #{OldName}
 			, #{ImageStep}
 		)
 	</insert>
 	
-	<select id="CountStep" resultType="int">
-		select MAX(ImageStep) from ImageData where imageNo=#{imageNo}
+	<select id="countStep" resultType="int">
+		SELECT MAX(ImageStep) 
+		FROM ImageData 
+		WHERE imageNo=#{imageNo}
 	</select>
 	
-	<delete id="deletefiles" parameterType="String">
-		DELETE FROM ImageData WHERE ImageData=#{ImageData}
+	<delete id="deleteImageFiles" parameterType="String">
+		DELETE FROM ImageData 
+		WHERE ImageName=#{ImageName}
 	</delete>
 	
-	<delete id="imageDelete" parameterType="int">
-		DELETE FROM ImageBoard WHERE ImageNo=#{ImageNo}
+	<delete id="imageBoardDelete" parameterType="int">
+		DELETE FROM ImageBoard 
+		WHERE ImageNo=#{ImageNo}
 	</delete>
 	
-	<delete id="imageDataDelete" parameterType="int">
-		DELETE FROM ImageData WHERE ImageNo=#{ImageNo}
+	<delete id="imageNameDelete" parameterType="int">
+		DELETE FROM ImageData 
+		WHERE ImageNo=#{ImageNo}
 	</delete>
 	
-	<select id="deleteImageFile" resultType="String">
-		SELECT ImageData FROM ImageData WHERE ImageNo=#{ImageNo}
+	<select id="deleteImageFileName" resultType="String">
+		SELECT ImageName 
+		FROM ImageData 
+		WHERE ImageNo=#{ImageNo}
 	</select>
 
 </mapper> 

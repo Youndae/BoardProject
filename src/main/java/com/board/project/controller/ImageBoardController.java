@@ -6,11 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,21 +39,16 @@ public class ImageBoardController {
 	@Autowired
 	CommentService commentService;
 
-	private static final int RESULT_EXCEED_SIZE = -2;
-	private static final int RESULT_UNACCEPTED_EXTENSION = -1;
-	private static final int RESULT_SUCCESS = 1;
-	private static final long LIMIT_SIZE = 10 * 1024 * 1024;
 	private static int result = 0;
 
-	@RequestMapping("/ImageModify")
-	public String imageModify(@RequestParam("ImageNo") int ImageNo , Model model) throws Exception {
-		//완
+	@RequestMapping("/ImageList")
+	public String imageList(Model model) throws Exception {
 
-		model.addAttribute("list", imageBoardMapper.Modify(ImageNo));
-		
-		return "ImageBoard/ImageModify";
+		model.addAttribute("ImgList", imageBoardMapper.imageBoardList());
+
+		return "ImageBoard/ImageList";
 	}
-
+	
 	@RequestMapping("/AttachList")
 	@ResponseBody
 	public ResponseEntity<List<ImageDataVO>> getAttachList(Integer ImageNo) throws Exception {
@@ -64,21 +57,13 @@ public class ImageBoardController {
 
 		return new ResponseEntity<>(imageBoardMapper.getAttachList(ImageNo), HttpStatus.OK);
 	}
-
-	@RequestMapping("/ImageList")
-	public String imageList(Model model) throws Exception {
-
-		model.addAttribute("ImgList", imageBoardMapper.imageList());
-
-		return "ImageBoard/ImageList";
-	}
-
+	
 	@RequestMapping("/ImageDetail")
 	public String imageDetail(Model model, @RequestParam("ImageNo") int ImageNo, @ModelAttribute("commentVO") CommentVO commentVO) throws Exception {
 			
 			commentVO.setImageNo(ImageNo);
-			model.addAttribute("detail", imageBoardMapper.imageDetail(ImageNo));
-			model.addAttribute("comment", commentMapper.CommentList(commentVO)); 
+			model.addAttribute("detail", imageBoardMapper.imageBoardDetail(ImageNo));
+			model.addAttribute("comment", commentMapper.commentList(commentVO)); 
 			
 			PageMaker pageMaker = new PageMaker();
 			pageMaker.setCri(commentVO);
@@ -88,13 +73,15 @@ public class ImageBoardController {
 			
 		return "ImageBoard/Imagedetail";
 	}
+	
+	@RequestMapping("/ImageModify")
+	public String imageModify(@RequestParam("ImageNo") int ImageNo , Model model) throws Exception {
 
-	@RequestMapping("/ImageInsert")
-	public String imageInsert() throws Exception {
-
-		return "ImageBoard/ImageInsert";
+		model.addAttribute("list", imageBoardMapper.imageBoardModify(ImageNo));
+		
+		return "ImageBoard/ImageModify";
 	}
-
+	
 	@RequestMapping("/ImageModifyProc")
 	@ResponseBody
 	public int ImageModifyProc(@RequestParam("files") List<MultipartFile> images,
@@ -105,9 +92,9 @@ public class ImageBoardController {
 		imageBoardVO.setImageNo(Integer.parseInt(request.getParameter("ImageNo")));
 		imageBoardVO.setImageTitle(request.getParameter("ImageTitle"));
 		imageBoardVO.setImageContent(request.getParameter("ImageContent"));
-		imageBoardMapper.ModifyProc(imageBoardVO);
-		//체크. 왜 ImageBoardVO에서 Step체크?
-		int step = imageBoardMapper.CountStep(imageBoardVO.getImageNo());
+		imageBoardMapper.imageBoardModifyProc(imageBoardVO);
+		
+		int step = imageBoardMapper.countStep(imageBoardVO.getImageNo());
 		
 
 		if (deletefiles != null) {
@@ -121,6 +108,13 @@ public class ImageBoardController {
 
 		return result;
 	}
+
+	@RequestMapping("/ImageInsert")
+	public String imageInsert() throws Exception {
+
+		return "ImageBoard/ImageInsert";
+	}
+
 
 	@RequestMapping("/imageupload")
 	@ResponseBody
@@ -143,8 +137,8 @@ public class ImageBoardController {
 
 		commentService.commentDeleteBoard(ImageNo, null);
 		imageBoardService.deleteList(ImageNo, request);
-		imageBoardMapper.imageDataDelete(ImageNo);	  
-		imageBoardMapper.imageDelete(ImageNo);
+		imageBoardMapper.imageNameDelete(ImageNo);	  
+		imageBoardMapper.imageBoardDelete(ImageNo);
 		
 		return "redirect:/ImageList";
 	}

@@ -12,5 +12,6 @@ public interface MemberMapper {
 	
 	public MemberVO loginCheck(MemberDTO memberDTO) throws Exception;
 	
-	int IdCheck(String UserId) throws Exception;
+	int idCheck(String UserId) throws Exception;
+	
 }

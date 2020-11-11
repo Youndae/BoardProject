@@ -15,10 +15,15 @@
 	</insert>
 	
 	<select id="loginCheck" resultType="MemberVO">
-		SELECT * FROM member WHERE UserId=#{UserId}
+		SELECT * 
+		FROM member 
+		WHERE UserId=#{UserId}
 	</select>
 	
-	<select id="IdCheck" resultType="int">
-		SELECT COUNT(*) FROM member WHERE UserId=#{UserId}
+	<select id="idCheck" resultType="int">
+		SELECT COUNT(*) 
+		FROM member 
+		WHERE UserId=#{UserId}
 	</select>
+
 </mapper>

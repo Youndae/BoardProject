@@ -62,7 +62,7 @@ function cReply(obj){
 		$(".comment-box[value="+Num+"]").append(
 				"<div id=\"ReplyComment\">" +
 				"<input type=\"text\" id=\"CommentReplyContent\" name=\"CommentReplyContent\">" +
-				"<button type=\"button\" id=\"CommentReplyInsert\" value=\""+ Num +"\">"+"작성"+"</button>" +
+				"<button class=\"btn btn-outline-info btn-sm\" type=\"button\" id=\"CommentReplyInsert\" value=\""+ Num +"\">"+"작성"+"</button>" +
 				"<input type=\"hidden\" id=\"CommentGroupNo\" value=\""+GNum+"\">"+
 				"<input type=\"hidden\" id=\"CommentIndent\" value=\""+INum+"\">"+
 				"</div>"

@@ -37,12 +37,12 @@ public class HierarchicalBoardController {
 	
 	@RequestMapping(value = "/BoardList", method = RequestMethod.GET)
 	public String BoardList(Model model, @ModelAttribute("scri") SearchCriteria scri) throws Exception{
-		//완성.
-		model.addAttribute("list", boardMapper.SearchPage(scri));
+	
+		model.addAttribute("list", boardMapper.searchPage(scri));
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(scri);
-		pageMaker.setTotalCount(boardMapper.ListCount(scri));
+		pageMaker.setTotalCount(boardMapper.listCount(scri));
 		
 		model.addAttribute("pageMaker", pageMaker);
 		
@@ -54,8 +54,8 @@ public class HierarchicalBoardController {
 		
 		commentVO.setBoardNo(BoardNo);
 			
-		model.addAttribute("boardDetail", boardMapper.BoardDetail(BoardNo));
-		model.addAttribute("comment", commentMapper.CommentList(commentVO)); 
+		model.addAttribute("boardDetail", boardMapper.boardDetail(BoardNo));
+		model.addAttribute("comment", commentMapper.commentList(commentVO)); 
 		
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(commentVO);
@@ -69,7 +69,7 @@ public class HierarchicalBoardController {
 	@RequestMapping("/BoardModify")
 	public String BoardModify(Model model, @RequestParam("BoardNo") int BoardNo) throws Exception{
 		
-		model.addAttribute("boardModify", boardMapper.BoardDetail(BoardNo));
+		model.addAttribute("boardModify", boardMapper.boardDetail(BoardNo));
 		
 		return "HierarchicalBoard/BoardModify";
 	}
@@ -83,7 +83,7 @@ public class HierarchicalBoardController {
 		boardVO.setBoardContent(request.getParameter("BoardContent"));
 		
 		
-		boardMapper.BoardModifyProc(boardVO);
+		boardMapper.boardModifyProc(boardVO);
 		
 		return "redirect:/BoardDetail?BoardNo="+request.getParameter("BoardNo");
 	}
@@ -113,7 +113,7 @@ public class HierarchicalBoardController {
 		boardVO.setBoardTitle(request.getParameter("boardTitle"));
 		boardVO.setBoardContent(request.getParameter("boardContent"));
 		
-		boardMapper.BoardInsertProc(boardVO);
+		boardMapper.boardInsertProc(boardVO);
 		
 		return "redirect:BoardList";
 	}
@@ -121,7 +121,7 @@ public class HierarchicalBoardController {
 	@RequestMapping("/BoardReply")
 	public String BoardReply(Model model, @RequestParam("BoardNo") int BoardNo) throws Exception{
 		
-		model.addAttribute("boardReply", boardMapper.BoardDetail(BoardNo));
+		model.addAttribute("boardReply", boardMapper.boardDetail(BoardNo));
 		
 		return "HierarchicalBoard/BoardReply";
 	}
@@ -138,7 +138,7 @@ public class HierarchicalBoardController {
 		boardVO.setBoardGroupNo(Integer.parseInt(request.getParameter("BoardGroupNo")));
 		boardVO.setBoardIndent(Integer.parseInt(request.getParameter("BoardIndent"))+1);
 		
-		boardMapper.BoardReplyProc(boardVO);
+		boardMapper.boardReplyProc(boardVO);
 		
 		return "redirect:BoardList";
 	}
