@@ -17,13 +17,19 @@ li {
 <body>
 	<div class="container">
 		<div>
-			<jsp:include page="/WEB-INF/views/top.jsp" flush="false" />
+			<jsp:include page="/WEB-INF/views/navbar.jsp" flush="false" />
 		</div>
 		<div class="form-row float-right mb-1">
-			<button class="btn btn-outline-info btn-sm" onclick="location.href='/board/BoardInsert'">글작성</button>
+			<c:set var="name" value="${sessionScope.userId}"/>
+			<c:if test="${name eq null }">
+				<button class="btn btn-outline-info btn-sm" onclick="location.href='/board/Login'">글작성</button>
+			</c:if>
+			<c:if test="${name ne null}">
+				<button class="btn btn-outline-info btn-sm" onclick="location.href='/board/BoardInsert'">글작성</button>
+			</c:if>
 		</div>
 		<form role="form" method="get">
-			<table class="table table-hover text-center" border="1">
+			<table class="table table-hover" border="1">
 				<tr>
 					<th>글번호</th>
 					<th>글제목</th>
@@ -36,35 +42,35 @@ li {
 						<c:choose>
 							<c:when test="${board.boardIndent == 1}">
 								<td>
-									<span style="margin-left: 12px;"> 
+									<span style="text-align:left; margin-left: 12px;"> 
 										<a href="/board/BoardDetail?BoardNo=${board.boardNo}">${board.boardTitle}</a>
 									</span>
 								</td>
 							</c:when>
 							<c:when test="${board.boardIndent == 2}">
 								<td>	
-									<span style="margin-left: 24px;"> 
+									<span style="text-align:left; margin-left: 24px;"> 
 										<a href="/board/BoardDetail?BoardNo=${board.boardNo}">${board.boardTitle}</a>
 									</span>
 								</td>
 							</c:when>
 							<c:when test="${board.boardIndent == 3}">
 								<td>
-									<span style="margin-left: 36px;"> 
+									<span style="text-align:left; margin-left: 36px;"> 
 										<a href="/board/BoardDetail?BoardNo=${board.boardNo}">${board.boardTitle}</a>
 									</span>
 								</td>
 							</c:when>
 							<c:when test="${board.boardIndent == 4}">
 								<td>
-									<span style="margin-left: 48px;"> 
+									<span style="text-align:left; margin-left: 48px;"> 
 										<a href="/board/BoardDetail?BoardNo=${board.boardNo}">${board.boardTitle}</a>
 									</span>
 								</td>
 							</c:when>
 							<c:otherwise>
 								<td>
-									<span style="margin-left: 0px;"> 
+									<span style="text-align:left; margin-left: 0px;"> 
 										<a href="/board/BoardDetail?BoardNo=${board.boardNo}">${board.boardTitle}</a>
 									</span>
 								</td>

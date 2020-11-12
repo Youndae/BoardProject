@@ -13,11 +13,12 @@
 		<form method="post" id="CommentFrm">
 			<div class="mb-4">
 				<c:set var="name" value="${sessionScope.userId}" />
-				<input type="text" id="CommentContent" name="CommentContent">
 				<c:if test="${name ne null}">
+				<input type="text" id="CommentContent" name="CommentContent" placeholder="댓글을 작성해주세요">
 				<button class="btn btn-outline-info btn-sm" type="button" id="CommentInsert">작성</button>
 				</c:if>
 				<c:if test="${name eq null}">
+				<input type="text" id="CommentContent" name="CommentContent" placeholder="댓글을 작성하시려면 로그인해주세요">
 				<button class="btn btn-outline-info btn-sm" type="button" id="CommentInsert" disabled="disabled">작성</button>
 				</c:if>
 			</div>
@@ -37,7 +38,9 @@
 											<span style="margin-left:36px; font-size: 20px;color:black;">
 												${clist.commentContent}
 											</span>
-											<button class="btn btn-outline-info btn-sm" type="button" id="cReply" value="${clist.commentNo}" onclick="cReply(this)">답글</button>
+											<c:if test="${name ne null}">
+												<button class="btn btn-outline-info btn-sm" type="button" id="cReply" value="${clist.commentNo}" onclick="cReply(this)">답글</button>
+											</c:if>
 											<c:if test="${name eq cId }">
 												<button class="btn btn-outline-info btn-sm" type="button" id="DeleteComment" value="${clist.commentNo}" onclick="DelComment(this)">삭제</button>				
 											</c:if>

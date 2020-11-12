@@ -8,10 +8,17 @@
 <body>
 <div class="container">
 	<div>
-		<jsp:include page="/WEB-INF/views/top.jsp" flush="false" />
+		<jsp:include page="/WEB-INF/views/navbar.jsp" flush="false" />
 	</div>
 	<div class="mb-4">
-		<button class="btn btn-outline-info btn-sm" onclick="location.href='/board/ImageInsert'">글작성</button>
+		<c:set var="name" value="${sessionScope.userId}"/>
+		
+		<c:if test="${name eq null}">
+			<button class="btn btn-outline-info btn-sm" onclick="location.href='/board/Login'">글작성</button>
+		</c:if>
+		<c:if test="${name ne null}">
+			<button class="btn btn-outline-info btn-sm" onclick="location.href='/board/ImageInsert'">글작성</button>
+		</c:if>
 	</div>
 	<div class="row">
 		<c:forEach var="list" items="${ImgList}">

@@ -6,7 +6,6 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -32,15 +31,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception{
 		
 		super.postHandle(request, response, handler, modelAndView);
-		/*
-		 * HttpSession session = request.getSession(); ModelMap modelMap =
-		 * modelAndView.getModelMap(); Object memberVO = modelMap.get("member");
-		 * 
-		 * if(memberVO != null) { logger.info("new login success");
-		 * session.setAttribute(LOGIN, memberVO);
-		 * System.out.println("post session : "+session.getAttribute(LOGIN));
-		 * response.sendRedirect("/board/BoardList"); }
-		 */
+		
 	}
 	
 	

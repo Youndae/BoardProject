@@ -12,7 +12,7 @@ public class PageMaker {
 	private int endPage;
 	private boolean prev;
 	private boolean next;
-	private int displayPageNum = 5; //페이징 개수.
+	private int displayPageNum = 5; 
 	private Criteria cri;
 	
 	

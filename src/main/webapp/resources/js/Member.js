@@ -8,22 +8,6 @@ $(document).ready(function(){
 })
 
 
-$(function(){
-	$("#Modify").click(function(){
-		var Name = $("#UserName").val();
-		
-		if(Name == ""){
-			$("#overlap").text("이름을 입력하세요");
-			$("#UserName").focus();
-		}else{
-			alert("정보수정이 완료되었습니다");
-			$("#ModifyForm").submit();
-		}
-	})
-})
-
-
-
 
 
 $(function(){

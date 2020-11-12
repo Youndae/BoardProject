@@ -10,7 +10,7 @@
 <body>
 	<div class="container">
 		<div>
-			<jsp:include page="/WEB-INF/views/top.jsp" flush="false" />
+			<jsp:include page="/WEB-INF/views/navbar.jsp" flush="false" />
 		</div>
 		<form method="post" id="insertBoardFrm">
 			<div>

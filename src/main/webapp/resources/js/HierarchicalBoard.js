@@ -27,7 +27,7 @@ $(function(){
 $(function(){
 	$("#Reply").click(function(){
 		var Indent = $("#BoardIndent").val();
-		if(Indent >= 4){
+		if(Indent == 4){
 			alert("더이상 답글을 작성할 수 없습니다.");
 		}else{
 			var BoardNo = $("#BoardNo").val();

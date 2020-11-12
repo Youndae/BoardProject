@@ -36,6 +36,7 @@
 				, a.ImageTitle
 				, a.ImageContent
 				, a.UserId
+				, a.ImageDate
 				, b.ImageName
 		FROM ImageBoard a INNER JOIN ImageData b
 		ON a.ImageNo = b.ImageNo
