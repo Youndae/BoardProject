@@ -3,6 +3,7 @@ package com.board.project.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -88,23 +89,7 @@ public class ImageBoardController {
 			@RequestParam(value = "deletefiles", required = false) List<String> deletefiles, HttpServletRequest request,
 			ImageBoardVO imageBoardVO, ImageDataVO imageDataVO) throws Exception {
 		
-
-		imageBoardVO.setImageNo(Integer.parseInt(request.getParameter("ImageNo")));
-		imageBoardVO.setImageTitle(request.getParameter("ImageTitle"));
-		imageBoardVO.setImageContent(request.getParameter("ImageContent"));
-		imageBoardMapper.imageBoardModifyProc(imageBoardVO);
-		
-		int step = imageBoardMapper.countStep(imageBoardVO.getImageNo());
-		
-
-		if (deletefiles != null) {
-			imageBoardService.deletefiles(deletefiles, request);
-		}
-
-		if (images.size() != 0) {
-			result = imageBoardService.imageModify(images, request, step, imageDataVO);
-		}
-
+		result = imageBoardService.modifyCheck(images, deletefiles, request, imageBoardVO, imageDataVO);
 
 		return result;
 	}
@@ -115,22 +100,19 @@ public class ImageBoardController {
 		return "ImageBoard/ImageInsert";
 	}
 
+	
+	 @RequestMapping("/imageupload")
+	  @ResponseBody 
+	  public int multiImageUpload(@RequestParam("files") List<MultipartFile> images, HttpServletRequest request, 
+			  ImageBoardVO imageBoardVO, ImageDataVO imageDataVO, HttpSession session) throws Exception {
+		 
+		result = imageBoardService.imageSizeCheck(images, request, imageDataVO, imageBoardVO, session);
+	
+	  return result;
+	  }
+	 
+	
 
-	@RequestMapping("/imageupload")
-	@ResponseBody
-	public int multiImageUpload(@RequestParam("files") List<MultipartFile> images, HttpServletRequest request,
-			ImageBoardVO imageBoardVO, ImageDataVO imageDataVO) throws Exception {
-		
-		imageBoardVO.setImageTitle(request.getParameter("ImageTitle"));
-		imageBoardVO.setUserId("coco");
-		imageBoardVO.setImageContent(request.getParameter("ImageContent"));
-		
-		imageBoardMapper.imageInsertProc(imageBoardVO);
-		
-		result = imageBoardService.imageInsert(images, request, imageDataVO);
-
-		return result;
-	}
 	
 	@RequestMapping("/ImageDelete")
 	public String ImageDelete(@RequestParam("ImageNo") int ImageNo, HttpServletRequest request)throws Exception{

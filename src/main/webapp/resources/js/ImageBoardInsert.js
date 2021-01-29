@@ -76,13 +76,12 @@ var previewIndex = 0;
                     dataType : 'JSON',
                     data : formData,
                     success : function(result) {
-
-                        if (result === -1) {
-                            alert('파일이 10MB를 초과하였습니다.');
-                        } else {
-                            
-                            location.href="ImageList";
-                        }
+                    	
+                    		if(result === -1){
+                    			alert("파일이 10MB를 초과하였습니다.");
+                    		}else{
+                    			location.href="ImageList";
+                    		}
                     }
                 });
             });

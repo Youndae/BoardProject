@@ -13,9 +13,11 @@ public class Criteria {
 	}
 	
 	public int getPage() {
+		System.out.println("getPage : "+page);
 		return page;
 	}
 	public void setPage(int page) {
+		System.out.println("setPage : "+page);
 		if(page <= 0) {
 			this.page = 1;
 			return;
@@ -26,8 +28,10 @@ public class Criteria {
 		return perPageNum;
 	}
 	public void setPerPageNum(int perPageNum) {
+		System.out.println("setPerPageNum : "+perPageNum);
 		if(perPageNum <= 0 || perPageNum > 100) {
 			this.perPageNum = 10;
+			System.out.println("setPerPageNum If : "+this.perPageNum);
 			return;
 		}
 		this.perPageNum = perPageNum;
@@ -38,12 +42,16 @@ public class Criteria {
 	}
 	
 	public int getRowStart() {
+		System.out.println("page : "+page+" perPageNum : "+perPageNum);
 		rowStart = ((page - 1) * perPageNum + 1);
+		System.out.println("rowStart : "+rowStart);
 		return rowStart;
 	}
 	
 	public int getRowEnd() {
+		System.out.println("RowEnd Start : "+rowStart+" perPageNum : "+perPageNum);
 		rowEnd = rowStart + perPageNum - 1;
+		System.out.println("rowEnd : "+rowEnd);
 		return rowEnd;
 	}
 	

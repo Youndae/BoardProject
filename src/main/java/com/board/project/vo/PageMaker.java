@@ -21,6 +21,7 @@ public class PageMaker {
 	}
 	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
+		System.out.println("totalCount : "+totalCount);
 		calcData();
 	}
 	public int getTotalCount() {
@@ -48,18 +49,21 @@ public class PageMaker {
 	private void calcData() {
 		endPage = (int) (Math.ceil(cri.getPage() / (double)displayPageNum) * displayPageNum);
 		startPage = (endPage - displayPageNum) + 1;
-		
+		System.out.println("endPage : "+endPage + " startPage : "+startPage);
 		int tempEndPage = (int) (Math.ceil(totalCount / (double)cri.getPerPageNum()));
+		System.out.println("tempEndPage : "+tempEndPage);
 		if(endPage > tempEndPage) {
 			endPage = tempEndPage;
 		}
 		
 		prev = startPage == 1 ? false : true;
 		next = endPage * cri.getPerPageNum() >= totalCount ? false : true;
+		System.out.println("prev : "+prev+" next : "+next);
 	}
 	
 	public String makeQuery(int page) {
 		System.out.println("makeQuery page : "+page);
+		System.out.println("makeQuery perpage : "+cri.getPerPageNum());
 		UriComponents uriComponents = 
 			UriComponentsBuilder.newInstance()
 								.queryParam("page", page)
@@ -70,7 +74,8 @@ public class PageMaker {
 	}	
 	
 	public String makeSearch(int page) {
-		
+		System.out.println("makeSearch page : "+page);
+		System.out.println("makeSearch perpage : "+cri.getPerPageNum());
 		UriComponents uriComponents = 
 				UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
