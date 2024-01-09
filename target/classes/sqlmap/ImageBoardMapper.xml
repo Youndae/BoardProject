@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.project.mapper.ImageBoardMapper">
+
+	<select id="imageBoardList" resultType="ImageBoardListDTO">
+		SELECT *
+		FROM(
+				SELECT ROWNUM AS rn
+					 , r.*
+				FROM (
+						 SELECT a.imageNo
+							  , a.imageTitle
+							  , a.userId
+							  , b.imageName
+						 FROM (
+								  SELECT imageNo
+									   , imageName
+								  FROM ImageData
+								  WHERE imageNo > 0
+									AND rowid in(
+												  SELECT max(rowid)
+												  FROM ImageData
+												  GROUP BY imageNo
+								  	)
+							  )b
+						 INNER JOIN ImageBoard a
+						 	ON a.imageNo = b.imageNo
+						 WHERE a.imageNo > 0
+						 		<include refid="search"></include>
+						 ORDER BY imageNo DESC
+					 )r
+			)
+		WHERE rn
+		BETWEEN (#{pageNum} - 1) * #{imageAmount} + 1 AND #{pageNum} * #{imageAmount}
+	</select>
+
+	<select id="listCount" resultType="int">
+		SELECT count(distinct(imageNo))
+		FROM imageBoard
+		WHERE imageNo > 0
+			<include refid="search"></include>
+	</select>
+
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()"> AND imageTitle LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()"> AND imageContent LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()"> AND userId LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()"> AND (imageTitle LIKE '%' || #{keyword} || '%') or (imageContent LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	
+	<select id="getAttachList" resultType="ImageDataDTO">
+		SELECT 	imageName
+				, oldName
+				, imageStep
+		FROM imageData
+		WHERE imageNo = #{imageNo} ORDER BY imageStep ASC
+	</select>
+	
+	<select id="imageBoardDetail" resultType="ImageBoardDetailDTO">
+		SELECT 	a.imageNo
+				, a.imageTitle
+				, a.imageContent
+				, a.userId
+				, a.imageDate
+				, b.imageName
+		FROM imageBoard a INNER JOIN imageData b
+		ON a.imageNo = b.imageNo
+		WHERE a.imageNo = #{imageNo}
+		ORDER BY b.imageStep ASC
+	</select>
+	
+	<insert id="imageBoardInsertProc" parameterType="ImageBoard">
+
+		INSERT INTO imageBoard(
+			imageNo
+			, imageTitle
+			, userId
+			, imageContent
+			, imageDate)
+		VALUES (
+			Image_SEQ.NEXTVAL
+			, #{imageTitle}
+			, #{userId}
+			, #{imageContent}
+			, sysdate
+			)
+
+		<selectKey resultType="int" keyProperty="imageNo" order="AFTER">
+			SELECT Image_SEQ.CURRVAL FROM dual
+		</selectKey>
+	</insert>
+	
+	<insert id="imageDataInsert" parameterType="ImageData">
+		INSERT INTO imageData(
+			imageName
+			, imageNo
+			, oldName
+			, imageStep)
+		VALUES(
+			#{imageName}
+			, #{imageNo}
+			, #{oldName}
+			, #{imageStep}
+		)
+	</insert>
+
+	<select id="getImageBoardModifyData" resultType="ImageBoardModifyDTO">
+		SELECT imageNo
+			 , imageTitle
+			 , imageContent
+		FROM imageBoard
+		WHERE imageNo = #{imageNo}
+	</select>
+	
+	<update id="imageBoardModifyProc" parameterType="ImageBoard">
+		UPDATE imageBoard
+		SET imageTitle = #{imageTitle}
+			, imageContent = #{imageContent}
+		WHERE imageNo = #{imageNo}
+	</update>
+	
+	<select id="countStep" resultType="int">
+		SELECT MAX(imageStep)
+		FROM imageData
+		WHERE imageNo = #{imageNo}
+	</select>
+	
+	<delete id="deleteImageFiles" parameterType="String">
+		DELETE FROM imageData
+		WHERE imageName = #{imageName}
+	</delete>
+	
+	<delete id="imageBoardDelete" parameterType="int">
+		DELETE FROM imageBoard
+		WHERE imageNo = #{imageNo}
+	</delete>
+	
+	<select id="deleteImageFileName" resultType="String">
+		SELECT imageName
+		FROM imageData
+		WHERE imageNo = #{imageNo}
+	</select>
+
+	<select id="checkWriter" resultType="String">
+		SELECT userId
+		FROM imageBoard
+		WHERE imageNo = #{imageNo}
+	</select>
+</mapper> 

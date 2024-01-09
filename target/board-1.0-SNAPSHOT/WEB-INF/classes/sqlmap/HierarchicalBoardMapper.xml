@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.project.mapper.HierarchicalBoardMapper">
+
+	<select id="searchPage" resultType="HierarchicalBoardListDTO">
+		SELECT  *
+		FROM (
+			SELECT  ROWNUM AS RNUM, A.*
+			FROM    (
+				SELECT boardNo
+				     , boardTitle
+				     , userId
+				     , boardDate
+				     , boardIndent
+				FROM hierarchicalBoard
+				WHERE boardNo > 0
+				<include refid="search"></include>
+
+				START WITH boardUpperNo = 0
+				CONNECT BY PRIOR boardNo = boardUpperNo
+				ORDER SIBLINGS BY boardGroupNo DESC
+			) A
+		)
+		WHERE RNUM
+		BETWEEN (#{pageNum} - 1) * #{boardAmount} + 1 AND #{pageNum} * #{boardAmount}
+	</select>
+	
+	<select id="listCount" resultType="int">
+		SELECT 	COUNT(distinct(boardNo))
+		FROM	hierarchicalBoard
+		WHERE boardNo > 0
+			<include refid="search"></include>
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()"> AND boardTitle LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'c'.toString()"> AND boardContent LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'w'.toString()"> AND userId LIKE '%' || #{keyword} || '%'</if>
+			<if test="searchType == 'tc'.toString()"> AND (boardTitle LIKE '%' || #{keyword} || '%') or (boardContent LIKE '%' || #{keyword} || '%')</if>
+		</if>
+	</sql>
+	
+	<select id="boardDetail" resultType="HierarchicalBoardDetailDTO">
+		SELECT 	boardNo
+				, boardTitle
+				, boardContent
+				, userId
+				, boardDate
+		FROM hierarchicalBoard
+		WHERE boardNo = #{boardNo}
+	</select>
+
+	<select id="getBoardModifyData" resultType="HierarchicalBoardModifyDTO">
+		SELECT 	boardNo
+			 , boardTitle
+			 , boardContent
+		FROM hierarchicalBoard
+		WHERE boardNo = #{boardNo}
+	</select>
+
+	<select id="getBoardReplyData" resultType="HierarchicalBoardReplyDTO">
+		SELECT 	boardNo
+		     , boardIndent
+		     , boardGroupNo
+		FROM hierarchicalBoard
+		WHERE boardNo = #{boardNo}
+	</select>
+	
+	<delete id="boardDelete" parameterType="int">
+		DELETE FROM hierarchicalBoard
+		WHERE boardNo = #{boardNo}
+	</delete>
+	
+	<select id="boardUpperCount" resultType="int">
+		SELECT COUNT(boardUpperNo)
+		FROM hierarchicalBoard
+		WHERE boardUpperNo = #{boardNo}
+	</select>
+	
+	<update id="boardUpperUpdate" parameterType="int">
+		UPDATE hierarchicalBoard
+		SET boardUpperNo=0
+		WHERE boardUpperNo = #{boardNo}
+	</update>
+
+	<update id="boardModifyProc" parameterType="HierarchicalBoard">
+		UPDATE hierarchicalBoard
+		SET boardTitle = #{boardTitle}
+			, boardContent = #{boardContent}
+		WHERE boardNo = #{boardNo}
+	</update>
+	
+	<insert id="boardInsertProc" parameterType="HierarchicalBoard">
+		INSERT INTO	
+		hierarchicalBoard(
+						boardNo
+						, boardTitle
+						, userId
+						, boardContent
+						, boardDate
+						, boardGroupNo
+						, boardUpperNo
+						, boardIndent
+						)
+				VALUES(
+						Board_seq.NEXTVAL
+						, #{boardTitle}
+						, #{userId}
+						, #{boardContent}
+						, sysdate
+						, Board_seq.NEXTVAL
+						, 0
+						, 0
+						)
+	</insert>
+
+	<insert id="boardReplyProc" parameterType="HierarchicalBoard">
+		INSERT INTO
+		hierarchicalBoard(
+						boardNo
+						, boardTitle
+						, userId
+						, boardContent
+						, boardDate
+						, boardGroupNo
+						, boardUpperNo
+						, boardIndent
+						)
+				VALUES(
+						Board_seq.NEXTVAL
+						, #{boardTitle}
+						, #{userId}
+						, #{boardContent}
+						, sysdate
+						, #{boardGroupNo}
+						, #{boardUpperNo}
+						, #{boardIndent}
+						)
+	</insert>
+
+	<select id="checkWriter" resultType="String">
+		SELECT userId
+		FROM hierarchicalBoard
+		WHERE boardNo = #{boardNo}
+	</select>
+
+	<select id="checkDeleteNo" resultType="HierarchicalBoardDeleteDTO">
+		SELECT boardUpperNo, boardGroupNo
+		FROM hierarchicalBoard
+		WHERE boardNo = #{boardNo}
+	</select>
+
+	<select id="groupData" resultType="HierarchicalBoardDeleteDTO">
+		SELECT boardNo, boardUpperNo
+		FROM hierarchicalBoard
+		WHERE boardGroupNo = #{boardGroupNo}
+		ORDER BY boardNo ASC
+	</select>
+
+	<delete id="deleteBoardGroup" parameterType="int">
+		DELETE FROM hierarchicalBoard
+		WHERE boardGroupNo = #{boardGroupNo}
+	</delete>
+
+	<delete id="deleteHierarchicalList" parameterType="java.util.List">
+		DELETE FROM hierarchicalBoard
+		WHERE
+		    <foreach collection="list" item="item" separator="OR">
+				boardNo = #{item}
+			</foreach>
+	</delete>
+
+</mapper> 

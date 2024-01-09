@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.project.mapper.CommentMapper">
+	
+	<select id="commentList" resultType="Comment">
+		SELECT 	* 
+		FROM (
+		SELECT 	ROWNUM AS RNUM, A.*
+		FROM	(
+				SELECT commentNo
+					, userId
+					, commentDate
+					, CASE
+					    WHEN (commentStatus > 0) THEN null
+						ELSE commentContent
+					END AS commentContent
+					, commentGroupNo
+					, commentUpperNo
+					, commentIndent
+					, commentStatus
+				FROM boardComment
+				WHERE boardNo=#{vo.boardNo} OR imageNo=#{vo.imageNo}
+				START WITH commentUpperNo = 0
+				CONNECT BY PRIOR commentNo = commentUpperNo
+				ORDER SIBLINGS BY commentGroupNo DESC
+				) A
+			 )
+		WHERE RNUM
+		BETWEEN (#{cri.pageNum} - 1) * #{cri.boardAmount} + 1 AND #{cri.pageNum} * #{cri.boardAmount}
+	</select>
+	
+	<select id="cListCount" resultType="int">
+		SELECT COUNT(distinct(commentNo))
+		FROM boardComment
+		WHERE boardNo=#{boardNo} OR imageNo=#{imageNo}
+	</select>
+	
+	<insert id="commentInsert" parameterType="Comment">
+		INSERT INTO BoardComment(
+						commentNo
+						, userId
+						, commentContent
+						, commentDate
+						, commentGroupNo
+						, commentUpperNo
+						, commentIndent
+						, imageNo
+						, boardNo)
+					VALUES(
+						Comment_SEQ.NEXTVAL
+						, #{userId}
+						, #{commentContent}
+						, sysdate
+						, Comment_SEQ.NEXTVAL
+						, 0
+						, 0
+						, #{imageNo}
+						, #{boardNo}
+					)
+	</insert>
+	
+	<insert id="commentReply" parameterType="Comment">
+		INSERT INTO boardComment(
+					commentNo
+					, userId
+					, commentContent
+					, commentDate
+					, commentGroupNo
+					, commentUpperNo
+					, commentIndent
+					, imageNo
+					, boardNo)
+			VALUES(
+					Comment_SEQ.NEXTVAL
+					, #{userId}
+					, #{commentContent}
+					, sysdate
+					, #{commentGroupNo}
+					, #{commentUpperNo}
+					, #{commentIndent}
+					, #{imageNo}
+					, #{boardNo}
+			)
+	</insert>
+	
+	<delete id="commentDeleteBoard" parameterType="int">
+		DELETE FROM boardComment
+		WHERE boardNo=#{boardNo} OR imageNo=#{imageNo}
+	</delete>
+
+
+	<update id="commentDelete" parameterType="int">
+		UPDATE boardComment
+		SET commentStatus = 1
+		WHERE commentNo = #{commentNo}
+	</update>
+
+	<select id="checkCommentWriter" resultType="string">
+		SELECT userId
+		FROM boardComment
+		WHERE commentNo = #{commentNo}
+	</select>
+
+	<select id="checkDeleteComment" resultType="CommentDeleteDTO">
+		SELECT commentUpperNo, commentGroupNo
+		FROM boardComment
+		WHERE commentNo = #{commentNo}
+	</select>
+
+	<select id="deleteGroupComment" resultType="CommentDeleteDTO">
+		SELECT commentNo, commentUpperNo
+		FROM boardComment
+		WHERE commentGroupNo = #{commentGroupNo}
+		ORDER BY commentNo ASC
+	</select>
+
+	<delete id="commentDeleteList" parameterType="java.util.List">
+		DELETE FROM boardComment
+		WHERE
+		    <foreach collection="list" item="item" separator="OR">
+				commentNo = #{item}
+			</foreach>
+	</delete>
+
+</mapper>
