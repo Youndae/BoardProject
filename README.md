@@ -36,7 +36,7 @@
   * 게시글 검색, 페이징, 작성, 수정, 삭제, 댓글 기능
 
 ## ERD
-<img src="./README_IMG/erd.jpg">
+<img src="./README_IMG/ERD.jpg">
 
 <br/>
 
