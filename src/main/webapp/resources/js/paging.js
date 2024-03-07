@@ -16,4 +16,3 @@ $(function(){
         location.href='/member/login';
     })
 })
-
