@@ -16,19 +16,19 @@ public interface ImageBoardMapper {
 	int listCount(Criteria cri);
 
 	//
-	public List<ImageDataDTO> getAttachList(int ImageNo);
+	List<ImageDataDTO> getAttachList(int ImageNo);
 
 	//
 	List<ImageBoardDetailDTO> imageBoardDetail(int ImageNo);
 
 	//
-	public int imageBoardInsertProc(ImageBoard imageBoard);
+	int imageBoardInsertProc(ImageBoard imageBoard);
 
 	//
-	void imageDataInsert(ImageData imageDataVO);
+	void imageDataInsert(List<ImageData> imageDataList);
 
 	//
-	public ImageBoardModifyDTO getImageBoardModifyData(int ImageNo);
+	ImageBoardModifyDTO getImageBoardModifyData(int ImageNo);
 
 	//
 	void imageBoardModifyProc(ImageBoard imageBoard);
@@ -37,14 +37,10 @@ public interface ImageBoardMapper {
 	int countStep(int ImageNo);
 
 	//
-	void deleteImageFiles(String ImageName);
-
-	//
 	void imageBoardDelete(int ImageNo);
 
 	//
 	List<String> deleteImageFileName(int ImageNo);
 
-	String checkWriter(int imageNo);
-	
+	void deleteImageFileList(List<String> deleteImageList);
 }

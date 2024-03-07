@@ -126,10 +126,10 @@ public class HierarchicalBoardServiceImpl implements HierarchicalBoardService{
 	public int boardModifyProc(HttpServletRequest request, Principal principal) {
 
 		HierarchicalBoard hierarchicalBoard = HierarchicalBoard.builder()
-						.boardTitle(request.getParameter("boardTitle"))
-						.boardNo(Integer.parseInt(request.getParameter("boardNo")))
-						.boardContent(request.getParameter("boardContent"))
-						.build();
+												.boardTitle(request.getParameter("boardTitle"))
+												.boardNo(Integer.parseInt(request.getParameter("boardNo")))
+												.boardContent(request.getParameter("boardContent"))
+												.build();
 
 
 		if(!principalService.checkWriter(hierarchicalBoard.getBoardNo(), "board", principal))

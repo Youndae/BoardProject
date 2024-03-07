@@ -8,7 +8,6 @@ import java.sql.Date;
 @Getter
 @Builder
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 public class Comment {
     private int commentNo;
@@ -21,4 +20,26 @@ public class Comment {
     private Integer imageNo;
     private Integer boardNo;
     private int commentStatus;
+
+    public Comment(int commentNo
+                    , String userId
+                    , Date commentDate
+                    , String commentContent
+                    , int commentGroupNo
+                    , int commentUpperNo
+                    , int commentIndent
+                    , Integer imageNo
+                    , Integer boardNo
+                    , int commentStatus) {
+        this.commentNo = commentNo;
+        this.userId = userId;
+        this.commentDate = commentDate;
+        this.commentContent = commentContent;
+        this.commentGroupNo = commentGroupNo;
+        this.commentUpperNo = commentUpperNo;
+        this.commentIndent = commentIndent;
+        this.imageNo = imageNo;
+        this.boardNo = boardNo;
+        this.commentStatus = commentStatus;
+    }
 }

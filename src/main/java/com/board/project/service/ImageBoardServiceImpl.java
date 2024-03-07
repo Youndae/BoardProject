@@ -1,14 +1,17 @@
 package com.board.project.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.board.project.domain.FilePathProperties;
 import com.board.project.domain.ResultProperties;
 import com.board.project.domain.dto.ImageBoardModifyDTO;
 import lombok.RequiredArgsConstructor;
@@ -35,17 +38,13 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 
 	//file size check. max 10MB
 	public boolean imageSizeCheck(List<MultipartFile> images) {
-
 		log.info("sizeCheck");
 		for(MultipartFile image : images) {
-
 			if(image.getSize() >= LIMIT_SIZE) {
 				log.info("over size");
 				return false;
 			}
 		}
-
-		log.info("size check End");
 		return true;
 	}
 
@@ -56,7 +55,6 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 							, String imageTitle
 						    , String imageContent
 							, Principal principal) {
-
 		log.info("imageBoard Insert");
 
 		if(principal == null)
@@ -65,7 +63,6 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 		if(imageSizeCheck(images) == false)
 			return ResultProperties.EXCEED_SIZE;
 
-
 		ImageBoard imageBoard = ImageBoard.builder()
 						.imageTitle(imageTitle)
 						.userId(principal.getName())
@@ -73,26 +70,18 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 						.build();
 
 		imageBoardMapper.imageBoardInsertProc(imageBoard);
-
-		log.info("imageNo : {}", imageBoard.getImageNo());
-
-		log.info("imageBoard save success");
-
-		saveImageFile(images, 1, imageBoard.getImageNo());
+		List<ImageData> saveImageDataList = saveImageFile(images, 1, imageBoard.getImageNo());
+		imageBoardMapper.imageDataInsert(saveImageDataList);
 
 		return ResultProperties.SUCCESS;
-
 	}
 
 	//image file save
-	@Transactional(rollbackFor = Exception.class)
-	public int saveImageFile(List<MultipartFile> images
-			, int step
-			, int imageNo) {
+	public List<ImageData> saveImageFile(List<MultipartFile> images
+										, int step
+										, int imageNo) {
 
-		log.info("file save");
-		String filePath = "E:\\upload\\boardProject\\";
-
+		List<ImageData> imageList = new ArrayList<>();
 
 		for (MultipartFile image : images) {
 			String originalName = image.getOriginalFilename();
@@ -102,40 +91,39 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 			String saveName = sb.append(new SimpleDateFormat("yyyyMMddHHmmss").format(System.currentTimeMillis()))
 					.append(UUID.randomUUID().toString())
 					.append(originalName.substring(originalName.lastIndexOf("."))).toString();
-			String saveFile = filePath + saveName;
+			String saveFile = FilePathProperties.FILE_PATH + saveName;
 
 			try{
 				image.transferTo(new File(saveFile));
 			}catch (Exception e){
-				return 0;
+				new IOException("ImageFileSave Exception");
 			}
 
-			ImageData imageData = ImageData.builder()
-					.imageName(saveName)
-					.oldName(originalName)
-					.imageStep(step)
-					.imageNo(imageNo)
-					.build();
-
-			imageBoardMapper.imageDataInsert(imageData);
-			step++;
+			imageList.add(
+					ImageData.builder()
+							.imageName(saveName)
+							.oldName(originalName)
+							.imageStep(step++)
+							.imageNo(imageNo)
+							.build()
+			);
 		}
 
-		return ResultProperties.SUCCESS;
+		return imageList;
 	}
 
 	//delete ImageFile
 	@Transactional(rollbackFor = Exception.class)
-	public void deleteFiles(List<String> deleteFiles) {
-		String filePath = "E:\\upload\\boardProject\\";
+	public List<String> deleteFiles(List<String> deleteFiles) {
+		List<String> deleteFileList = new ArrayList<>();
 
 		if(deleteFiles.size() == 0) {
 			log.info("deleteFiles is null");
+			return null;
 		}else {
 			for(int i = 0; i < deleteFiles.size(); i++) {
 				String delFileName = deleteFiles.get(i);
-				imageBoardMapper.deleteImageFiles(delFileName);
-				File file = new File(filePath+delFileName);
+				File file = new File(FilePathProperties.FILE_PATH + delFileName);
 				if(file.exists()) {
 					if(file.delete()) {
 						log.info("file delete success");
@@ -145,9 +133,10 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 				}else {
 					log.info("file is null");
 				}
+				deleteFileList.add(delFileName);
 		 	}
+			return deleteFileList;
 		}
-		
 	}
 
 	//Modify imageBoard
@@ -169,7 +158,8 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 				return ResultProperties.EXCEED_SIZE;
 
 			int step = imageBoardMapper.countStep(imageNo) + 1;
-			saveImageFile(images, step, imageNo);
+			List<ImageData> saveImageDataList = saveImageFile(images, step, imageNo);
+			imageBoardMapper.imageDataInsert(saveImageDataList);
 		}
 
 		ImageBoard imageBoard = ImageBoard.builder()
@@ -181,34 +171,31 @@ public class ImageBoardServiceImpl implements ImageBoardService{
 		imageBoardMapper.imageBoardModifyProc(imageBoard);
 
 		if(deleteFiles != null) {
-			deleteFiles(deleteFiles);
+			List<String> deleteImageFileList = deleteFiles(deleteFiles);
+			imageBoardMapper.deleteImageFileList(deleteImageFileList);
 		}
 
 		return ResultProperties.SUCCESS;
-
 	}
 
 	//delete imageBoard
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public int deleteBoard(int imageNo, Principal principal) {
-
 		if(!principalService.checkWriter(imageNo, "image", principal))
 			return ResultProperties.FAIL;
 
 		List<String> dt = imageBoardMapper.deleteImageFileName(imageNo);
-
-		deleteFiles(dt);
+		List<String> deleteImageList = deleteFiles(dt);
 
 		imageBoardMapper.imageBoardDelete(imageNo);
+		imageBoardMapper.deleteImageFileList(deleteImageList);
 
 		return ResultProperties.SUCCESS;
-
 	}
 
 	@Override
 	public ImageBoardModifyDTO getModifyImageData(int imageNo, Principal principal) {
-
 		try{
 			if(!principalService.checkWriter(imageNo, "image", principal))
 				return null;

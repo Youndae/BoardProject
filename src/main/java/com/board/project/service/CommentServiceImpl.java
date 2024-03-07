@@ -32,29 +32,20 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional(rollbackFor = Exception.class)
 	public int commentReply(Map<String, Object> commentData
 								, Principal principal) {
-		
 
-		Comment comment;
 
-		if(commentData.get("boardNo") == null) {
-			comment = Comment.builder()
-					.userId(principal.getName())
-					.commentContent(commentData.get("commentContent").toString())
-					.commentGroupNo(Integer.parseInt(commentData.get("commentGroupNo").toString()))
-					.commentIndent(Integer.parseInt(commentData.get("commentIndent").toString())+1)
-					.commentUpperNo(Integer.parseInt(commentData.get("commentNo").toString()))
-					.imageNo(Integer.parseInt(commentData.get("imageNo").toString()))
-					.build();
-		}else {
-			comment = Comment.builder()
-					.userId(principal.getName())
-					.commentContent(commentData.get("commentContent").toString())
-					.commentGroupNo(Integer.parseInt(commentData.get("commentGroupNo").toString()))
-					.commentIndent(Integer.parseInt(commentData.get("commentIndent").toString())+1)
-					.commentUpperNo(Integer.parseInt(commentData.get("commentNo").toString()))
-					.boardNo(Integer.parseInt(commentData.get("boardNo").toString()))
-					.build();
-		}
+		String boardNo = commentData.get("boardNo").toString();
+		String imageNo = commentData.get("imageNo").toString();
+
+		Comment comment = Comment.builder()
+								.userId(principal.getName())
+								.commentContent(commentData.get("commentContent").toString())
+								.commentGroupNo(Integer.parseInt(commentData.get("commentGroupNo").toString()))
+								.commentIndent(Integer.parseInt(commentData.get("commentIndent").toString())+1)
+								.commentUpperNo(Integer.parseInt(commentData.get("commentNo").toString()))
+								.boardNo(boardNo == null ? null : Integer.parseInt(boardNo))
+								.imageNo(imageNo == null ? null : Integer.parseInt(imageNo))
+								.build();
 
 		commentMapper.commentReply(comment);
 
@@ -66,24 +57,15 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional(rollbackFor = Exception.class)
 	public int commentInsert(Map<String, Object> CommentContent
 								, Principal principal) {
+		String boardNo = CommentContent.get("boardNo").toString();
+		String imageNo = CommentContent.get("imageNo").toString();
 
-
-		log.info("commentInsert");
-		Comment comment;
-
-		if(CommentContent.get("boardNo") == null) {
-			comment = Comment.builder()
-					.userId(principal.getName())
-					.commentContent(CommentContent.get("commentContent").toString())
-					.imageNo(Integer.parseInt(CommentContent.get("imageNo").toString()))
-					.build();
-		}else {
-			comment = Comment.builder()
-					.userId(principal.getName())
-					.commentContent(CommentContent.get("commentContent").toString())
-					.boardNo(Integer.parseInt(CommentContent.get("boardNo").toString()))
-					.build();
-		}
+		Comment comment = Comment.builder()
+								.userId(principal.getName())
+								.commentContent(CommentContent.get("commentContent").toString())
+								.boardNo(boardNo == null ? null : Integer.parseInt(boardNo))
+								.imageNo(imageNo == null ? null : Integer.parseInt(imageNo))
+								.build();
 
 		commentMapper.commentInsert(comment);
 
@@ -95,8 +77,6 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public int deleteComment(int commentNo, Principal principal) {
-
-
 		if(!principalService.checkWriter(commentNo, "comment", principal))
 			return ResultProperties.FAIL;
 

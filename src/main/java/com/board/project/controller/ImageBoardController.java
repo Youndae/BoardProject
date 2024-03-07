@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.board.project.domain.FilePathProperties;
 import com.board.project.domain.dto.Criteria;
 import com.board.project.domain.dto.ImageBoardModifyDTO;
 import com.board.project.domain.dto.ImageDataDTO;
@@ -147,7 +148,7 @@ public class ImageBoardController {
 	@RequestMapping(value = "/display", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String image){
-		File file = new File("E:\\upload\\boardProject\\" + image);
+		File file = new File(FilePathProperties.FILE_PATH + image);
 
 		ResponseEntity<byte[]> result = null;
 

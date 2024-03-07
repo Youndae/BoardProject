@@ -91,19 +91,22 @@
 			SELECT Image_SEQ.CURRVAL FROM dual
 		</selectKey>
 	</insert>
-	
-	<insert id="imageDataInsert" parameterType="ImageData">
-		INSERT INTO imageData(
-			imageName
-			, imageNo
-			, oldName
-			, imageStep)
-		VALUES(
-			#{imageName}
-			, #{imageNo}
-			, #{oldName}
-			, #{imageStep}
-		)
+
+	<insert id="imageDataInsert" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" separator=" " open="INSERT ALL" close="SELECT * FROM DUAL">
+			INTO imageData(
+			    imageName
+			    , imageNo
+			    , oldName
+			    , imageStep
+			)
+			VALUES (
+				#{item.imageName}
+				, #{item.imageNo}
+				, #{item.oldName}
+				, #{item.imageStep}
+			)
+		</foreach>
 	</insert>
 
 	<select id="getImageBoardModifyData" resultType="ImageBoardModifyDTO">
@@ -126,12 +129,16 @@
 		FROM imageData
 		WHERE imageNo = #{imageNo}
 	</select>
-	
-	<delete id="deleteImageFiles" parameterType="String">
+
+	<delete id="deleteImageFileList" parameterType="String">
 		DELETE FROM imageData
-		WHERE imageName = #{imageName}
+		<where>
+			<foreach collection="list" item="list" open="" close="" separator="OR">
+				(imageName = #{item})
+			</foreach>
+		</where>
 	</delete>
-	
+
 	<delete id="imageBoardDelete" parameterType="int">
 		DELETE FROM imageBoard
 		WHERE imageNo = #{imageNo}
@@ -143,9 +150,4 @@
 		WHERE imageNo = #{imageNo}
 	</select>
 
-	<select id="checkWriter" resultType="String">
-		SELECT userId
-		FROM imageBoard
-		WHERE imageNo = #{imageNo}
-	</select>
 </mapper> 

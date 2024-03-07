@@ -1,5 +1,5 @@
-var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
+const token = $("meta[name='_csrf']").attr("content");
+const header = $("meta[name='_csrf_header']").attr("content");
 
 $(document).ready(function(){
 	
@@ -13,7 +13,7 @@ $(document).ready(function(){
 
 $(function(){
 	$("#modify").click(function(){
-		var boardNo = $("#boardNo").val();
+		const boardNo = $("#boardNo").val();
 
 		location.href = "/board/boardModify?boardNo=" + boardNo;
 	})
@@ -27,7 +27,7 @@ $(function() {
 
 $(function(){
 	$("#deleteBoard").click(function(){
-		var boardNo = $("#boardNo").val();
+		const boardNo = $("#boardNo").val();
 
 		$.ajax({
 			url: '/board/boardDelete/' + boardNo,
@@ -56,11 +56,11 @@ $(function(){
 
 $(function(){
 	$("#reply").click(function(){
-		var indent = $("#boardIndent").val();
+		const indent = $("#boardIndent").val();
 		if(indent == 4){
 			alert("더이상 답글을 작성할 수 없습니다.");
 		}else{
-			var boardNo = $("#boardNo").val();
+			const boardNo = $("#boardNo").val();
 			location.href= "/board/boardReply?boardNo=" + boardNo;
 		}
 	})
@@ -68,7 +68,7 @@ $(function(){
 
 $(function(){
 	$("#insertBoard").click(function(){
-		var form = $("#insertBoardFrm");
+		const form = $("#insertBoardFrm");
 		
 		form.action = "<c:url value='/boardInsertproc'/>";
 		form.submit();
@@ -77,7 +77,7 @@ $(function(){
 
 $(function(){
 	$("#modifyProc").click(function(){
-		var form = document.getElementById("insertBoardFrm");
+		const form = document.getElementById("insertBoardFrm");
 		
 		form.action = "/board/boardModifyProc";
 		form.submit();
@@ -86,7 +86,7 @@ $(function(){
 
 $(function(){
 	$("#replyProc").click(function(){
-		var form = document.getElementById("replyFrm");
+		const form = document.getElementById("replyFrm");
 		
 		form.action = "/board/boardReplyProc";
 		form.submit();
@@ -96,8 +96,7 @@ $(function(){
 
 $(function() {
 	$('#searchBtn').click(function() {
-
-		var sType = $("select option:selected").val();
+		const sType = $("select option:selected").val();
 
 		console.log("sType : " + sType);
 
@@ -110,7 +109,7 @@ $(function(){
 	$('.pagination a').on('click', function(e) {
 		e.preventDefault();
 
-		var page_form = $('#page_action');
+		const page_form = $('#page_action');
 
 		page_form.find("input[name='pageNum']").val($(this).attr("href"));
 		page_form.submit();

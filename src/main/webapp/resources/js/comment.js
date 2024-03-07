@@ -1,5 +1,5 @@
-var token = $("meta[name='_csrf']").attr("content");
-var header = $("meta[name='_csrf_header']").attr("content");
+const token = $("meta[name='_csrf']").attr("content");
+const header = $("meta[name='_csrf_header']").attr("content");
 
 $(function() {
 
@@ -18,7 +18,7 @@ $(function() {
 	});
 
 	$("#commentInsert").click(function(){
-		var commentContent = {
+		const commentContent = {
 			commentContent : $("#commentContent").val(),
 			boardNo : $("#boardNo").val(),
 			imageNo : $("#imageNo").val(),
@@ -28,7 +28,7 @@ $(function() {
 			$("#commentContent").focus();
 		}else{
 
-			var str = JSON.stringify(commentContent);
+			const str = JSON.stringify(commentContent);
 
 			$.ajax({
 				url: "/comment/commentInsert",
@@ -51,9 +51,9 @@ $(function() {
 	});
 
 	function commentPaging(obj){
-		var boardNo = $("#boardNo").val();
-		var imageNo = $("#imageNo").val();
-		var pageNum = obj;
+		const boardNo = $("#boardNo").val();
+		const imageNo = $("#imageNo").val();
+		const pageNum = obj;
 
 		if(boardNo != null)
 			hierarchicalBoardComment(boardNo, pageNum);
@@ -82,10 +82,10 @@ function imageBoardComment(imageNo, pageNum){
 }
 
 function commentEachParsing(arr, uid){
-	var comment_area = $(".comment-area");
+	const comment_area = $(".comment-area");
 	comment_area.empty();
 
-	var commentStr = "";
+	let commentStr = "";
 
 	$(arr).each(function(i, res){
 		commentStr += "<div class=\"comment-box\" value=\"" + res.commentNo + "\">" +
@@ -93,27 +93,20 @@ function commentEachParsing(arr, uid){
 							"<tr>" +
 								"<td>";
 
-		if(res.commentIndent == 0){
-			commentStr += "<span class=\"comment_userId\">" + res.userId + "</span>" +
-							"<span class=\"comment_date\">" + formatDate(res.commentDate) + "</span>" +
-							"<p class=\"comment_content\">" + res.commentContent + "</p>";
-		}else if(res.commentIndent == 1){
-			commentStr += "<span class=\"comment_userId indent_size_1\">" + res.userId + "</span>" +
-							"<span class=\"comment_date indent_size_1\">" + formatDate(res.commentDate) + "</span>" +
-							"<p class=\"comment_content indent_size_1\">" + res.commentContent + "</p>";
-		}else if(res.commentIndent == 2){
-			commentStr += "<span class=\"comment_userId indent_size_2\">" + res.userId + "</span>" +
-									"<span class=\"comment_date indent_size_2\">" + formatDate(res.commentDate) + "</span>" +
-									"<p class=\"comment_content indent_size_2\">" + res.commentContent + "</p>";
-		}else if(res.commentIndent == 3){
-			commentStr += "<span class=\"comment_userId indent_size_3\">" + res.userId + "</span>" +
-							"<span class=\"comment_date indent_size_3\">" + formatDate(res.commentDate) + "</span>" +
-							"<p class=\"comment_content indent_size_3\">" + res.commentContent + "</p>";
-		}else if(res.commentIndent == 4){
-			commentStr += "<span class=\"comment_userId indent_size_4\">" + res.userId + "</span>" +
-							"<span class=\"comment_date indent_size_4\">" + formatDate(res.commentDate) + "</span>" +
-							"<p class=\"comment_content indent_size_4\">" + res.commentContent + "</p>";
-		}
+		let commentIndentClassName = '';
+
+		if(res.commentIndent == 1)
+			commentIndentClassName = ' indent_size_1';
+		else if(res.commentIndent == 2)
+			commentIndentClassName = ' indent_size_2';
+		else if(res.commentIndent == 3)
+			commentIndentClassName = ' indent_size_3';
+		else if(res.commentIndent == 4)
+			commentIndentClassName = ' indent_size_4';
+
+		commentStr += "<span class=\"comment_userId" + commentIndentClassName + "\">" + res.userId + "</span>" +
+						"<span class=\"comment_date" + commentIndentClassName + "\">" + formatDate(res.commentDate) + "</span>" +
+						"<p class=\"comment_content" + commentIndentClassName + "\">" + res.commentContent + "</p>";
 
 		if(uid != null && res.commentIndent != 4){
 			commentStr += "<button class=\"btn btn-outline-info btn-sm\" type=\"button\"" +
@@ -140,15 +133,15 @@ function commentEachParsing(arr, uid){
 }
 
 function commentPagingParsing(res){
-	var comment_paging = $(".comment-paging");
+	const comment_paging = $(".comment-paging");
 	comment_paging.empty();
 
-	var cpStr = "";
-	var startPage = res.pageDTO.startPage;
-	var endPage = res.pageDTO.endPage;
-	var pageNum = res.pageDTO.cri.pageNum;
-	var prev = res.pageDTO.prev;
-	var next = res.pageDTO.next;
+	let cpStr = "";
+	const startPage = res.pageDTO.startPage;
+	const endPage = res.pageDTO.endPage;
+	const pageNum = res.pageDTO.cri.pageNum;
+	const prev = res.pageDTO.prev;
+	const next = res.pageDTO.next;
 
 	if(prev){
 		cpStr += "<ul>" +
@@ -159,7 +152,7 @@ function commentPagingParsing(res){
 		cpStr += "<ul>";
 	}
 
-	for(var i = startPage; i <= endPage; i++){
+	for(let i = startPage; i <= endPage; i++){
 		if(startPage != endPage){
 			if(i == pageNum){
 				cpStr += "<li>" +
@@ -187,9 +180,9 @@ function commentPagingParsing(res){
 }
 
 function commentPaging(obj){
-	var boardNo = $("#boardNo").val();
-	var imageNo = $("#imageNo").val();
-	var pageNum = obj;
+	const boardNo = $("#boardNo").val();
+	const imageNo = $("#imageNo").val();
+	const pageNum = obj;
 
 	if(boardNo != null){
 		hierarchicalBoardComment(boardNo, pageNum);
@@ -201,10 +194,10 @@ function commentPaging(obj){
 }
 
 function formatDate(date){
-	var d = new Date(date);
-	var month = '' + (d.getMonth() + 1);
-	var day = '' + d.getDate();
-	var year = d.getFullYear();
+	const d = new Date(date);
+	let month = '' + (d.getMonth() + 1);
+	let day = '' + d.getDate();
+	const year = d.getFullYear();
 
 	if(month.length < 2)
 		month = '0' + month;
@@ -215,8 +208,8 @@ function formatDate(date){
 }
 
 $(document).on("click", "#commentReplyInsert", function(){
-	
-	var commentData = {
+
+	const commentData = {
 			commentNo : $("#commentReplyInsert").val(),
 			commentGroupNo : $("#commentGroupNo").val(),
 			commentIndent : $("#commentIndent").val(),
@@ -229,36 +222,36 @@ $(document).on("click", "#commentReplyInsert", function(){
 		alert("댓글을 입력해주세요");
 		$("#commentReplyContent").focus();
 	}else{
+
+		const str = JSON.stringify(commentData)
 	
-	var str = JSON.stringify(commentData)
-	
-	$.ajax({
-		url: "/comment/commentReply",
-		method: 'post',
-		data: str,
-		contentType: "application/json; charset=UTF-8",
-		beforeSend: function(xhr){
-			xhr.setRequestHeader(header, token);
-		},
-		success: function(data){
-			location.reload();
-		},
-		 error : function(request, status, error){
-				alert("code:" + request.status + "\n"
-						+ "message : " + request.responseText
-						+ "\n" + "error : " +error);
-			}
-	})
+		$.ajax({
+			url: "/comment/commentReply",
+			method: 'post',
+			data: str,
+			contentType: "application/json; charset=UTF-8",
+			beforeSend: function(xhr){
+				xhr.setRequestHeader(header, token);
+			},
+			success: function(data){
+				location.reload();
+			},
+			 error : function(request, status, error){
+					alert("code:" + request.status + "\n"
+							+ "message : " + request.responseText
+							+ "\n" + "error : " +error);
+				}
+		})
 	}
 })
 
 function cReply(obj){
 	$("#replyComment").remove();
-	
-	var RInput = $("#commentReplyContent").val();
-	var Num = obj.attributes['value'].value;
-	var GNum = $(".comment-box[value="+Num+"] .CommentGroupNo").val();
-	var INum = $(".comment-box[value="+Num+"] .CommentIndent").val()
+
+	const RInput = $("#commentReplyContent").val();
+	const Num = obj.attributes['value'].value;
+	const GNum = $(".comment-box[value="+Num+"] .CommentGroupNo").val();
+	const INum = $(".comment-box[value="+Num+"] .CommentIndent").val()
 
 	if(RInput == null){
 		$(".comment-box[value="+Num+"]").append(
@@ -275,7 +268,7 @@ function cReply(obj){
 
 
 function delComment(obj){
-	var commentNo = obj.attributes['value'].value;
+	const commentNo = obj.attributes['value'].value;
 
 	$.ajax({
 		url:"/comment/commentDelete/" + commentNo,
@@ -299,6 +292,4 @@ function delComment(obj){
 			
 		}
 	})
-	
-	
 }
