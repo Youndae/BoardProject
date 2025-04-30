@@ -1,62 +1,120 @@
 # BoardProject_default
 
+# 프로젝트 요약
+> 계층형을 표현하는 텍스트 기반의 게시판과 텍스트와 이미지 업로드가 가능한 게시판으로 구성된 CRUD 중심의 프로젝트입니다.   
+> 다양한 기능 구현보다 기본에 충실한 프로젝트입니다.   
+> 기본적인 개념에 대한 프로젝트인만큼 새로운 기술이나 언어, 환경에 대한 기본 CRUD 테스트에 주로 사용하고 있어 다양한 버전이 존재합니다.   
+> 해당 프로젝트는 가장 최초에 수행했던 기본 버전이며, Servlet & JSP, REST-API, Kotlin 버전이 추가로 존재합니다.   
+> 버전이 다르더라도 기능에는 차이가 거의 없으며 각 환경에 대한 구조의 차이 정도만 있습니다.
 
-## 목적
-* 이미지 업로드 후 수정 기능 구현. 이미지 등록 및 수정 시 개별 삭제 기능 구현.
-* oracle사용. Oracle을 이용한 계층형 게시판 구현. 계층형 쿼리 사용.
-* 검색 및 페이징 구현.
+### 타 버전 GitHub
 
-## 개발환경
-* Spring 4.3.3
-* Java 8
-* Spring Security 5
-* MyBatis
-* Oracle 11g
-* JSP
-* Tomcat
-* jQuery
-* Ajax
-* BootStrap
-* IDE - Eclipse
+- Servlet & JSP
+  - https://github.com/Youndae/BoardProject_servlet_jsp
+- REST-API 서버 및 FrontEnd Server
+  - https://github.com/Youndae/rest-api-project
+- React Client
+  - https://github.com/Youndae/boardProject_client_react
+- Kotlin
+  - https://github.com/Youndae/boardProject_kt
 
-## 프로젝트 설명
-* 교육과정 중 진행한 최종 프로젝트에서 구현하지 못했던 이미지 게시판 수정처리 기능을 마무리 해보고자 시작한 게시판 형태의 미니 프로젝트
-* 텍스트 기반의 게시판과 이미지 업로드가 가능한 게시판으로 구성
-* Oracle을 통한 계층형 쿼리 구현
-* 로그인과 인증 / 인가는 Spring Security로 처리.
+<br/>
 
-## 프로젝트 기능
-* 계층형 게시판
-    * 텍스트만 작성이 가능한 게시판
-    * 게시글 검색, 페이징, 작성, 수정, 삭제, 답글, 댓글 기능
-    * 게시글 삭제 시 하위에 위치하는 게시글 삭제
-* 이미지 게시판
-    * 텍스트와 함께 이미지를 업로드할 수 있는 게시판
-    * 이미지는 최대 5장까지 허용
-    * 게시글 검색, 페이징, 작성, 수정, 삭제, 댓글 기능
+# 목차
 
-## ERD
+1. [프로젝트 구조](#프로젝트-구조)
+2. [개발 환경](#개발-환경)
+3. [ERD](#ERD)
+4. [페이지별 기능 상세](#페이지별-기능-상세)
+5. [기능 및 개선 내역](#기능-및-개선-내역)
+
+<br/>
+
+# 프로젝트 구조
+<img src="./README_IMG/project_structure.jpg"/>
+
+Spring MVC, JSP 환경의 기본 구조로서 Layered Architecture 구조
+
+<br/>
+
+# 개발 환경
+
+|Category|Tech Stack|
+|---|---|
+|Backend| - Spring 4.3.3 <br/> - JDK 8 <br/> - Maven <br/> - MyBatis <br/> - SpringSecurity|
+|Frontend| - JSP <br/> - JQuery <br/> - Ajax <br/> - BootStrap|
+|Database| - Oracle11g|
+|Environment| - Eclipse <br/> - GitHub|
+
+<br/>
+
+# ERD
 <img src="./README_IMG/ERD.jpg">
 
 <br/>
 
-## 기능
+# 페이지별 기능 상세
 
-### 목차
-* 계층형 게시판 (쿼리 작성)
-* 계층형 게시판 (계층형 구조 삭제 처리)
-* 이미지 게시판 (이전 프로젝트 문제 해결)
+<details>
+    <summary><strong>계층형 게시판</strong></summary>
 
-<br />
+- 계층형 목록
+- 검색 ( 제목, 내용, 작성자, 제목 + 내용 기반 )
+- Pagination
+- 게시글 작성
+- 게시글 상세 정보
+  - 작성자인 경우 수정, 삭제( 삭제하는 경우 하위 계층 게시글 삭제 )
+  - 답글 작성
+  - 댓글 작성 ( 대댓글 작성 가능 )
+</details>
 
-## 계층형 게시판 (쿼리 작성)
+<br/>
+
+<details>
+    <summary><strong>이미지 게시판</strong></summary>
+
+- 목록
+- 게시글 작성
+  - 텍스트 및 이미지 업로드 ( 최대 5장 제한 )
+- 검색 ( 제목, 내용, 작성자, 제목 + 내용 기반 )
+- Pagination
+- 게시글 상세 정보
+  - 작성자인 경우 수정, 삭제
+  - 댓글 작성 ( 대댓글 작성 가능 )
+</details>
+
+<br/>
+
+<details>
+    <summary><strong>로그인</strong></summary>
+
+- 로그인
+- 회원가입
+</details>
+
+<br/>
+
+# 기능 및 개선 내역
+
+* <strong>백엔드</strong>
+  1. [계층형 구조 설계 및 조회 쿼리](#계층형-구조-설계-및-조회-쿼리)
+  2. [삭제시 하위 계층 게시글 처리](#삭제시-하위-계층-게시글-처리)
+  3. [이미지 게시판 수정 기능 중 이전 프로젝트 문제 해결](#이미지-게시판-수정-기능-중-이전-프로젝트-문제-해결)
+
+<br/>
+
+* <strong>프론트엔드</strong>
+  1. [comment 동적 include](#comment-동적-include)
+
+### 계층형 구조 설계 및 조회 쿼리
 <br />
 
   <img src="./README_IMG/default_hBoard_db.jpg">
-  계층형 구조는 GroupNo, UpperNo, Indent 컬럼으로 정렬하도록 했습니다.   
-  GroupNo는 최상위 글의 글 번호를 기준으로 하위 글과의 그룹을 형성할 수 있도록 했습니다.   
-  UpperNo는 바로 한단계 위의 글 번호를 갖도록 처리했으며 최상위글의 경우 참조할 상위 글이 없으므로 0을 갖게 됩니다.   
-  Indent는 원글 기준 0을 시작으로 계층이 내려갈수록 증가하게 됩니다.
+
+계층형 구조를 표현하기 위해 GroupNo, UpperNo, Indent 컬럼을 사용했습니다.   
+GroupNo는 최상위 글의 글 번호를 기준으로 하위 계층의 모든 데이터는 같은 GroupNo를 갖습니다.   
+UpperNO는 바로 한단계 위의 글 번호를 갖게 되며 최상위 글은 상위 계층이 없으므로 0을 갖게 됩니다.   
+Indent는 최상위 계층 기준 0으로 시작하며 계층이 내려갈수록 하나씩 증가하게 됩니다.
 
   ```xml
   <select id="searchPage" resultType="HierarchicalBoardListDTO">
@@ -91,20 +149,76 @@
       </if>
   </sql>
   ```
+Oracle에서는 START WITH 구문을 통해 보다 간결하게 표현할 수 있었습니다.   
+UpperNo가 0인 최상위 계층을 시작으로 boardNo가 BoardUpperNo에 존재하는 데이터를 바로 하위에 배치하도록 처리했습니다.   
+검색 기능의 경우 동적으로 처리합니다.
 
-  쿼리에서는 START WITH 구문을 통해 UpperNo가 0인 것을 시작으로 boardNo가 BoardUpperNo에 존재하는 데이터를 하단에 배치하도록 처리했습니다.   
-  기본 조회와 검색 기능에 대한 동적 처리를 위해 동적 쿼리로 작성했습니다.
+```html
+<table class="table table-hover" border="1">
+				<tr>
+					<th>글번호</th>
+					<th>글제목</th>
+					<th>작성자</th>
+					<th>작성일</th>
+				</tr>
+				<c:forEach var="board" items="${list}">
+					<tr>
+						<td>${board.boardNo}</td>
+						<c:choose>
+							<c:when test="${board.boardIndent == 1}">
+								<td>
+									<span style="text-align:left; margin-left: 12px;"> 
+										<a href="/board/boardDetail?boardNo=${board.boardNo}">${board.boardTitle}</a>
+									</span>
+								</td>
+							</c:when>
+							<c:when test="${board.boardIndent == 2}">
+								<td>	
+									<span style="text-align:left; margin-left: 24px;"> 
+										<a href="/board/boardDetail?boardNo=${board.boardNo}">${board.boardTitle}</a>
+									</span>
+								</td>
+							</c:when>
+							<c:when test="${board.boardIndent == 3}">
+								<td>
+									<span style="text-align:left; margin-left: 36px;"> 
+										<a href="/board/boardDetail?boardNo=${board.boardNo}">${board.boardTitle}</a>
+									</span>
+								</td>
+							</c:when>
+							<c:when test="${board.boardIndent == 4}">
+								<td>
+									<span style="text-align:left; margin-left: 48px;"> 
+										<a href="/board/boardDetail?boardNo=${board.boardNo}">${board.boardTitle}</a>
+									</span>
+								</td>
+							</c:when>
+							<c:otherwise>
+								<td>
+									<span style="text-align:left; margin-left: 0px;"> 
+										<a href="/board/boardDetail?boardNo=${board.boardNo}">${board.boardTitle}</a>
+									</span>
+								</td>
+							</c:otherwise>
+						</c:choose>
+						<td>${board.userId}</td>
+						<td>${board.boardDate}</td>
+					</tr>
+				</c:forEach>
+			</table>
+```
+
+JSP에서는 계층을 좀 더 명확하게 구분할 수 있도록 Indent 값에 따라 margin 값을 다르게 설정해 처리하도록 JSTL을 사용해 처리했습니다.
 
 <br/>
-<br/>
 
-## 계층형 게시판 (계층형 구조 삭제 처리)
+### 삭제시 하위 계층 게시글 처리
 
 <br />
 
-  계층형 구조에서의 게시글 삭제 요청이 발생하는 경우 하위 글 역시 삭제됩니다.   
-  각 게시글 데이터는 UpperNo에 자신의 한단계 상위의 데이터만 담고 있기 때문에 단계적으로 내려가며 데이터를 찾아야 했습니다.   
-  이 문제를 해결하기 위해 재귀함수를 사용했습니다.
+계층형 구조의 게시판에서는 게시글 삭제 요청이 발생하는 경우 하위글을 같이 삭제하도록 처리했습니다.   
+각 게시글 데이터는 UpperNo에 자신의 한단계 상위의 데이터만 담고 있기 때문에 단계적으로 내려가며 데이터를 찾도록 해야 했습니다.   
+이 문제는 재귀처리로 해결할 수 있었습니다.
 
   ```java
   @Override
@@ -150,49 +264,57 @@
   }
   ```
   <br/>
-  재귀 함수 처리로는 삭제 요청이 들어온 게시글의 글번호를 UpperNo에 담고 있는 데이터를 찾고, 찾은 데이터를 리스트에 담아준 뒤 재귀 호출로 해당 데이터의 하위 게시글을 다시 검색하는 형태로 처리합니다.
+  
+이번에는 상위 계층이 삭제되는 경우 하위 계층도 같이 삭제하도록 처리했지만, 요구사항에 따라 하위 계층은 유지하는 경우도 있습니다.   
+그런경우에는 데이터를 삭제 처리하기 보다 제목과 내용만 수정하거나 상태값을 의미하는 컬럼을 하나 두도록 처리하고 요청 데이터만 갱신하는 방법이 있습니다.   
+그리고 조회 시 CASE WHEN을 사용하거나 조회 이후 코드 레벨에서의 데이터 파싱을 통해 '삭제된 게시글입니다.' 와 같은 문구를 제목에 담아 처리하는 방법으로 해결 할 수 있습니다.
+
 <br/>
 
-### 이미지 게시판 (이전 프로젝트 문제 해결)
+### 이미지 게시판 수정 기능 중 이전 프로젝트 문제 해결
 
 <br />
 
-* 문제 해결   
-  프로젝트 시작 당시 가장 중요한 포인트였습니다.
+처음 이 프로젝트를 시작하게 된 이유가 이 문제 해결 때문이었습니다.   
+교육 과정 중 진행한 최종 프로젝트에서 파일 수정을 제대로 처리하지 못하고 마무리하는 일이 있었습니다.   
+그래서 종강 후 이 문제를 해결해보기 위해 이미지 업로드 기능을 추가해서 진행했습니다.   
 
-  <img src="./README_IMG/imageTable_fail.jpg">
+<img src="./README_IMG/imageTable_fail.jpg">
 
-  팀 프로젝트에서의 이미지 게시판 구조입니다.   
-  게시판 정보와 함께 파일 정보 역시 한번에 들어가있는 구조로 설계했었습니다.   
-  그러다보니 파일의 수정이 발생하는 경우 삭제할 컬럼의 위치파악이나 새로운 데이터의 삽입, 정렬에 대한 처리를 해결하지 못했었습니다.
+위 이미지는 팀 프로젝트의 테이블 구조입니다.   
+이미지 파일을 담는 테이블이 분리되어 있지 않고 게시글 정보와 함께 담겨있는 구조였습니다.   
+그러다보니 파일 수정이 발생했을 때 삭제 되어야 할 컬럼 위치 파악이나 새로운 파일 데이터의 삽입, 정렬에 대한 처리를 해결하지 못했습니다.   
 
-  현재는 저 설계 구조에서도 문제를 해결해 두었지만, 이 프로젝트에서는 테이블을 분리해 처리하는 방법으로 문제를 해결했습니다.   
-  <br/>
-
-  <img src="./README_IMG/default_image_db.jpg">
-
-  ImageBoard 테이블에는 게시글 정보만 담도록 하고, ImageData 테이블에는 파일에 대한 데이터만 담아주도록 분리해 처리했습니다.   
-  이미지 배치 순서를 위해 ImageStep이라는 컬럼을 통해 처리했고 삽입, 삭제 발생 시 위치 조정을 하는 방법이 아닌 뒤에 계속해서 쌓이는 형태로 처리했습니다.
+현재는 팀 프로젝트에서 저 구조를 유지한 상태로 문제를 해결했지만, 이 프로젝트를 진행할때는 테이블을 분리하는 방법으로 문제를 해결했습니다.
 
 <br/>
 
-* 게시판 수정   
-  <img src="./README_IMG/default_image_sequence.jpg">
-  수정 요청이 발생하면 파일 사이즈 체크 후 새로운 파일을 저장하도록 하고 ImageData 테이블에 저장 요청을 먼저 하게 됩니다.   
-  그 후 게시글 정보를 수정한 뒤 정상적으로 처리가 되었다면 파일 삭제 처리 및 해당 데이터 삭제 요청을 처리합니다.   
-  처리 도중 오류가 발생해 롤백하는 경우를 감안해 처리하기 위해 파일 삭제를 가장 마지막에 처리하도록 했습니다.
+<img src="./README_IMG/default_image_db.jpg">
 
+게시글 정보와 이미지 파일 데이터 테이블을 분리했고, 이 구조로 인해 문제를 바로 해결할 수 있었습니다.   
+ImageStep이라는 컬럼을 사용했는데 작성 또는 수정 시 이미지 배치에 대해 따로 설정할 수 없기에 가장 끝에 배치하는 구조로 가장 큰 imageStep 값보다 하나 더 큰 값으로 처리하도록 했습니다.
 
-## 개선한 부분과 문제 해결, 고민중인 부분
+이 문제 해결 과정을 통해 테이블 구조 설계에 대한 중요성을 알 수 있었고, 이후 프로젝트를 진행하며 설계에 더 신경쓰게되는 계기가 되었습니다.
 
-기존 계층형 게시판의 게시글을 삭제하는 경우 해당 게시글 하나만 삭제하도록 구현했었는데,
-원글이 존재하지 않는데 굳이 하위 글이 존재할 필요가 없다고 생각해 해당 부분을 수정했습니다.
-그 처리과정 중 여러 개의 데이터를 삭제해야 하는 경우 반복문을 통해 처리하도록 구현했었는데,
-동적 쿼리를 통해 List로 받아 처리하도록 개선했습니다.
+<br/>
 
-앞으로 개선하고자 하는 부분은 예외처리 부분입니다.
-@Transactinal을 통해 예외가 발생했을 때 롤백은 잘 처리되고 있지만, 프론트로의 결과 반환처리는 잘 되지 않고 있습니다.
-그래서 Spring에서의 예외처리를 좀 더 학습해서 이 부분을 개선하고자 하고 있습니다.
+### comment 동적 include
+
+<br />
+
+각 게시판에는 댓글 작성 기능이 존재합니다.
+완전히 동일한 기능과 UI를 갖고 있기 때문에 그냥 작성하게 되면 댓글 부분 코드가 완전하게 중복된다는 문제가 있었습니다.   
+이 중복을 제거하기 위해 comment.jsp로 분리하고 include를 통해 재사용 할 수 있도록 개선했습니다.   
+
+```html
+<!-- ImageDetail.jsp -->
+
+<div>
+    <jsp:include page="/WEB-INF/views/comment.jsp" flush="false" />
+</div>	
+```
+
+이렇게 댓글 UI가 위치해야 하는 부분에 배치해줌으로써 중복 코드를 최소화 할 수 있었습니다.
 
 <br/>
 <br/>
@@ -200,9 +322,6 @@
 
 ----
 
-<br/>
-<br/>
-<br/>
 <br/>
 <br/>
 
