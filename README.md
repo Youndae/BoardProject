@@ -11,9 +11,9 @@
 
 - Servlet & JSP
   - https://github.com/Youndae/BoardProject_servlet_jsp
-- REST-API 서버 및 FrontEnd Server
+- REST-API 서버 및 SSR Frontend
   - https://github.com/Youndae/rest-api-project
-- React Client
+- SPA Frontend
   - https://github.com/Youndae/boardProject_client_react
 - Kotlin
   - https://github.com/Youndae/boardProject_kt
